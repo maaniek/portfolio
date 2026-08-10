@@ -323,7 +323,7 @@ section{ padding-top:var(--sec); }
 .scope{ margin-top:clamp(64px, 8vw, 104px); }
 
 /* Industries — ciąg dalszy case studies */
-.industries{ margin-top:clamp(44px, 5vw, 72px); max-width:900px; }
+.industries{ margin-top:clamp(44px, 5vw, 72px); width:100%; }
 .industries .ind-label{
   display:block; font-family:var(--mono); font-size:var(--fs-md); color:var(--ink-60);
   margin-bottom:22px;
@@ -339,9 +339,6 @@ section{ padding-top:var(--sec); }
 }
 @media (max-width:900px){ .ind-grid{ grid-template-columns:1fr; } }
 @media (min-width:901px) and (max-width:1150px){ .ind-grid{ grid-template-columns:repeat(2, 1fr); } }
-@media (max-width:900px){
-  .industries{ max-width:none; }
-}
 .scope-title{ margin-bottom:clamp(28px, 3.4vw, 48px); }
 .scope-title em{ font-style:normal; color:var(--ink-60); }
 .work h2 em{ font-style:normal; color:var(--ink-60); }
