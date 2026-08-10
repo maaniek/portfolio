@@ -477,6 +477,9 @@ section{ padding-top:var(--sec); }
 .work .acc-side{ position:sticky; top:32px; }
 
 .teach-side .case-link{ margin-top:30px; }
+/* dwa przyciski obok siebie — zawijaja sie, gdy zabraknie miejsca */
+.side-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.side-actions .case-link{ margin-top:0; }
 .side-quote{ margin-top:30px; border:1px solid var(--ink); padding:24px 28px; }
 .side-quote p{ font-size:var(--fs-md); line-height:1.5; margin-bottom:0; }
 .side-quote .q-cont{ margin-top:18px; }
@@ -1159,7 +1162,10 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="teach-side">
         <p class="hook">Coaching isn't about better screens. It's about <em>changing how people think</em> — a Product Owner who writes requirements differently a year later, an engineer who now argues for the user, a management team that stops treating design as decoration.</p>
-        <a class="case-link" href="#quotes">See references <span>→</span></a>
+        <div class="side-actions">
+          <a class="case-link" href="https://drive.google.com/file/d/1TdTWwkF8X1LdqpVUzh_dzXeit-L-e4-I/view" target="_blank" rel="noopener">See references <span>→</span></a>
+          <a class="case-link" href="https://drive.google.com/file/d/1emlqT-VGTawGBfKDe7uhI0pQzhYEQkjF/view" target="_blank" rel="noopener">Read the MBA lecture <span>→</span></a>
+        </div>
       </div>
     </div>
   </div>
