@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Case Study in AI-Native Design — Marcel Dziedzic</title>
+<meta name="description" content="From brief to three shipped products in under three hours — a case study in AI-native, rapid design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green: #009A3B;
+    --green-dark: #007a2f;
+    --sage: #E0E7B0;
+    --ink: #212529;
+    --paper: #FFFFFF;
+    --muted: #5a6b60;
+    --border: rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Source Sans 3", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 48px; }
+
+  @media (max-width: 700px) {
+    .wrap { padding: 0 24px; }
+  }
+
+  /* ============ TYPOGRAPHY SYSTEM ============ */
+  /* Deliberately NOT the outlined-serif LP headline treatment — same palette,
+     same pill buttons, same body font, but bold solid sans for headlines so this
+     reads as its own thing: close family, distinct voice. */
+
+  h1 {
+    font-family: "Source Sans 3", sans-serif;
+    font-weight: 800;
+    font-size: clamp(42px, 6.4vw, 92px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  h1 .accent {
+    color: var(--green-dark);
+  }
+
+  h2 {
+    font-family: "Source Sans 3", sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 3.6vw, 46px);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .lede {
+    font-family: "Merriweather", serif;
+    font-weight: 300;
+    font-size: clamp(21px, 2.2vw, 28px);
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 13px 28px;
+    border-radius: 999px;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+    cursor: pointer;
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--green);
+    border: 1.5px solid var(--green);
+  }
+  .btn-outline:hover { background: var(--green); color: #fff; transform: translateY(-1px); }
+  .btn-solid {
+    background: var(--ink);
+    color: #fff;
+    border: 1.5px solid var(--ink);
+  }
+  .btn-solid:hover { background: transparent; color: var(--ink); }
+
+  .icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid var(--green-dark);
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+  .icon-circle svg { width: 20px; height: 20px; stroke: var(--green-dark); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ============ SECTION RHYTHM (zebra) ============ */
+  /* Full-bleed flat bands, no rounded insets — the LP's signature "card" motif
+     is deliberately not reused here. */
+
+  .sage-section {
+    background: #EEF2DC;
+    padding: 120px 48px;
+    text-align: center;
+  }
+  .plain-section {
+    padding: 120px 48px;
+    text-align: center;
+  }
+
+  @media (max-width: 700px) {
+    .sage-section, .plain-section { padding: 72px 24px; }
+  }
+
+  .section-inner { max-width: 900px; margin: 0 auto; }
+  .section-inner.wide { max-width: 1080px; }
+
+  h2 { margin-bottom: 20px; }
+
+  /* ============ HERO ============ */
+
+  .hero {
+    padding: 140px 48px 90px;
+    text-align: center;
+  }
+  .hero-inner { max-width: 900px; margin: 0 auto; }
+
+  .hero .lede {
+    max-width: 820px;
+    margin: 30px auto 0;
+    color: var(--muted);
+    font-family: "Source Sans 3", sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.45;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    margin-top: 72px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-size: 40px;
+    color: var(--green-dark);
+  }
+  .num-with-icon { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .oled-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2px solid var(--green);
+    color: var(--green);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+
+  .heading-with-icon { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .heading-with-icon svg { width: 0.8em; height: 0.8em; stroke: var(--green-dark); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .stat .label {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    margin-top: 6px;
+  }
+
+  .cta-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 56px;
+  }
+
+  @media (max-width: 700px) {
+    .hero { padding: 88px 24px 56px; }
+    .stat-row { gap: 32px; margin-top: 48px; }
+  }
+
+  /* ============ HIGHLIGHTS ============ */
+
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px 32px;
+    text-align: left;
+    margin-top: 64px;
+  }
+  .benefit strong {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .benefit span {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #3a3a3a;
+  }
+  .benefit code {
+    background: rgba(0,122,47,0.1);
+    color: var(--green-dark);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: ui-monospace, monospace;
+  }
+
+  @media (max-width: 900px) {
+    .benefit-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .benefit-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Flow diagram */
+  .flow-wrap { margin-top: 88px; }
+  .flow-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--green-dark);
+    margin-bottom: 12px;
+  }
+  .flow-sub {
+    font-size: 17px;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .flow-loop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green-dark);
+  }
+  .flow-loop svg { width: 18px; height: 18px; stroke: var(--green-dark); stroke-width: 2; fill: none; }
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .flow-node {
+    background: transparent;
+    border: 1.5px solid var(--green-dark);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 13px 20px;
+    border-radius: 10px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .flow-node.hub {
+    background: var(--green-dark);
+    border-color: var(--green-dark);
+    color: #fff;
+    font-weight: 700;
+  }
+  .flow-node.hub span { display: block; font-weight: 500; font-size: 14px; opacity: 0.85; margin-top: 2px; }
+  .flow-arrow { color: var(--green-dark); font-size: 20px; padding: 0 14px; flex-shrink: 0; }
+  .flow-branch { display: flex; flex-direction: column; gap: 10px; }
+
+  @media (max-width: 700px) {
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); padding: 10px 0; }
+  }
+
+  .quote {
+    font-family: "Merriweather", serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 30px);
+    color: var(--ink);
+    max-width: 680px;
+    margin: 88px auto 0;
+    line-height: 1.4;
+  }
+  .quote::before, .quote::after { color: var(--green-dark); }
+  .quote::before { content: '\201C'; }
+  .quote::after { content: '\201D'; }
+
+  /* ============ KPI / VELOCITY ============ */
+
+  .kpi-row {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    flex-wrap: wrap;
+    margin-top: 56px;
+  }
+
+  .timeline {
+    max-width: 900px;
+    margin: 72px auto 0;
+    text-align: left;
+  }
+  .timeline-hours {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-family: ui-monospace, monospace;
+  }
+  .timeline-bar {
+    display: flex;
+    height: 52px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1.5px solid var(--green-dark);
+  }
+  .tl-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    padding: 4px 8px;
+  }
+  .tl-seg:nth-child(1) { background: var(--ink); color: #fff; flex: 0.5; }
+  .tl-seg:nth-child(2) { background: var(--green-dark); color: #fff; flex: 1; }
+  .tl-seg:nth-child(3) { background: var(--green); color: #fff; flex: 1; }
+  .tl-seg:nth-child(4) { background: var(--sage); color: var(--ink); flex: 0.5; }
+
+  @media (max-width: 700px) {
+    .timeline-bar { flex-direction: column; height: auto; }
+    .tl-seg { padding: 12px; }
+    .kpi-row { gap: 32px; }
+  }
+
+  /* ============ FULL-WIDTH LANDING EMBED ============ */
+
+  .embed-heading {
+    text-align: center;
+    padding: 96px 48px 48px;
+  }
+  .live-icon {
+    position: relative;
+    display: inline-block;
+    width: 13px; height: 13px;
+    margin-right: 22px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+  }
+  .live-icon .core {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .live-icon .pulse {
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,154,59,0.6);
+    animation: live-pulse 1.8s ease-out infinite;
+  }
+  @keyframes live-pulse {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.7); opacity: 0; }
+  }
+  .embed-arrow {
+    font-size: 56px;
+    line-height: 1;
+    color: var(--green-dark);
+    margin-top: 18px;
+    animation: arrow-bounce 1.4s ease-in-out infinite;
+  }
+  @keyframes arrow-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  .embed-full {
+    width: 100%;
+    border-top: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+  }
+  .embed-full iframe {
+    width: 100%;
+    height: 600px; /* replaced by JS with the real content height on load */
+    border: none;
+    display: block;
+  }
+
+  /* ============ MOBILE APP EMBED ============ */
+  /* No extra bezel here — the app renders its own device frame internally.
+     Section background matches the app's own page background (#D8EAE0) so
+     the embed sits flush, as if it were just part of that page. */
+
+  .app-section {
+    background: #D8EAE0;
+  }
+  .app-section-tight {
+    padding-top: 24px;
+  }
+
+  .app-embed-frame {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+  }
+  .app-embed-frame iframe {
+    flex: 0 0 480px;
+    width: 480px;
+    max-width: 100%;
+    height: 780px;
+    border: none;
+    display: block;
+  }
+
+  /* ============ SHIPPED (benefits pattern) ============ */
+
+  .terminal {
+    max-width: 760px;
+    margin: 56px auto 0;
+    text-align: left;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -24px rgba(0,0,0,0.35);
+  }
+  .terminal-chrome {
+    background: #2b2b2b;
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
+  }
+  .terminal-chrome .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .terminal-chrome .dot.r { background: #EC6A5E; }
+  .terminal-chrome .dot.y { background: #F4BF4F; }
+  .terminal-chrome .dot.g { background: #61C554; }
+  .terminal-body {
+    background: #1a1a1a;
+    padding: 24px 26px 28px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .t-line { color: #d8d8d8; white-space: pre-wrap; word-break: break-all; }
+  .t-prompt { color: var(--green); font-weight: 700; margin-right: 6px; }
+  .t-ok { color: #6bd68a; }
+  .t-err { color: #ef7466; }
+  .t-warn { color: #f0c15c; }
+  .t-gap { margin-top: 16px; }
+
+  .shipped-close {
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 26px);
+    color: var(--ink);
+    max-width: 640px;
+    margin: 72px auto 0;
+  }
+
+  /* ============ CLOSING / SIGN-OFF (dark bookend) ============ */
+
+  .closing {
+    background: var(--ink);
+    padding: 120px 48px 90px;
+    text-align: center;
+  }
+  .closing h2 {
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 36px);
+    max-width: 760px;
+    margin: 0 auto 20px;
+  }
+  .closing h2 strong {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .photo-ring {
+    position: relative;
+    width: 190px; height: 190px;
+    margin: 96px auto 32px;
+  }
+  .pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(238,242,220,0.8);
+    opacity: 0;
+    animation: photo-pulse 4.5s ease-out infinite;
+  }
+  .pulse-ring.d1 { animation-delay: 1.5s; }
+  .pulse-ring.d2 { animation-delay: 3s; }
+  @keyframes photo-pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.55); opacity: 0; }
+  }
+  .closing .photo {
+    position: relative;
+    z-index: 1;
+    width: 190px; height: 190px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+  }
+  .closing .signature {
+    width: 460px;
+    max-width: 90%;
+    margin: 0 auto 10px;
+    filter: invert(1);
+    opacity: 0.92;
+  }
+
+  @media (max-width: 700px) {
+    .closing { padding: 72px 24px 56px; }
+    .closing .signature { width: 340px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .embed-arrow, .pulse-ring, .live-icon .pulse { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <h1>A case study in<br><span class="accent">AI-native</span> design.</h1>
+    <p class="lede">A real product-launch brief — landing page, mobile app, and investor pitch for a smart wine accessory — designed and shipped in under three hours, using AI tools end to end.</p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num">3 hrs</div>
+        <div class="label">Hands-on, total</div>
+      </div>
+      <div class="stat"><div class="num">3</div><div class="label">Live deliverables</div></div>
+      <div class="stat"><div class="num">0</div><div class="label">Lines hand-coded</div></div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#landing-embed" class="btn btn-solid">View live site →</a>
+      <a href="#app-embed" class="btn btn-outline">Open mobile app →</a>
+      <a href="pitch.pdf" target="_blank" class="btn btn-outline">Read the pitch deck →</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PROJECT HIGHLIGHTS (sage) ============ -->
+<section class="sage-section" id="highlights">
+  <div class="section-inner wide">
+    <h2>How this was actually built</h2>
+    <p class="lede">Not one tool. The right tool, every time — that's the skill.</p>
+
+    <div class="benefit-grid">
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M9.5 2a4.5 4.5 0 0 0-4.4 5.5A4 4 0 0 0 4 15a4 4 0 0 0 3 6.5h1a2 2 0 0 0 2-2V4.5A2.5 2.5 0 0 0 9.5 2z"/><path d="M14.5 2a4.5 4.5 0 0 1 4.4 5.5A4 4 0 0 1 20 15a4 4 0 0 1-3 6.5h-1a2 2 0 0 1-2-2V4.5A2.5 2.5 0 0 1 14.5 2z"/></svg></div>
+        <strong>Advanced file architecture</strong>
+        <span><code>CLAUDE.md</code> + structured project folders — every session picked up exactly where the last one left off</span>
+      </div>
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.402 2.402 0 0 1-3.409-.001l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.315 8.685a.979.979 0 0 1 .837-.276c.47.07.802.48.968.925a2.501 2.501 0 1 0 3.214-3.214c-.446-.166-.855-.497-.925-.968a.979.979 0 0 1 .276-.837l1.611-1.611A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02z"/></svg></div>
+        <strong>Skills, not raw prompts</strong>
+        <span><code>brainstorming</code> → real requirements pass. <code>pptx</code> → native editable deck</span>
+      </div>
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C22 6.012 17.5 2 12 2z"/></svg></div>
+        <strong>Right tool per asset</strong>
+        <span>Product renders generated in Gemini (Nano Banana), composited straight into the system</span>
+      </div>
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M12 17v5M8 22h8"/><path d="M5 8h14l-1 4a6 6 0 0 1-12 0z"/></svg></div>
+        <strong>Connected tooling</strong>
+        <span>GitHub CLI, repo, Pages — wired live, mid-conversation</span>
+      </div>
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <strong>Model &amp; effort, tuned per task</strong>
+        <span>High effort for design calls. Fast/cheap for repetitive edits</span>
+      </div>
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+        <strong>UX/UI Pro Max</strong>
+        <span><code>ui-ux-pro-max</code> → design-system search, before a single pixel was placed</span>
+      </div>
+      <div class="benefit">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg></div>
+        <strong>UX writing pass</strong>
+        <span><code>ux-copy</code> → every headline and CTA reviewed for clarity and tone</span>
+      </div>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-title">The system, in one picture</div>
+      <p class="flow-sub">Not linear — refined across several passes, not a single one-shot prompt</p>
+      <div class="flow">
+        <div class="flow-node">Brief</div>
+        <div class="flow-arrow">⇄</div>
+        <div class="flow-node hub">Claude Setup<span>CLAUDE.md · skills · connectors</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-branch">
+          <div class="flow-node">Landing Page</div>
+          <div class="flow-node">Mobile App</div>
+          <div class="flow-node">Pitch Deck</div>
+        </div>
+        <div class="flow-arrow">⇄</div>
+        <div class="flow-node">GitHub Pages</div>
+      </div>
+      <div class="flow-loop">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 3v5h5"/></svg>
+        Feedback from each output looped back into the setup — iterated, not one-shot
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KPI / VELOCITY (plain) ============ -->
+<section class="plain-section" id="kpi">
+  <div class="section-inner">
+    <h2 class="heading-with-icon"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>How fast, really</h2>
+
+    <div class="kpi-row">
+      <div class="stat"><div class="num">3 hrs</div><div class="label">Total time</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">Deliverables</div></div>
+      <div class="stat"><div class="num">4</div><div class="label">App screens</div></div>
+      <div class="stat"><div class="num">2</div><div class="label">AI tools used</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-hours"><span>0h</span><span>1h</span><span>2h</span><span>3h</span></div>
+      <div class="timeline-bar">
+        <div class="tl-seg">Brief</div>
+        <div class="tl-seg">Landing Page</div>
+        <div class="tl-seg">Mobile App</div>
+        <div class="tl-seg">Deck + Deploy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LANDING PAGE — FULL WIDTH EMBED ============ -->
+<div class="embed-heading" id="landing-embed">
+  <h2><span class="live-icon"><span class="pulse"></span><span class="core"></span></span>See it live – The Landing Page</h2>
+  <div class="embed-arrow">↓</div>
+</div>
+<div class="embed-full">
+  <iframe id="landing-iframe" src="index.html" title="Live landing page" loading="lazy" scrolling="no" onload="autosizeIframe(this)"></iframe>
+</div>
+
+<!-- ============ MOBILE APP EMBED ============ -->
+<div class="embed-heading app-section" id="app-embed">
+  <h2><span class="live-icon"><span class="pulse"></span><span class="core"></span></span>See it live – The Mobile App</h2>
+  <div class="embed-arrow">↓</div>
+</div>
+<section class="plain-section app-section app-section-tight">
+  <div class="section-inner">
+    <div class="app-embed-frame">
+      <iframe src="app/index.html" title="Live mobile app prototype" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHIPPED (sage) — real deployment log ============ -->
+<section class="sage-section">
+  <div class="section-inner wide">
+    <h2>Shipped, not just designed</h2>
+    <p class="lede">Not a mockup of a deploy. The actual log from this session.</p>
+
+    <div class="terminal">
+      <div class="terminal-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">$</span> gh repo create sommelier-node --public --source=. --push</div>
+        <div class="t-line t-ok">✓ Live at https://maaniek.github.io/sommelier-node/</div>
+        <div class="t-line t-gap"><span class="t-prompt">$</span> curl -I https://maaniek.github.io/sommelier-node/assets/hero-cap.png</div>
+        <div class="t-line t-err">HTTP/2 404 — image broken on the deployed site</div>
+        <div class="t-line t-warn">⚠ root cause: absolute path "/assets/…" — breaks once hosted on a subpath</div>
+        <div class="t-line t-gap"><span class="t-prompt">$</span> sed -i '' 's|"/assets/|"assets/|g' index.html</div>
+        <div class="t-line"><span class="t-prompt">$</span> git commit -m "Fix image paths for GitHub Pages subpath hosting" &amp;&amp; git push</div>
+        <div class="t-line t-ok">✓ Re-verified — 200 OK, image live</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING / SIGN-OFF (dark bookend) ============ -->
+<section class="closing">
+  <div class="section-inner">
+    <h2>This isn't a description of the process — <strong>it's the process</strong>. Built live, end to end, with Claude.</h2>
+    <div class="photo-ring">
+      <span class="pulse-ring"></span>
+      <span class="pulse-ring d1"></span>
+      <span class="pulse-ring d2"></span>
+      <img class="photo" src="case-study-assets/photo.png" alt="Marcel Dziedzic">
+    </div>
+    <img class="signature" src="case-study-assets/signature.png" alt="Signature — Marcel Dziedzic">
+  </div>
+</section>
+
+<script>
+  function measureAndSet(iframe) {
+    try {
+      const doc = iframe.contentDocument;
+      if (!doc || !doc.documentElement) return;
+      const height = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
+      const prev = iframe._maxHeight || 0;
+      if (height > prev) {
+        iframe._maxHeight = height;
+        iframe.style.height = height + 'px';
+      }
+    } catch (e) { /* cross-origin fallback: keep default height */ }
+  }
+
+  function autosizeIframe(iframe) {
+    // The landing page's hero uses `min-height: 86vh`. If we resize this iframe
+    // to match its own content height, that changes the iframe's viewport height,
+    // which changes 86vh, which changes the content height again — an infinite
+    // feedback loop. Neutralize vh-based sizing inside the embed first so the
+    // page's height becomes stable and independent of the iframe's own box size.
+    //
+    // The height we pick also controls how much the hero photo gets cropped by
+    // its own `object-fit: cover` — too short and the sides get cut off. The
+    // photo's real aspect ratio is 1376:768 (≈1.792:1), so deriving the height
+    // from the iframe's actual width keeps the full photo width visible, at
+    // any viewport size, instead of guessing a fixed pixel value.
+    try {
+      const doc = iframe.contentDocument;
+      const heroEl = doc.querySelector('.hero');
+      // Use the hero element's own rendered width (it has side margins, so it's
+      // narrower than the iframe itself) — not the iframe's width — to derive
+      // the height that keeps the photo's real aspect ratio uncropped.
+      const heroWidth = heroEl ? heroEl.getBoundingClientRect().width : iframe.clientWidth;
+      const heroAspect = 1376 / 768;
+      const heroHeight = Math.round(heroWidth / heroAspect);
+      const style = doc.createElement('style');
+      style.textContent = `.hero { min-height: ${heroHeight}px !important; }`;
+      doc.head.appendChild(style);
+    } catch (e) { /* cross-origin: fall back to default sizing */ }
+
+    measureAndSet(iframe);
+    [200, 500, 900, 1400].forEach(delay => {
+      setTimeout(() => measureAndSet(iframe), delay);
+    });
+  }
+</script>
+
+</body>
+</html>

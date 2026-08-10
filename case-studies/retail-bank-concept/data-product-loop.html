@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data → Product Loop</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'IBM Plex Sans',sans-serif; background:#fff; padding:48px 40px; }
+    .canvas { max-width:1040px; margin:0 auto; }
+
+    /* Header */
+    .hdr { margin-bottom:48px; display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+    .hdr h1 { font-size:24px; font-weight:700; color:#1A1A2E; letter-spacing:-.4px; margin-bottom:6px; }
+    .hdr p  { font-size:13px; color:#6B7280; max-width:480px; line-height:1.6; }
+
+    /* 3-column layout */
+    .cols { display:grid; grid-template-columns:1fr 48px 1fr 48px 1fr; align-items:start; gap:0; }
+
+    /* Column cards */
+    .col { display:flex; flex-direction:column; gap:0; }
+
+    .col-header {
+      padding:14px 16px;
+      border-radius:12px 12px 0 0;
+      border:1px solid #E5E7EB; border-bottom:none;
+      display:flex; align-items:center; gap:10px;
+    }
+    .col-icon {
+      width:30px; height:30px; border-radius:8px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .col-title { font-size:14px; font-weight:700; color:#1A1A2E; }
+    .col-sub   { font-size:11px; color:#6B7280; margin-top:1px; }
+
+    .col-body {
+      border:1px solid #E5E7EB; border-radius:0 0 12px 12px;
+      overflow:hidden;
+    }
+
+    .data-item {
+      padding:11px 16px;
+      border-bottom:1px solid #F3F4F6;
+      display:flex; align-items:flex-start; gap:10px;
+    }
+    .data-item:last-child { border-bottom:none; }
+    .di-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:6px; }
+    .di-strong { font-size:13px; font-weight:600; color:#1A1A2E; display:block; line-height:1.3; }
+    .di-sub    { font-size:12px; color:#6B7280; margin-top:1px; line-height:1.4; }
+
+    /* Arrow connector */
+    .arrow-col {
+      display:flex; align-items:center; justify-content:center;
+      padding-top:80px;
+    }
+
+    /* Output cards (right column) */
+    .out-item {
+      padding:14px 16px;
+      border-bottom:1px solid #F3F4F6;
+      display:flex; align-items:flex-start; gap:10px;
+    }
+    .out-item:last-child { border-bottom:none; }
+    .out-num {
+      width:20px; height:20px; border-radius:5px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:700; color:white; margin-top:1px;
+    }
+
+    /* Feedback loop bar */
+    .loop {
+      margin-top:20px;
+      background:#1A1A2E;
+      border-radius:12px;
+      padding:20px 28px;
+      display:flex; align-items:center; gap:0;
+    }
+    .loop-step {
+      flex:1; text-align:center; padding:0 12px; position:relative;
+    }
+    .loop-step::after {
+      content:'→';
+      position:absolute; right:-6px; top:50%; transform:translateY(-50%);
+      font-size:16px; color:rgba(255,255,255,.3); font-weight:300;
+    }
+    .loop-step:last-child::after { display:none; }
+    .loop-label { font-size:11px; font-weight:700; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.6px; margin-bottom:3px; }
+    .loop-val   { font-size:13px; font-weight:600; color:white; line-height:1.3; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div>
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <div style="width:26px; height:26px; background:#E2001A; border-radius:5px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-size:15px; font-weight:700; font-style:italic;">m</span>
+        </div>
+        <span style="font-size:13px; font-weight:600; color:#1A1A2E;">mBank</span>
+        <span style="font-size:13px; color:#9CA3AF;">· Dashboard Redesign</span>
+      </div>
+      <h1>Data → Better Products</h1>
+      <p>How user behaviour and AI signals feed back into product development — turning interactions into tailored financial services.</p>
+    </div>
+    <div style="display:inline-flex; align-items:center; gap:6px; background:#ECEEF2; color:#1A1A2E; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; padding:5px 12px; border-radius:20px; flex-shrink:0; height:fit-content;">
+      <svg style="width:13px;height:13px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      Data loop
+    </div>
+  </div>
+
+  <!-- 3 columns -->
+  <div class="cols">
+
+    <!-- COL 1: User signals -->
+    <div class="col">
+      <div class="col-header" style="background:#F0F0F5; border-color:#D1D5DB;">
+        <div class="col-icon" style="background:#1A1A2E;">
+          <svg style="width:14px;height:14px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
+        <div>
+          <div class="col-title">User signals</div>
+          <div class="col-sub">What the dashboard captures</div>
+        </div>
+      </div>
+      <div class="col-body" style="border-color:#D1D5DB;">
+        <div class="data-item">
+          <div class="di-dot" style="background:#1A1A2E;"></div>
+          <div><span class="di-strong">Spending patterns</span><span class="di-sub">Categories, merchants, frequency, timing</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#1A1A2E;"></div>
+          <div><span class="di-strong">Savings goals & progress</span><span class="di-sub">What users save for, how consistently</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#1A1A2E;"></div>
+          <div><span class="di-strong">AI corrections & feedback</span><span class="di-sub">Which suggestions were accepted or dismissed</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#1A1A2E;"></div>
+          <div><span class="di-strong">Life event signals</span><span class="di-sub">Salary changes, large purchases, new recurring costs</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#1A1A2E;"></div>
+          <div><span class="di-strong">Anxiety indicators</span><span class="di-sub">Frequent balance checks, ignored nudges, low engagement</span></div>
+        </div>
+        <div class="data-item" style="background:#EEF2FF; border-left:3px solid #4338CA; margin-left:-1px;">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div style="flex:1;">
+            <div style="display:flex; align-items:center; gap:7px; margin-bottom:2px;">
+              <span class="di-strong" style="color:#1A1A2E;">Questions asked to AI</span>
+              <span style="font-size:10px; font-weight:700; background:#4338CA; color:white; padding:1px 6px; border-radius:20px; white-space:nowrap; letter-spacing:.3px;">AI Assistant</span>
+            </div>
+            <span class="di-sub">What users want to know but can't find elsewhere</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 1 -->
+    <div class="arrow-col">
+      <svg width="48" height="32" viewBox="0 0 48 32" fill="none">
+        <path d="M2 16 H38 M30 8 L38 16 L30 24" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- COL 2: AI layer -->
+    <div class="col">
+      <div class="col-header" style="background:#EEF2FF; border-color:#C7D2FE;">
+        <div class="col-icon" style="background:#4338CA;">
+          <svg style="width:14px;height:14px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <div>
+          <div class="col-title">AI processing</div>
+          <div class="col-sub">What the model derives</div>
+        </div>
+      </div>
+      <div class="col-body" style="border-color:#C7D2FE;">
+        <div class="data-item">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div><span class="di-strong">User financial profile</span><span class="di-sub">Risk appetite, cash flow stability, financial literacy level</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div><span class="di-strong">Product fit scoring</span><span class="di-sub">Which products are relevant for this user right now</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div><span class="di-strong">Intent & timing signals</span><span class="di-sub">When a user is likely to act on a financial decision</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div><span class="di-strong">Churn & friction detection</span><span class="di-sub">Users at risk of disengaging or leaving</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div><span class="di-strong">Unmet needs mapping</span><span class="di-sub">Gaps between what users ask and what the bank offers</span></div>
+        </div>
+        <div class="data-item">
+          <div class="di-dot" style="background:#4338CA;"></div>
+          <div><span class="di-strong">Cohort clustering</span><span class="di-sub">Groups of users with shared behaviour and needs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div class="arrow-col">
+      <svg width="48" height="32" viewBox="0 0 48 32" fill="none">
+        <path d="M2 16 H38 M30 8 L38 16 L30 24" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- COL 3: Product outcomes -->
+    <div class="col">
+      <div class="col-header" style="background:#FFF5F5; border-color:#FECACA;">
+        <div class="col-icon" style="background:#E2001A;">
+          <svg style="width:14px;height:14px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+        <div>
+          <div class="col-title">Product decisions</div>
+          <div class="col-sub">What mBank can build or improve</div>
+        </div>
+      </div>
+      <div class="col-body" style="border-color:#FECACA;">
+        <div class="out-item">
+          <div class="out-num" style="background:#E2001A;">A</div>
+          <div><span class="di-strong">Personalised credit offers</span><span class="di-sub">Loan amount and rate based on actual cash flow, not just credit score</span></div>
+        </div>
+        <div class="out-item">
+          <div class="out-num" style="background:#374151;">B</div>
+          <div><span class="di-strong">Targeted savings products</span><span class="di-sub">Holiday fund, emergency buffer — offered when the user is ready</span></div>
+        </div>
+        <div class="out-item">
+          <div class="out-num" style="background:#374151;">C</div>
+          <div><span class="di-strong">Right-timed investment nudge</span><span class="di-sub">mFundusz offer after salary lands, not as a generic banner</span></div>
+        </div>
+        <div class="out-item">
+          <div class="out-num" style="background:#374151;">D</div>
+          <div><span class="di-strong">Friction-based feature backlog</span><span class="di-sub">Features built from real user questions and pain points</span></div>
+        </div>
+        <div class="out-item">
+          <div class="out-num" style="background:#4B5563;">E</div>
+          <div><span class="di-strong">Segment-specific bundles</span><span class="di-sub">Product packages for young savers, freelancers, families — not everyone</span></div>
+        </div>
+        <div class="out-item">
+          <div class="out-num" style="background:#4B5563;">F</div>
+          <div><span class="di-strong">Proactive retention offers</span><span class="di-sub">Reach the at-risk user before they switch — with a reason to stay</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AI Assistant callout -->
+  <div style="margin-top:16px; border:1.5px solid #C7D2FE; border-radius:12px; background:#EEF2FF; padding:18px 22px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="width:36px; height:36px; border-radius:9px; background:#4338CA; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">
+      <svg style="width:16px;height:16px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+    </div>
+    <div style="flex:1;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <div style="font-size:14px; font-weight:700; color:#1A1A2E;">The AI Assistant is the ideal interface for this loop</div>
+        <span style="font-size:11px; font-weight:700; background:#4338CA; color:white; padding:2px 8px; border-radius:20px; letter-spacing:.3px;">Solution 06</span>
+      </div>
+      <div style="font-size:13px; color:#374151; line-height:1.6; max-width:820px;">
+        Every user question is a rich signal — not just a query to answer. The assistant captures <strong>intent, anxiety and goals</strong> in natural language and feeds them directly into the loop. It's both a user tool and a passive data layer — working even when users ignore the rest of the dashboard.
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback loop -->
+  <div class="loop">
+    <div class="loop-step">
+      <div class="loop-label">Step 1</div>
+      <div class="loop-val">User interacts with dashboard</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-label">Step 2</div>
+      <div class="loop-val">AI captures & analyses behaviour</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-label">Step 3</div>
+      <div class="loop-val">Product team acts on insights</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-label">Step 4</div>
+      <div class="loop-val">Better products → more engagement</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-label">Result</div>
+      <div class="loop-val">Richer data → smarter AI → repeat</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

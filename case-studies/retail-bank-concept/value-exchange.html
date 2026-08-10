@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Value Exchange Map — mBank Redesign</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #1A1A2E;
+      --red:  #E2001A;
+      --mid:  #374151;
+      --muted:#4B5563;
+      --line: #E5E7EB;
+      --bg:   #F7F8FA;
+      --white:#FFFFFF;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'IBM Plex Sans',sans-serif; background:var(--white); color:var(--navy); min-height:100vh; }
+
+    .page { max-width:1100px; margin:0 auto; padding:48px 32px 64px; }
+
+    /* Header */
+    .header { margin-bottom:48px; }
+    .header h1 { font-size:28px; font-weight:700; letter-spacing:-.5px; }
+    .header p { font-size:15px; color:var(--muted); margin-top:6px; max-width:560px; line-height:1.6; }
+
+    /* Legend */
+    .legend { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:40px; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+    .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+    /* Diagram area */
+    .diagram { position:relative; width:100%; height:580px; }
+
+    /* Player nodes */
+    .player {
+      position:absolute;
+      border-radius:16px;
+      padding:20px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .player-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.7px; opacity:.6; }
+    .player-name { font-size:18px; font-weight:700; letter-spacing:-.3px; }
+    .player-sub { font-size:12px; opacity:.65; line-height:1.4; margin-top:2px; }
+
+    .player-user    { background:var(--navy); color:white; width:180px; }
+    .player-mbank   { background:var(--red);  color:white; width:180px; }
+    .player-ai      { background:white; border:2px solid var(--navy); color:var(--navy); width:160px; }
+    .player-3p      { background:white; border:2px solid var(--line); color:var(--navy); width:160px; }
+
+    /* Value flow tags */
+    .flow-tag {
+      position:absolute;
+      font-size:11px;
+      font-weight:600;
+      padding:4px 10px;
+      border-radius:20px;
+      white-space:nowrap;
+      transform:translate(-50%, -50%);
+      z-index:10;
+      box-shadow:0 2px 6px rgba(0,0,0,.08);
+    }
+    .flow-data    { background:#EEF2FF; color:#3730A3; }
+    .flow-value   { background:#ECFDF5; color:#065F46; }
+    .flow-money   { background:#FEF3C7; color:#92400E; }
+    .flow-service { background:#ECEEF2; color:var(--navy); }
+    .flow-trust   { background:#FFF0F0; color:#9B0012; }
+
+    /* Section below — value table */
+    .value-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:48px; }
+    .value-card { background:white; border:1px solid var(--line); border-radius:12px; padding:20px; }
+    .value-card-title { font-size:13px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .value-row { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; }
+    .value-row:last-child { margin-bottom:0; }
+    .value-icon { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:12px; }
+    .value-text strong { display:block; font-size:13px; font-weight:600; color:var(--navy); }
+    .value-text span { font-size:12px; color:var(--muted); line-height:1.4; }
+
+    /* Before/after bar */
+    .shift-section { margin-top:48px; }
+    .shift-title { font-size:16px; font-weight:700; margin-bottom:16px; }
+    .shift-row { display:flex; align-items:center; gap:0; margin-bottom:10px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:white; }
+    .shift-label { width:180px; font-size:13px; color:var(--muted); padding:12px 16px; flex-shrink:0; border-right:1px solid var(--line); }
+    .shift-before { flex:1; font-size:13px; padding:12px 14px; color:var(--muted); background:#FAFAFA; border-right:1px solid var(--line); }
+    .shift-arrow { padding:12px 10px; color:var(--line); font-size:16px; flex-shrink:0; }
+    .shift-after { flex:1; font-size:13px; font-weight:500; padding:12px 14px; color:var(--navy); }
+    .shift-tag { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; margin-left:6px; }
+    .tag-up   { background:#ECFDF5; color:#065F46; }
+    .tag-down { background:#FEE2E2; color:#9B0012; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+      <div style="width:32px; height:32px; background:var(--red); border-radius:6px; display:flex; align-items:center; justify-content:center;"><span style="color:white; font-size:18px; font-weight:700; font-style:italic;">m</span></div>
+      <span style="font-size:15px; font-weight:700; color:var(--navy);">Bank</span>
+      <span style="font-size:13px; color:var(--muted);">· Dashboard Redesign</span>
+    </div>
+    <h1>Value Exchange Map</h1>
+    <p>How value flows between ecosystem players once the dashboard is transformed from a passive balance viewer into an AI-powered financial intelligence layer.</p>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#3730A3;"></div>Data & signals</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#065F46;"></div>Financial value</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#92400E;"></div>Monetary flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--navy);"></div>Service & intelligence</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9B0012;"></div>Trust & loyalty</div>
+  </div>
+
+  <!-- DIAGRAM -->
+  <div class="diagram">
+
+    <!-- SVG Arrows -->
+    <svg style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible;">
+      <defs>
+        <marker id="arrow-navy" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1A1A2E" opacity=".5"/>
+        </marker>
+        <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#065F46" opacity=".6"/>
+        </marker>
+        <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#3730A3" opacity=".6"/>
+        </marker>
+        <marker id="arrow-amber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#92400E" opacity=".6"/>
+        </marker>
+        <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#9B0012" opacity=".6"/>
+        </marker>
+      </defs>
+
+      <!-- User → AI (data signals) -->
+      <path d="M 190,200 C 280,200 320,250 360,270" fill="none" stroke="#3730A3" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5" marker-end="url(#arrow-purple)"/>
+
+      <!-- AI → User (intelligence) -->
+      <path d="M 360,290 C 320,310 280,280 190,240" fill="none" stroke="#1A1A2E" stroke-width="2" opacity=".5" marker-end="url(#arrow-navy)"/>
+
+      <!-- User → mBank (trust + loyalty) -->
+      <path d="M 190,210 C 340,160 560,160 710,190" fill="none" stroke="#9B0012" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5" marker-end="url(#arrow-red)"/>
+
+      <!-- mBank → User (products + clarity) -->
+      <path d="M 710,220 C 560,200 340,240 190,260" fill="none" stroke="#065F46" stroke-width="2" opacity=".5" marker-end="url(#arrow-green)"/>
+
+      <!-- AI → mBank (insights + model) -->
+      <path d="M 520,265 C 590,250 660,230 710,210" fill="none" stroke="#3730A3" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5" marker-end="url(#arrow-purple)"/>
+
+      <!-- mBank → AI (data infra) -->
+      <path d="M 710,240 C 660,270 590,280 520,285" fill="none" stroke="#1A1A2E" stroke-width="2" opacity=".4" marker-end="url(#arrow-navy)"/>
+
+      <!-- User → 3P (spend) -->
+      <path d="M 150,340 C 150,400 250,460 320,490" fill="none" stroke="#92400E" stroke-width="1.5" stroke-dasharray="4 3" opacity=".4" marker-end="url(#arrow-amber)"/>
+
+      <!-- 3P → mBank (fees) -->
+      <path d="M 480,490 C 580,460 660,380 720,320" fill="none" stroke="#92400E" stroke-width="1.5" stroke-dasharray="4 3" opacity=".4" marker-end="url(#arrow-amber)"/>
+
+      <!-- AI → 3P (signals) -->
+      <path d="M 430,360 C 420,420 400,460 400,480" fill="none" stroke="#3730A3" stroke-width="1" stroke-dasharray="4 3" opacity=".3" marker-end="url(#arrow-purple)"/>
+    </svg>
+
+    <!-- USER NODE -->
+    <div class="player player-user" style="left:0; top:160px;">
+      <div class="player-label">Player 01</div>
+      <div class="player-name">User</div>
+      <div class="player-sub">Marcel D.<br>Retail banking customer</div>
+    </div>
+
+    <!-- AI NODE — center -->
+    <div class="player player-ai" style="left:50%; top:220px; transform:translateX(-50%);">
+      <div class="player-label" style="color:var(--muted);">Layer</div>
+      <div class="player-name" style="font-size:16px;">AI Assistant</div>
+      <div class="player-sub" style="color:var(--muted);">Intelligence layer<br>Cash flow · Insights · Paths</div>
+    </div>
+
+    <!-- mBANK NODE -->
+    <div class="player player-mbank" style="right:0; top:160px;">
+      <div class="player-label">Player 02</div>
+      <div class="player-name">mBank</div>
+      <div class="player-sub">Institution + product<br>Data + financial products</div>
+    </div>
+
+    <!-- 3P NODE -->
+    <div class="player player-3p" style="left:50%; top:430px; transform:translateX(-50%);">
+      <div class="player-label" style="color:var(--muted);">Player 03</div>
+      <div class="player-name" style="font-size:16px;">Third parties</div>
+      <div class="player-sub" style="color:var(--muted);">Merchants · Subscriptions<br>Netflix · Żabka · Energa</div>
+    </div>
+
+    <!-- FLOW TAGS -->
+    <!-- User → AI -->
+    <div class="flow-tag flow-data" style="left:26%; top:236px;">Goals · spending signals · corrections</div>
+
+    <!-- AI → User -->
+    <div class="flow-tag flow-service" style="left:26%; top:278px;">Insights · cash flow · trajectory</div>
+
+    <!-- User → mBank (top arc) -->
+    <div class="flow-tag flow-trust" style="left:50%; top:138px;">Trust · loyalty · AUM</div>
+
+    <!-- mBank → User (lower arc) -->
+    <div class="flow-tag flow-value" style="left:50%; top:240px;">Clarity · proactive alerts · products</div>
+
+    <!-- AI → mBank -->
+    <div class="flow-tag flow-data" style="left:75%; top:236px;">Behavioural patterns · churn signals</div>
+
+    <!-- mBank → AI -->
+    <div class="flow-tag flow-service" style="left:75%; top:272px;">Data infrastructure · product catalogue</div>
+
+    <!-- User → 3P -->
+    <div class="flow-tag flow-money" style="left:22%; top:430px;">Spend · subscription fees</div>
+
+    <!-- 3P → mBank -->
+    <div class="flow-tag flow-money" style="left:75%; top:430px;">Transaction revenue · fees</div>
+  </div>
+
+  <!-- VALUE SHIFT TABLE -->
+  <div class="shift-section">
+    <div class="shift-title">What changes in the value exchange</div>
+
+    <div class="shift-row">
+      <div class="shift-label">User → mBank</div>
+      <div class="shift-before">Anonymous transactions only</div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">Goals, intent, behavioural signals, life context <span class="shift-tag tag-up">↑ data richness</span></div>
+    </div>
+
+    <div class="shift-row">
+      <div class="shift-label">mBank → User</div>
+      <div class="shift-before">Balance + loan ads</div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">Financial clarity, proactive alerts, trajectory planning <span class="shift-tag tag-up">↑ perceived value</span></div>
+    </div>
+
+    <div class="shift-row">
+      <div class="shift-label">User → AI</div>
+      <div class="shift-before">Nothing — AI didn't exist</div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">Questions, corrections, goals — model improves with every session <span class="shift-tag tag-up">↑ new loop</span></div>
+    </div>
+
+    <div class="shift-row">
+      <div class="shift-label">AI → User</div>
+      <div class="shift-before">Nothing — AI didn't exist</div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">Personalised insights, cash flow analysis, savings scenarios <span class="shift-tag tag-up">↑ new loop</span></div>
+    </div>
+
+    <div class="shift-row">
+      <div class="shift-label">AI → mBank</div>
+      <div class="shift-before">No signal layer</div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">Churn prediction, cross-sell moments, product-fit signals <span class="shift-tag tag-up">↑ revenue intelligence</span></div>
+    </div>
+
+    <div class="shift-row">
+      <div class="shift-label">Loan ads</div>
+      <div class="shift-before">Aggressive, above the fold</div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">Removed — replaced by contextual product moments <span class="shift-tag tag-down">↓ friction</span></div>
+    </div>
+  </div>
+
+  <!-- VALUE CARDS -->
+  <div class="value-grid" style="margin-top:48px;">
+
+    <div class="value-card">
+      <div class="value-card-title">
+        <div style="width:28px; height:28px; background:var(--navy); border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <svg style="width:13px;height:13px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
+        User gains
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#ECFDF5;">✓</div>
+        <div class="value-text"><strong>Financial clarity</strong><span>Dashboard answers "am I on track?" without calling anyone</span></div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#ECFDF5;">✓</div>
+        <div class="value-text"><strong>Proactive safety net</strong><span>Unusual transactions flagged, upcoming payments surfaced before problems occur</span></div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#ECFDF5;">✓</div>
+        <div class="value-text"><strong>Agency over the future</strong><span>Trajectory paths A/B/C give user control, not just a number to stare at</span></div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#ECFDF5;">✓</div>
+        <div class="value-text"><strong>No more loan ads</strong><span>First thing seen is the user's own financial reality, not a sales pitch</span></div>
+      </div>
+    </div>
+
+    <div class="value-card">
+      <div class="value-card-title">
+        <div style="width:28px; height:28px; background:var(--red); border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <svg style="width:13px;height:13px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+        mBank gains
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#EEF2FF;">↑</div>
+        <div class="value-text"><strong>Richer user data</strong><span>Goals, intent signals, life events — not just transaction logs</span></div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#EEF2FF;">↑</div>
+        <div class="value-text"><strong>Early churn detection</strong><span>Anxiety patterns visible before user leaves — 3 logins during volatility = call them</span></div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#EEF2FF;">↑</div>
+        <div class="value-text"><strong>AUM growth</strong><span>"Move buffer to savings account" feels helpful, not pushy — user keeps more money at mBank</span></div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon" style="background:#EEF2FF;">↑</div>
+        <div class="value-text"><strong>Contextual cross-sell</strong><span>Product recommendations earned through trust, not forced through ads</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom summary -->
+  <div style="margin-top:40px; background:var(--navy); border-radius:14px; padding:28px 32px; display:flex; align-items:center; justify-content:space-between; gap:32px;">
+    <div>
+      <div style="font-size:13px; color:rgba(255,255,255,.5); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px;">The core shift</div>
+      <div style="font-size:20px; font-weight:700; color:white; letter-spacing:-.3px; line-height:1.4;">From a bank that holds your money<br>to a bank that understands your life.</div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex-shrink:0;">
+      <div style="text-align:center;">
+        <div style="font-size:32px; font-weight:700; color:white; letter-spacing:-1px;">↑ 3×</div>
+        <div style="font-size:12px; color:rgba(255,255,255,.5);">session depth</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:32px; font-weight:700; color:white; letter-spacing:-1px;">↑ 248</div>
+        <div style="font-size:12px; color:rgba(255,255,255,.5);">PLN/mo user surplus</div>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex-shrink:0;">
+      <div style="text-align:center;">
+        <div style="font-size:32px; font-weight:700; color:white; letter-spacing:-1px;">↓ 0</div>
+        <div style="font-size:12px; color:rgba(255,255,255,.5);">loan ads above fold</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:32px; font-weight:700; color:white; letter-spacing:-1px;">↑ AUM</div>
+        <div style="font-size:12px; color:rgba(255,255,255,.5);">assets stay at mBank</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

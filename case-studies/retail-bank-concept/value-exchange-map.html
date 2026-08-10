@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Value Exchange Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'IBM Plex Sans',sans-serif; background:#fff; display:flex; align-items:center; justify-content:center; min-height:100vh; padding:48px 40px; }
+    .canvas { width:100%; max-width:1000px; }
+
+    /* Header */
+    .hdr { margin-bottom:52px; display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+    .hdr-left h1 { font-size:24px; font-weight:700; color:#1A1A2E; letter-spacing:-.4px; }
+    .hdr-left p  { font-size:13px; color:#6B7280; margin-top:5px; max-width:440px; line-height:1.55; }
+    .legend { display:flex; flex-direction:column; gap:7px; flex-shrink:0; }
+    .leg { display:flex; align-items:center; gap:8px; font-size:12px; color:#6B7280; }
+    .leg-s { width:28px; height:2.5px; border-radius:2px; flex-shrink:0; }
+    .leg-d { width:28px; height:0; border-top:2.5px dashed; flex-shrink:0; }
+
+    /* Diagram container */
+    .diagram { position:relative; width:100%; height:520px; }
+
+    /* Player nodes */
+    .node { position:absolute; border-radius:14px; padding:18px 22px; }
+    .node-lbl { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.8px; opacity:.5; margin-bottom:4px; }
+    .node-name { font-size:22px; font-weight:700; letter-spacing:-.4px; }
+    .node-desc { font-size:12px; opacity:.6; margin-top:4px; line-height:1.4; }
+
+    .n-user  { background:#1A1A2E; color:white; width:188px; left:0; top:50%; transform:translateY(-50%); }
+    .n-mbank { background:#E2001A; color:white; width:188px; right:0; top:50%; transform:translateY(-50%); }
+    .n-ai    { background:#fff; border:2px solid #1A1A2E; color:#1A1A2E; width:172px;
+               left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
+
+    /* Benefit chips */
+    .benefit-col { position:absolute; display:flex; flex-direction:column; gap:7px; }
+    .b-chip { display:flex; align-items:flex-start; gap:7px; }
+    .b-dot  { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .b-text { font-size:12px; color:#374151; line-height:1.4; }
+    .b-text strong { display:block; font-size:12px; font-weight:600; color:#1A1A2E; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <div style="width:26px; height:26px; background:#E2001A; border-radius:5px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-size:15px; font-weight:700; font-style:italic; line-height:1;">m</span>
+        </div>
+        <span style="font-size:13px; font-weight:600; color:#1A1A2E;">mBank</span>
+        <span style="font-size:13px; color:#9CA3AF;">· Dashboard Redesign</span>
+      </div>
+      <h1>Value Exchange Map</h1>
+      <p>How the AI layer transforms value exchange between the user and the bank — turning passive data into mutual benefit.</p>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-s" style="background:#3730A3;"></div>Data & signals</div>
+      <div class="leg"><div class="leg-s" style="background:#065F46;"></div>Value & intelligence</div>
+      <div class="leg"><div class="leg-d" style="border-color:#9CA3AF;"></div>Trust & loyalty</div>
+    </div>
+  </div>
+
+  <!-- Diagram -->
+  <div class="diagram">
+
+    <svg style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 1000 520">
+      <defs>
+        <marker id="a-navy" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5z" fill="#1A1A2E" opacity=".7"/></marker>
+        <marker id="a-green" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5z" fill="#065F46"/></marker>
+        <marker id="a-purple" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5z" fill="#3730A3"/></marker>
+        <marker id="a-grey" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5z" fill="#9CA3AF"/></marker>
+      </defs>
+
+      <!-- ── USER ↔ AI ── -->
+      <!-- User → AI: goals, signals (purple dashed, above) -->
+      <path d="M 198,238 C 310,210 370,218 403,238"
+        fill="none" stroke="#3730A3" stroke-width="1.8" stroke-dasharray="5 3"
+        marker-end="url(#a-purple)"/>
+      <!-- AI → User: insights, clarity (green solid, below) -->
+      <path d="M 403,268 C 368,295 300,295 198,272"
+        fill="none" stroke="#065F46" stroke-width="2.2"
+        marker-end="url(#a-green)"/>
+
+      <!-- Labels USER ↔ AI -->
+      <rect x="218" y="195" width="176" height="22" rx="11" fill="#EEF2FF"/>
+      <text x="306" y="210" text-anchor="middle" font-size="10.5" font-weight="600" fill="#3730A3">Goals · signals · corrections</text>
+
+      <rect x="210" y="292" width="188" height="22" rx="11" fill="#F0FDF4"/>
+      <text x="304" y="307" text-anchor="middle" font-size="10.5" font-weight="600" fill="#065F46">Insights · trajectory · alerts</text>
+
+      <!-- ── AI ↔ mBANK ── -->
+      <!-- AI → mBank: patterns, churn (purple dashed, above) -->
+      <path d="M 597,238 C 630,218 690,210 802,238"
+        fill="none" stroke="#3730A3" stroke-width="1.8" stroke-dasharray="5 3"
+        marker-end="url(#a-purple)"/>
+      <!-- mBank → AI: data infra (navy solid, below) -->
+      <path d="M 802,272 C 690,295 625,295 597,268"
+        fill="none" stroke="#1A1A2E" stroke-width="2.2" opacity=".5"
+        marker-end="url(#a-navy)"/>
+
+      <!-- Labels AI ↔ mBank -->
+      <rect x="612" y="195" width="190" height="22" rx="11" fill="#EEF2FF"/>
+      <text x="707" y="210" text-anchor="middle" font-size="10.5" font-weight="600" fill="#3730A3">Patterns · churn signals · intent</text>
+
+      <rect x="622" y="292" width="172" height="22" rx="11" fill="#F7F8FA" stroke="#E5E7EB"/>
+      <text x="708" y="307" text-anchor="middle" font-size="10.5" font-weight="600" fill="#374151">Data infrastructure · products</text>
+
+      <!-- ── USER ↔ mBANK (direct arc, top) ── -->
+      <!-- User → mBank: trust, loyalty, AUM (grey dashed) -->
+      <path d="M 198,220 C 400,80 600,80 802,220"
+        fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-dasharray="6 3"
+        marker-end="url(#a-grey)"/>
+      <!-- mBank → User: proactive products (green solid) -->
+      <path d="M 802,248 C 600,120 400,120 198,248"
+        fill="none" stroke="#065F46" stroke-width="2" opacity=".6"
+        marker-end="url(#a-green)"/>
+
+      <!-- Labels arc -->
+      <rect x="410" y="84" width="180" height="22" rx="11" fill="#F9FAFB" stroke="#E5E7EB"/>
+      <text x="500" y="99" text-anchor="middle" font-size="10.5" font-weight="600" fill="#9CA3AF">Trust · loyalty · AUM</text>
+
+      <rect x="390" y="128" width="220" height="22" rx="11" fill="#F0FDF4"/>
+      <text x="500" y="143" text-anchor="middle" font-size="10.5" font-weight="600" fill="#065F46">Proactive products · financial clarity</text>
+
+      <!-- ── AI node glow ring ── -->
+      <circle cx="500" cy="260" r="84" fill="none" stroke="#1A1A2E" stroke-width="1" stroke-dasharray="3 4" opacity=".12"/>
+    </svg>
+
+    <!-- NODE: USER -->
+    <div class="node n-user">
+      <div class="node-lbl">Player 01</div>
+      <div class="node-name">User</div>
+      <div class="node-desc">Marcel D.<br>Retail banking customer</div>
+    </div>
+
+    <!-- NODE: AI (center) -->
+    <div class="node n-ai">
+      <div class="node-lbl" style="color:#6B7280;">New layer</div>
+      <div class="node-name" style="font-size:18px;">AI Assistant</div>
+      <div class="node-desc" style="color:#6B7280;">Cash flow · Insights<br>Trajectory · Alerts</div>
+    </div>
+
+    <!-- NODE: mBANK -->
+    <div class="node n-mbank">
+      <div class="node-lbl">Player 02</div>
+      <div class="node-name">mBank</div>
+      <div class="node-desc">Institution + product<br>Data · financial products</div>
+    </div>
+
+    <!-- BENEFIT COL: USER (bottom-left) -->
+    <div class="benefit-col" style="left:0; top:380px; width:240px;">
+      <div style="font-size:11px; font-weight:700; color:#1A1A2E; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+        <div style="width:16px; height:16px; background:#1A1A2E; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+          <svg style="width:9px;height:9px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        User gains
+      </div>
+      <div class="b-chip"><div class="b-dot" style="background:#065F46;"></div><div class="b-text"><strong>Financial clarity</strong>"Am I on track?" answered instantly</div></div>
+      <div class="b-chip"><div class="b-dot" style="background:#065F46;"></div><div class="b-text"><strong>Proactive safety net</strong>Unusual transactions flagged automatically</div></div>
+      <div class="b-chip"><div class="b-dot" style="background:#065F46;"></div><div class="b-text"><strong>Agency over the future</strong>Trajectory A/B/C — control, not just a number</div></div>
+      <div class="b-chip"><div class="b-dot" style="background:#065F46;"></div><div class="b-text"><strong>Reduced financial anxiety</strong>Control replaces uncertainty — user feels informed, not lost</div></div>
+    </div>
+
+    <!-- BENEFIT COL: AI (bottom-center) -->
+    <div class="benefit-col" style="left:50%; top:380px; transform:translateX(-50%); width:220px; align-items:center; text-align:center;">
+      <div style="font-size:11px; font-weight:700; color:#1A1A2E; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; display:flex; align-items:center; gap:6px; justify-content:center;">
+        <div style="width:16px; height:16px; background:#1A1A2E; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+          <svg style="width:9px;height:9px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        AI gains
+      </div>
+      <div class="b-chip" style="justify-content:center;"><div class="b-dot" style="background:#3730A3;"></div><div class="b-text" style="text-align:left;"><strong>Better training data</strong>Every correction & question improves the model</div></div>
+      <div class="b-chip" style="justify-content:center;"><div class="b-dot" style="background:#3730A3;"></div><div class="b-text" style="text-align:left;"><strong>Validated predictions</strong>User actions confirm or correct AI accuracy</div></div>
+      <div class="b-chip" style="justify-content:center;"><div class="b-dot" style="background:#3730A3;"></div><div class="b-text" style="text-align:left;"><strong>Real-time feedback loops</strong>Accept / reject signals refine every insight</div></div>
+      <div style="margin-top:8px; font-size:11px; color:#6B7280; font-style:italic; text-align:center; line-height:1.4;">More users → better AI → more value → more users</div>
+    </div>
+
+    <!-- BENEFIT COL: mBANK (bottom-right) -->
+    <div class="benefit-col" style="right:0; top:380px; width:240px; align-items:flex-end;">
+      <div style="font-size:11px; font-weight:700; color:#E2001A; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+        mBank gains
+        <div style="width:16px; height:16px; background:#E2001A; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+          <svg style="width:9px;height:9px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+      </div>
+      <div class="b-chip" style="flex-direction:row-reverse; text-align:right;"><div class="b-dot" style="background:#E2001A;"></div><div class="b-text"><strong>Richer user data</strong>Goals, intent, life events — not just transactions</div></div>
+      <div class="b-chip" style="flex-direction:row-reverse; text-align:right;"><div class="b-dot" style="background:#E2001A;"></div><div class="b-text"><strong>Early churn detection</strong>Anxiety patterns visible before user leaves</div></div>
+      <div class="b-chip" style="flex-direction:row-reverse; text-align:right;"><div class="b-dot" style="background:#E2001A;"></div><div class="b-text"><strong>AUM growth</strong>Recommendations feel helpful — assets stay</div></div>
+      <div class="b-chip" style="flex-direction:row-reverse; text-align:right;"><div class="b-dot" style="background:#E2001A;"></div><div class="b-text"><strong>Contextual cross-sell</strong>Product moments earned through trust</div></div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

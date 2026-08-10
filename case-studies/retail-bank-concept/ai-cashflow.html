@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>mBank — AI Cash Flow</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --red:   #E2001A;
+      --navy:  #1A1A2E;
+      --mid:   #374151;
+      --muted: #4B5563;
+      --line:  #E5E7EB;
+      --bg:    #F7F8FA;
+      --white: #FFFFFF;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:var(--navy); font-size:14px; line-height:1.5; }
+
+    .nav-item { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:14px; font-weight:500; color:var(--mid); cursor:pointer; }
+    .nav-item:hover { background:#F3F4F6; color:var(--navy); }
+
+    .card { background:var(--white); border-radius:12px; border:1px solid var(--line); }
+
+    .month-card { background:var(--white); border:1px solid var(--line); border-radius:10px; padding:14px 16px; min-width:120px; flex-shrink:0; }
+    .month-card.current { background:var(--navy); border-color:var(--navy); }
+
+    .pattern-card { background:var(--white); border:1px solid var(--line); border-radius:10px; padding:14px 16px; display:flex; gap:12px; align-items:flex-start; }
+
+    .followup { font-size:13px; color:var(--navy); background:white; border:1px solid var(--line); padding:8px 14px; border-radius:20px; cursor:pointer; font-family:inherit; }
+    .followup:hover { background:#F3F4F6; }
+
+    ::-webkit-scrollbar { width:3px; height:3px; }
+    ::-webkit-scrollbar-thumb { background:var(--line); border-radius:2px; }
+  </style>
+</head>
+<body>
+<div style="display:flex; min-height:100vh;">
+
+  <!-- SIDEBAR -->
+  <aside style="width:220px; background:var(--white); border-right:1px solid var(--line); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:20;">
+    <div style="padding:20px 20px 16px; border-bottom:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:32px; height:32px; background:var(--red); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <span style="color:white; font-size:18px; font-weight:700; font-style:italic; line-height:1;">m</span>
+        </div>
+        <div style="font-size:18px; font-weight:700; color:var(--navy);">Bank</div>
+      </div>
+    </div>
+    <div style="margin:14px 12px; background:var(--bg); border-radius:10px; padding:12px;">
+      <div style="font-size:11px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px;">eKonto Prywatne</div>
+      <div style="font-size:20px; font-weight:700; letter-spacing:-.5px;">6 263<span style="font-size:13px; font-weight:400; color:var(--muted);">.99 PLN</span></div>
+      <div style="font-size:12px; color:var(--muted); margin-top:2px;">05 1140 ···· 8456</div>
+    </div>
+    <nav style="flex:1; padding:4px 10px; display:flex; flex-direction:column; gap:2px;">
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>Payments</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Savings</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Investments</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>Cards</div>
+    </nav>
+    <div style="padding:12px; border-top:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; cursor:pointer;">
+        <div style="width:34px; height:34px; border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; color:white; font-size:12px; font-weight:700; flex-shrink:0;">MD</div>
+        <div><div style="font-size:14px; font-weight:600;">Marcel D.</div><div style="font-size:12px; color:var(--muted);">Personal account</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="margin-left:220px; flex:1; display:flex; flex-direction:column; min-height:100vh;">
+
+    <!-- Top bar -->
+    <div style="padding:16px 28px; border-bottom:1px solid var(--line); background:var(--white); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10;">
+      <a href="index.html" style="display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--mid); font-size:14px; font-weight:500;">
+        <svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Back to dashboard
+      </a>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:26px; height:26px; border-radius:6px; background:var(--navy); display:flex; align-items:center; justify-content:center;">
+          <svg style="width:13px;height:13px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <span style="font-size:14px; font-weight:600; color:var(--navy);">AI Assistant</span>
+      </div>
+      <div style="width:140px;"></div>
+    </div>
+
+    <!-- Conversation -->
+    <div style="flex:1; max-width:820px; width:100%; margin:0 auto; padding:32px 24px 120px;">
+
+      <!-- User question -->
+      <div style="display:flex; justify-content:flex-end; margin-bottom:28px;">
+        <div style="background:var(--navy); border-radius:14px 14px 2px 14px; padding:12px 18px; max-width:70%;">
+          <span style="font-size:15px; color:white; font-weight:500;">Can you analyze my cash flow and tell me if I should be worried about anything?</span>
+        </div>
+      </div>
+
+      <!-- AI response -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <!-- AI Insight label -->
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="display:flex; align-items:center; gap:6px; background:var(--navy); padding:5px 10px; border-radius:20px;">
+            <svg style="width:12px;height:12px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            <span style="font-size:11px; font-weight:700; color:white; text-transform:uppercase; letter-spacing:.5px;">AI Insight</span>
+          </div>
+          <span style="font-size:13px; color:var(--muted);">Based on your last 6 months of data</span>
+        </div>
+
+        <!-- 3 inline metrics — quick summary before chart -->
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+          <div class="card" style="padding:16px;">
+            <div style="font-size:11px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px;">Avg monthly income</div>
+            <div style="font-size:24px; font-weight:700; letter-spacing:-.5px;">4 200<span style="font-size:13px; font-weight:400; color:var(--muted);"> PLN</span></div>
+            <div style="font-size:13px; color:var(--muted); margin-top:4px;">Stable — no change in 6 mo</div>
+          </div>
+          <div class="card" style="padding:16px;">
+            <div style="font-size:11px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px;">Avg monthly expenses</div>
+            <div style="font-size:24px; font-weight:700; letter-spacing:-.5px;">3 840<span style="font-size:13px; font-weight:400; color:var(--muted);"> PLN</span></div>
+            <div style="font-size:13px; color:var(--muted); margin-top:4px;">↑ 8% vs 6 months ago</div>
+          </div>
+          <div class="card" style="padding:16px; background:var(--navy); border-color:var(--navy);">
+            <div style="font-size:11px; color:rgba(255,255,255,.45); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px;">Net monthly surplus</div>
+            <div style="font-size:24px; font-weight:700; letter-spacing:-.5px; color:white;">360<span style="font-size:13px; font-weight:400; color:rgba(255,255,255,.45);"> PLN</span></div>
+            <div style="font-size:13px; color:rgba(255,255,255,.5); margin-top:4px;">Could be 608 PLN — see below</div>
+          </div>
+        </div>
+
+        <!-- MAIN CHART CARD -->
+        <div class="card" style="padding:22px;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px;">
+            <div>
+              <div style="font-size:15px; font-weight:600;">Income vs. expenses — last 6 months</div>
+              <div style="font-size:13px; color:var(--muted); margin-top:2px;">Smoothed monthly totals · Dec 2024 – May 2025</div>
+            </div>
+            <div style="display:flex; gap:16px; align-items:center;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <svg width="24" height="8"><path d="M0 4 C6 4 6 4 12 4 C18 4 18 4 24 4" stroke="#1A1A2E" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                <span style="font-size:12px; color:var(--muted);">Income</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <svg width="24" height="8"><path d="M0 4 C6 4 6 4 12 4 C18 4 18 4 24 4" stroke="#9CA3AF" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="4 2"/></svg>
+                <span style="font-size:12px; color:var(--muted);">Expenses</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <div style="width:12px; height:12px; border-radius:2px; background:rgba(26,26,46,.08);"></div>
+                <span style="font-size:12px; color:var(--muted);">Surplus</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SVG Chart with smooth bezier curves -->
+          <svg viewBox="0 0 720 200" style="width:100%; height:200px;" preserveAspectRatio="none">
+            <!-- Y grid lines -->
+            <line x1="0" y1="40" x2="720" y2="40" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="0" y1="80" x2="720" y2="80" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="0" y1="120" x2="720" y2="120" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="0" y1="160" x2="720" y2="160" stroke="#F3F4F6" stroke-width="1"/>
+
+            <!-- Y labels -->
+            <text x="4" y="38" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">5 000</text>
+            <text x="4" y="78" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">4 000</text>
+            <text x="4" y="118" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">3 000</text>
+            <text x="4" y="158" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">2 000</text>
+
+            <!-- Surplus fill area between income and expenses -->
+            <path d="M 60,72 C 100,70 140,68 180,72 C 220,76 260,74 300,70 C 340,66 380,62 420,68 C 460,74 500,70 540,66 C 580,62 620,64 660,70
+                     L 660,120 C 620,116 580,118 540,114 C 500,110 460,118 420,116 C 380,114 340,118 300,118 C 260,118 220,122 180,120 C 140,118 100,116 60,118 Z"
+              fill="rgba(26,26,46,.07)"/>
+
+            <!-- Income line — smooth bezier, navy -->
+            <path d="M 60,72 C 100,70 140,68 180,72 C 220,76 260,74 300,70 C 340,66 380,62 420,68 C 460,74 500,70 540,66 C 580,62 620,64 660,70"
+              fill="none" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Expenses line — smooth bezier, grey dashed -->
+            <path d="M 60,118 C 100,116 140,122 180,120 C 220,118 260,124 300,118 C 340,112 380,120 420,116 C 460,112 500,118 540,114 C 580,110 620,116 660,120"
+              fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 3"/>
+
+            <!-- Data points — income -->
+            <circle cx="60"  cy="72"  r="4" fill="white" stroke="#1A1A2E" stroke-width="2"/>
+            <circle cx="180" cy="72"  r="4" fill="white" stroke="#1A1A2E" stroke-width="2"/>
+            <circle cx="300" cy="70"  r="4" fill="white" stroke="#1A1A2E" stroke-width="2"/>
+            <circle cx="420" cy="68"  r="4" fill="white" stroke="#1A1A2E" stroke-width="2"/>
+            <circle cx="540" cy="66"  r="4" fill="white" stroke="#1A1A2E" stroke-width="2"/>
+            <circle cx="660" cy="70"  r="5" fill="#1A1A2E" stroke="#1A1A2E" stroke-width="2"/>
+
+            <!-- Data points — expenses -->
+            <circle cx="60"  cy="118" r="4" fill="white" stroke="#9CA3AF" stroke-width="2"/>
+            <circle cx="180" cy="120" r="4" fill="white" stroke="#9CA3AF" stroke-width="2"/>
+            <circle cx="300" cy="118" r="4" fill="white" stroke="#9CA3AF" stroke-width="2"/>
+            <circle cx="420" cy="116" r="4" fill="white" stroke="#9CA3AF" stroke-width="2"/>
+            <circle cx="540" cy="114" r="4" fill="white" stroke="#9CA3AF" stroke-width="2"/>
+            <circle cx="660" cy="120" r="5" fill="#9CA3AF" stroke="#9CA3AF" stroke-width="2"/>
+
+            <!-- Tooltip on May (current month) -->
+            <rect x="575" y="30" width="110" height="52" rx="7" fill="#1A1A2E"/>
+            <text x="630" y="48" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="rgba(255,255,255,.6)" font-weight="500">May 2025</text>
+            <text x="598" y="64" font-family="IBM Plex Sans" font-size="9" fill="rgba(255,255,255,.6)">In</text>
+            <text x="672" y="64" text-anchor="end" font-family="IBM Plex Sans" font-size="9" fill="white" font-weight="600">4 200 PLN</text>
+            <text x="598" y="76" font-family="IBM Plex Sans" font-size="9" fill="rgba(255,255,255,.6)">Out</text>
+            <text x="672" y="76" text-anchor="end" font-family="IBM Plex Sans" font-size="9" fill="white" font-weight="600">3 840 PLN</text>
+            <!-- Tooltip tail -->
+            <polygon points="630,82 624,90 636,90" fill="#1A1A2E"/>
+
+            <!-- X month labels -->
+            <text x="60"  y="185" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#9CA3AF">Dec</text>
+            <text x="180" y="185" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#9CA3AF">Jan</text>
+            <text x="300" y="185" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#9CA3AF">Feb</text>
+            <text x="420" y="185" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#9CA3AF">Mar</text>
+            <text x="540" y="185" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#9CA3AF">Apr</text>
+            <text x="660" y="185" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#1A1A2E" font-weight="600">May</text>
+          </svg>
+        </div>
+
+
+        <!-- AI Pattern observations — compact -->
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-size:13px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">Patterns I noticed</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:28px; height:28px; background:#FEF3C7; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg style="width:13px;height:13px;color:#D97706;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <span style="font-size:13px; color:var(--mid);">February deficit — one-off spike to <strong>4 320 PLN</strong>. Buffer covered it.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:28px; height:28px; background:#ECEEF2; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg style="width:13px;height:13px;color:var(--navy);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+              </div>
+              <span style="font-size:13px; color:var(--mid);">Expenses up <strong>8%</strong> in 6 months — entertainment & subscriptions. Income is flat.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:28px; height:28px; background:#ECFDF5; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg style="width:13px;height:13px;color:#065F46;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <span style="font-size:13px; color:var(--mid);">Salary arrives on the <strong>25th</strong> every month — reliable, easy to plan around.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRAJECTORY CARD -->
+        <div class="card" style="padding:22px;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:6px;">
+            <div>
+              <div style="font-size:15px; font-weight:600;">Your financial trajectory</div>
+              <div style="font-size:13px; color:var(--muted); margin-top:2px;">Where will you be in 12 months? Pick a path.</div>
+            </div>
+          </div>
+
+          <!-- Path selectors -->
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0;">
+
+            <!-- Path A -->
+            <div style="border:1px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; opacity:.55;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                <div style="width:28px; height:3px; background:#D1D5DB; border-radius:99px; border-top:2px dashed #9CA3AF;"></div>
+                <span style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;">Path A</span>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:2px;">Status quo</div>
+              <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">Keep spending as now</div>
+              <div style="font-size:11px; color:var(--muted);">Balance in 12 months</div>
+              <div style="font-size:18px; font-weight:700; color:var(--navy);">6 580 PLN</div>
+            </div>
+
+            <!-- Path B — ACTIVE -->
+            <div style="border:2px solid var(--navy); border-radius:10px; padding:14px; cursor:pointer; position:relative;">
+              <div style="position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:var(--navy); color:white; font-size:10px; font-weight:700; padding:2px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap;">Selected</div>
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                <div style="width:28px; height:2.5px; background:var(--navy); border-radius:99px;"></div>
+                <span style="font-size:11px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:.5px;">Path B</span>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:2px;">Small changes</div>
+              <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">Cut 2 subscriptions + limit</div>
+              <div style="font-size:11px; color:var(--muted);">Balance in 12 months</div>
+              <div style="font-size:18px; font-weight:700; color:var(--navy);">8 663 PLN</div>
+            </div>
+
+            <!-- Path C -->
+            <div style="border:1px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; opacity:.55;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                <div style="width:28px; height:3px; background:#9CA3AF; border-radius:99px;"></div>
+                <span style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;">Path C</span>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:2px;">All in</div>
+              <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">All AI recommendations</div>
+              <div style="font-size:11px; color:var(--muted);">Balance in 12 months</div>
+              <div style="font-size:18px; font-weight:700; color:var(--navy);">10 583 PLN</div>
+            </div>
+          </div>
+
+          <!-- Trajectory chart -->
+          <svg viewBox="0 0 720 180" style="width:100%; height:180px;" preserveAspectRatio="none">
+            <!-- Grid -->
+            <line x1="60" y1="20" x2="60" y2="155" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="60" y1="50"  x2="700" y2="50"  stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="60" y1="90"  x2="700" y2="90"  stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="60" y1="130" x2="700" y2="130" stroke="#F3F4F6" stroke-width="1"/>
+
+            <!-- Y labels -->
+            <text x="4" y="53"  font-family="IBM Plex Sans" font-size="8" fill="#9CA3AF">10k</text>
+            <text x="4" y="93"  font-family="IBM Plex Sans" font-size="8" fill="#9CA3AF">8k</text>
+            <text x="4" y="133" font-family="IBM Plex Sans" font-size="8" fill="#9CA3AF">6k</text>
+
+            <!-- X labels -->
+            <text x="60"  y="170" text-anchor="middle" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">Now</text>
+            <text x="260" y="170" text-anchor="middle" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">3 mo</text>
+            <text x="460" y="170" text-anchor="middle" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">6 mo</text>
+            <text x="660" y="170" text-anchor="middle" font-family="IBM Plex Sans" font-size="9" fill="#1A1A2E" font-weight="600">12 mo</text>
+
+            <!-- Shared start point -->
+            <circle cx="60" cy="130" r="5" fill="var(--navy)"/>
+
+            <!-- Path A — flat dashed grey -->
+            <path d="M 60,130 C 200,130 400,132 660,126"
+              fill="none" stroke="#D1D5DB" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round"/>
+            <circle cx="660" cy="126" r="4" fill="white" stroke="#D1D5DB" stroke-width="2"/>
+            <text x="666" y="130" font-family="IBM Plex Sans" font-size="9" fill="#9CA3AF">6 580</text>
+
+            <!-- Path C — lighter dashed mid -->
+            <path d="M 60,130 C 200,120 400,80 660,46"
+              fill="none" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="5 3" stroke-linecap="round"/>
+            <circle cx="660" cy="46" r="4" fill="white" stroke="#9CA3AF" stroke-width="2"/>
+            <text x="666" y="50" font-family="IBM Plex Sans" font-size="9" fill="#6B7280">10 583</text>
+
+            <!-- Path B — bold navy ACTIVE -->
+            <path d="M 60,130 C 200,124 400,100 660,80"
+              fill="none" stroke="#1A1A2E" stroke-width="3" stroke-linecap="round"/>
+            <!-- Soft fill under B -->
+            <path d="M 60,130 C 200,124 400,100 660,80 L 660,155 L 60,155 Z"
+              fill="rgba(26,26,46,.05)"/>
+            <circle cx="660" cy="80" r="5" fill="#1A1A2E"/>
+            <rect x="590" y="62" width="86" height="22" rx="5" fill="#1A1A2E"/>
+            <text x="633" y="77" text-anchor="middle" font-family="IBM Plex Sans" font-size="9" fill="white" font-weight="600">8 663 PLN</text>
+          </svg>
+
+          <!-- Path B detail -->
+          <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--line);">
+            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:10px;">To reach Path B — here's what changes:</div>
+            <div style="display:flex; flex-direction:column; gap:7px;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:6px; height:6px; border-radius:50%; background:var(--navy); flex-shrink:0;"></div>
+                  <span style="font-size:13px; color:var(--mid);">Cancel Netflix subscription</span>
+                </div>
+                <span style="font-size:13px; font-weight:600; color:var(--navy);">+43 PLN/mo</span>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:6px; height:6px; border-radius:50%; background:var(--navy); flex-shrink:0;"></div>
+                  <span style="font-size:13px; color:var(--mid);">Set entertainment limit to 45 PLN</span>
+                </div>
+                <span style="font-size:13px; font-weight:600; color:var(--navy);">+29 PLN/mo</span>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:6px; height:6px; border-radius:50%; background:var(--navy); flex-shrink:0;"></div>
+                  <span style="font-size:13px; color:var(--mid);">Auto-save 100 PLN on salary day</span>
+                </div>
+                <span style="font-size:13px; font-weight:600; color:var(--navy);">+100 PLN/mo</span>
+              </div>
+              <div style="height:1px; background:var(--line); margin:4px 0;"></div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:13px; color:var(--muted);">Total improvement</span>
+                <span style="font-size:14px; font-weight:700; color:var(--navy);">+172 PLN/mo</span>
+              </div>
+            </div>
+            <button style="margin-top:14px; width:100%; padding:10px; background:var(--navy); color:white; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit;">Apply Path B automatically</button>
+          </div>
+        </div>
+
+        <!-- Follow-up -->
+        <div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">Continue the conversation</div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button class="followup">Why did February spike?</button>
+            <button class="followup">How do I grow my surplus?</button>
+            <button class="followup">Will I have enough for rent on the 5th?</button>
+            <button class="followup">Compare me to similar users</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chat input -->
+<div style="position:fixed; bottom:0; left:220px; right:0; padding:12px 24px 14px; border-top:1px solid var(--line); background:rgba(255,255,255,.95); backdrop-filter:blur(16px); z-index:30;">
+  <div style="max-width:820px; margin:0 auto; display:flex; align-items:center; gap:10px; background:var(--white); border:1px solid #D1D5DB; border-radius:10px; padding:10px 14px; box-shadow:0 1px 8px rgba(0,0,0,.06);">
+    <div style="width:26px; height:26px; border-radius:6px; background:var(--navy); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+      <svg style="width:13px;height:13px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+    </div>
+    <input type="text" placeholder="Ask a follow-up…" style="flex:1; border:none; outline:none; font-size:14px; color:var(--navy); font-family:inherit; background:transparent;"/>
+    <button style="width:30px; height:30px; background:var(--navy); border:none; border-radius:7px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;">
+      <svg style="width:13px;height:13px;color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+    </button>
+  </div>
+  <div style="text-align:center; font-size:11px; color:#9CA3AF; margin-top:4px;">AI assistant · Your data never leaves mBank</div>
+</div>
+
+</body>
+</html>

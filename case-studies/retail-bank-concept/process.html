@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Design Process — Scenario A</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'IBM Plex Sans',sans-serif; background:#fff; min-height:100vh; padding:48px 40px; }
+    .canvas { max-width:1020px; margin:0 auto; }
+
+    /* Header */
+    .hdr { margin-bottom:52px; display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+    .hdr h1 { font-size:24px; font-weight:700; color:#1A1A2E; letter-spacing:-.4px; }
+    .hdr p  { font-size:13px; color:#6B7280; margin-top:5px; max-width:460px; line-height:1.55; }
+    .badge  { display:inline-flex; align-items:center; gap:6px; background:#ECEEF2; color:#1A1A2E; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; padding:5px 12px; border-radius:20px; flex-shrink:0; }
+
+    /* Timeline row */
+    .timeline { position:relative; display:flex; gap:0; align-items:flex-start; }
+
+    /* Connector arrow between steps */
+    .connector { width:32px; flex-shrink:0; display:flex; align-items:center; justify-content:center; padding-top:32px; }
+    .connector svg { color:#D1D5DB; }
+
+    /* Step card */
+    .step { flex:1; display:flex; flex-direction:column; gap:0; }
+
+    .step-header {
+      display:flex; align-items:center; gap:10px;
+      padding:14px 16px;
+      border-radius:10px 10px 0 0;
+      border:1px solid #E5E7EB;
+      border-bottom:none;
+      background:#F7F8FA;
+    }
+    .step-num {
+      width:24px; height:24px; border-radius:6px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:700; flex-shrink:0;
+    }
+    .step-name { font-size:14px; font-weight:700; color:#1A1A2E; }
+
+    .step-body {
+      border:1px solid #E5E7EB;
+      border-radius:0 0 10px 10px;
+      padding:14px 16px;
+      background:#fff;
+      flex:1;
+    }
+
+    .step-focus {
+      font-size:12px; font-weight:600; color:#6B7280;
+      text-transform:uppercase; letter-spacing:.5px;
+      margin-bottom:10px;
+    }
+
+    .method-tag {
+      display:inline-flex; align-items:center; gap:5px;
+      font-size:11.5px; font-weight:500; color:#374151;
+      background:#F3F4F6; border-radius:6px;
+      padding:4px 9px; margin:0 4px 5px 0;
+    }
+
+    .insight {
+      margin-top:12px; padding:10px 12px;
+      background:#F7F8FA; border-radius:8px;
+      font-size:12px; color:#4B5563; line-height:1.5;
+      border-left:3px solid #E5E7EB;
+    }
+    .insight strong { color:#1A1A2E; }
+
+    /* Deliverable row at bottom */
+    .deliverables {
+      display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;
+    }
+    .del-tag {
+      font-size:11px; color:#6B7280;
+      border:1px solid #E5E7EB;
+      border-radius:20px; padding:3px 9px;
+      display:flex; align-items:center; gap:4px;
+    }
+    .del-tag::before { content:"→"; font-size:10px; color:#9CA3AF; }
+
+    /* Step color variants */
+    .s1 .step-num { background:#1A1A2E; color:white; }
+    .s1 .step-header { background:#F0F0F5; border-color:#D1D5DB; }
+    .s1 .insight { border-left-color:#1A1A2E; }
+
+    .s2 .step-num { background:#374151; color:white; }
+    .s2 .step-header { background:#F3F4F6; border-color:#D1D5DB; }
+    .s2 .insight { border-left-color:#374151; }
+
+    .s3 .step-num { background:#4B5563; color:white; }
+    .s3 .step-header { background:#F7F8FA; border-color:#E5E7EB; }
+
+    .s4 .step-num { background:#6B7280; color:white; }
+    .s4 .step-header { background:#F9FAFB; border-color:#E5E7EB; }
+
+    .s5 .step-num { background:#E2001A; color:white; }
+    .s5 .step-header { background:#FFF5F5; border-color:#FECACA; }
+    .s5 .step-body { border-color:#FECACA; }
+    .s5 .insight { border-left-color:#E2001A; background:#FFF5F5; }
+
+    /* Bottom note */
+    .bottom-note {
+      margin-top:40px; background:#1A1A2E; border-radius:12px;
+      padding:22px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .bn-text { font-size:15px; font-weight:600; color:white; line-height:1.5; }
+    .bn-sub  { font-size:13px; color:rgba(255,255,255,.5); margin-top:4px; }
+    .bn-chip { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.1); border-radius:8px; padding:8px 14px; flex-shrink:0; }
+    .bn-chip span { font-size:13px; color:rgba(255,255,255,.7); }
+    .bn-chip strong { color:white; font-size:14px; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div>
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <div style="width:26px; height:26px; background:#E2001A; border-radius:5px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:white; font-size:15px; font-weight:700; font-style:italic;">m</span>
+        </div>
+        <span style="font-size:13px; font-weight:600; color:#1A1A2E;">mBank</span>
+        <span style="font-size:13px; color:#9CA3AF;">· Dashboard Redesign</span>
+      </div>
+      <h1>How I'd structure the design work</h1>
+      <p>A structured, user-centered approach — from raw research to a shipped product that earns trust with every interaction.</p>
+    </div>
+    <div class="badge">
+      <svg style="width:13px;height:13px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Scenario A — Design Thinking
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+
+    <!-- STEP 1: DISCOVERY -->
+    <div class="step s1">
+      <div class="step-header">
+        <div class="step-num">01</div>
+        <div class="step-name">Discovery</div>
+      </div>
+      <div class="step-body">
+        <div class="step-focus">Methods</div>
+        <div>
+          <span class="method-tag">Client interviews</span>
+          <span class="method-tag">Analytics review</span>
+          <span class="method-tag">Product audit</span>
+          <span class="method-tag">Stakeholder alignment</span>
+        </div>
+        <div class="insight">
+          <strong>Business focus:</strong> Where's the growth opportunity and what drives revenue — alignment before any pixel.
+        </div>
+        <div class="deliverables">
+          <span class="del-tag">Research plan</span>
+          <span class="del-tag">Stakeholder map</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="connector">
+      <svg style="width:18px;height:18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- STEP 2: DEFINE -->
+    <div class="step s2">
+      <div class="step-header">
+        <div class="step-num">02</div>
+        <div class="step-name">Define</div>
+      </div>
+      <div class="step-body">
+        <div class="step-focus">Methods</div>
+        <div>
+          <span class="method-tag">Research synthesis</span>
+          <span class="method-tag">JTBD framework</span>
+          <span class="method-tag">Journey mapping</span>
+          <span class="method-tag">Tech alignment</span>
+        </div>
+        <div class="insight">
+          <strong>Core question:</strong> Define the gap between what users see and what they need to act on.
+        </div>
+        <div class="deliverables">
+          <span class="del-tag">Opportunity areas</span>
+          <span class="del-tag">JTBD map</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="connector">
+      <svg style="width:18px;height:18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- STEP 3: IDEATE -->
+    <div class="step s3">
+      <div class="step-header">
+        <div class="step-num">03</div>
+        <div class="step-name">Ideate</div>
+      </div>
+      <div class="step-body">
+        <div class="step-focus">Methods</div>
+        <div>
+          <span class="method-tag">Design sprint</span>
+          <span class="method-tag">Crazy 8s</span>
+          <span class="method-tag">Diverge → converge</span>
+          <span class="method-tag">Eng. in the room</span>
+        </div>
+        <div class="insight">
+          <strong>Output:</strong> 3 distinct concepts — different enough to learn from, focused enough to test.
+        </div>
+        <div class="deliverables">
+          <span class="del-tag">3 concepts</span>
+          <span class="del-tag">Prioritisation matrix</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="connector">
+      <svg style="width:18px;height:18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- STEP 4: PROTOTYPE & TEST -->
+    <div class="step s4">
+      <div class="step-header">
+        <div class="step-num">04</div>
+        <div class="step-name">Prototype & Test</div>
+      </div>
+      <div class="step-body">
+        <div class="step-focus">Methods</div>
+        <div>
+          <span class="method-tag">Mid-fi prototypes</span>
+          <span class="method-tag">Usability sessions</span>
+          <span class="method-tag">Real users only</span>
+        </div>
+        <div class="insight">
+          <strong>Core question:</strong> "Does this make you feel more in control of your money?"
+        </div>
+        <div class="deliverables">
+          <span class="del-tag">Validated direction</span>
+          <span class="del-tag">Test findings</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="connector">
+      <svg style="width:18px;height:18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- STEP 5: DELIVER -->
+    <div class="step s5">
+      <div class="step-header">
+        <div class="step-num">05</div>
+        <div class="step-name">Deliver</div>
+      </div>
+      <div class="step-body">
+        <div class="step-focus">Approach</div>
+        <div>
+          <span class="method-tag">MVP first</span>
+          <span class="method-tag">Design system</span>
+          <span class="method-tag">Metrics from day 1</span>
+          <span class="method-tag">Phased roadmap</span>
+        </div>
+        <div class="insight" style="background:#FFF5F5; border-left-color:#E2001A;">
+          <strong>Principle:</strong> Ship the smallest version that proves the concept — then V2, V3.
+        </div>
+        <div class="deliverables">
+          <span class="del-tag">MVP</span>
+          <span class="del-tag">Design system</span>
+          <span class="del-tag">Metrics framework</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom note -->
+  <div class="bottom-note">
+    <div>
+      <div class="bn-text">Every decision traced back to a user quote — not an opinion.</div>
+      <div class="bn-sub">Collaboration isn't a phase. It's the method. Business, engineering and users in the room from day one.</div>
+    </div>
+    <div style="display:flex; gap:10px; flex-shrink:0;">
+      <div class="bn-chip"><span>Timeline</span><strong>~11 weeks to MVP</strong></div>
+      <div class="bn-chip"><span>Risk</span><strong>Low</strong></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

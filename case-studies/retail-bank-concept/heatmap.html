@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>mBank — Click Heatmap</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --red:#E2001A; --navy:#1A1A2E; --mid:#374151; --muted:#4B5563;
+      --line:#E5E7EB; --bg:#F7F8FA; --white:#FFFFFF;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:var(--navy); font-size:14px; line-height:1.5; }
+
+    /* ── HEATMAP OVERLAY ── */
+    .hm-wrap { position:relative; }
+    .hm-layer { position:absolute; inset:0; pointer-events:none; z-index:10; mix-blend-mode:multiply; }
+    .hm-spot {
+      position:absolute;
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+    }
+    /* Hot */
+    .hm-hot  { background:radial-gradient(circle, rgba(220,38,38,.65) 0%, rgba(234,88,12,.35) 40%, transparent 70%); }
+    /* Warm */
+    .hm-warm { background:radial-gradient(circle, rgba(234,88,12,.45) 0%, rgba(234,179,8,.25) 45%, transparent 70%); }
+    /* Mild */
+    .hm-mild { background:radial-gradient(circle, rgba(234,179,8,.35) 0%, rgba(163,230,53,.15) 50%, transparent 70%); }
+    /* Cool */
+    .hm-cool { background:radial-gradient(circle, rgba(59,130,246,.2) 0%, rgba(99,102,241,.08) 55%, transparent 70%); }
+
+    /* dashboard styles */
+    .nav-item { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:14px; font-weight:500; color:var(--mid); cursor:pointer; }
+    .nav-item.active { background:#ECEEF2; color:var(--navy); font-weight:600; }
+    .card { background:var(--white); border-radius:12px; border:1px solid var(--line); }
+    .chip { font-size:12px; font-weight:600; padding:2px 8px; border-radius:20px; }
+    .chip-up { background:#ECFDF5; color:#065F46; }
+    .chip-down { background:#FEF3C7; color:#92400E; }
+    .tx { display:grid; grid-template-columns:1fr 110px 80px 100px; gap:8px; align-items:center; padding:9px 8px; border-radius:8px; cursor:pointer; }
+    .icon-box { width:34px; height:34px; border-radius:8px; background:#F3F4F6; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .donut-ring { transform:rotate(-90deg); transform-origin:50% 50%; }
+    @keyframes fillH { from{width:0} to{width:72%} }
+    .hfill { animation:fillH 1s ease forwards; }
+    ::-webkit-scrollbar { width:3px; }
+    ::-webkit-scrollbar-thumb { background:var(--line); border-radius:2px; }
+  </style>
+</head>
+<body>
+<div style="display:flex; min-height:100vh;">
+
+  <!-- SIDEBAR -->
+  <aside style="width:220px; background:var(--white); border-right:1px solid var(--line); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:20;">
+    <div style="padding:20px 20px 16px; border-bottom:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:32px; height:32px; background:var(--red); border-radius:6px; display:flex; align-items:center; justify-content:center;"><span style="color:white; font-size:18px; font-weight:700; font-style:italic;">m</span></div>
+        <div style="font-size:18px; font-weight:700;">Bank</div>
+      </div>
+    </div>
+    <div style="margin:14px 12px; background:var(--bg); border-radius:10px; padding:12px;">
+      <div style="font-size:11px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px;">eKonto Prywatne</div>
+      <div style="font-size:20px; font-weight:700; letter-spacing:-.5px;">6 263<span style="font-size:13px; font-weight:400; color:var(--muted);">.99 PLN</span></div>
+      <div style="font-size:12px; color:var(--muted); margin-top:2px;">05 1140 ···· 8456</div>
+    </div>
+    <!-- Card pill -->
+    <div style="margin:0 12px 10px; border:1px solid var(--line); border-radius:8px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:7px;">
+        <svg style="width:14px;height:14px;color:var(--muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        <span style="font-size:12px; color:var(--muted);">···· 4821</span>
+      </div>
+      <span style="font-size:12px; font-weight:600;">2 400 PLN left</span>
+    </div>
+    <nav style="flex:1; padding:4px 10px; display:flex; flex-direction:column; gap:2px;">
+      <div class="nav-item active"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>Payments</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Savings</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Investments</div>
+      <div class="nav-item"><svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>Cards</div>
+    </nav>
+    <div style="padding:12px; border-top:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:10px; padding:8px;">
+        <div style="width:34px; height:34px; border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; color:white; font-size:12px; font-weight:700;">MD</div>
+        <div><div style="font-size:14px; font-weight:600;">Marcel D.</div><div style="font-size:12px; color:var(--muted);">Personal account</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="hm-wrap" style="margin-left:220px; flex:1; padding:24px; padding-bottom:80px;">
+
+    <!-- HEATMAP LAYER -->
+    <div class="hm-layer">
+
+      <!-- Transfer button — HOTTEST -->
+      <div class="hm-spot hm-hot" style="width:160px; height:100px; top:38px; right:100px;"></div>
+
+      <!-- Balance number -->
+      <div class="hm-spot hm-hot" style="width:200px; height:120px; top:92px; left:200px;"></div>
+
+      <!-- Top transaction rows (1-3) -->
+      <div class="hm-spot hm-hot" style="width:500px; height:80px; top:308px; left:50%;"></div>
+      <div class="hm-spot hm-warm" style="width:500px; height:70px; top:358px; left:50%;"></div>
+      <div class="hm-spot hm-warm" style="width:500px; height:70px; top:408px; left:50%;"></div>
+
+      <!-- Studenciak flagged row -->
+      <div class="hm-spot hm-hot" style="width:440px; height:80px; top:258px; left:50%;"></div>
+
+      <!-- View all link -->
+      <div class="hm-spot hm-warm" style="width:120px; height:60px; top:580px; left:55%;"></div>
+
+      <!-- Heads up bar -->
+      <div class="hm-spot hm-warm" style="width:600px; height:60px; top:160px; left:52%;"></div>
+
+      <!-- Spending donut card -->
+      <div class="hm-spot hm-mild" style="width:260px; height:200px; top:230px; right:60px;"></div>
+
+      <!-- Savings goals -->
+      <div class="hm-spot hm-mild" style="width:240px; height:160px; top:440px; right:60px;"></div>
+
+      <!-- AI insight card -->
+      <div class="hm-spot hm-warm" style="width:260px; height:120px; top:80px; right:60px;"></div>
+
+      <!-- Notifications bell -->
+      <div class="hm-spot hm-warm" style="width:80px; height:80px; top:32px; right:44px;"></div>
+
+      <!-- Search -->
+      <div class="hm-spot hm-mild" style="width:80px; height:80px; top:32px; right:100px;"></div>
+
+      <!-- Nav — Dashboard item -->
+      <div class="hm-spot hm-mild" style="width:200px; height:50px; top:120px; left:-110px;"></div>
+
+      <!-- Nav — Payments -->
+      <div class="hm-spot hm-mild" style="width:180px; height:44px; top:160px; left:-110px;"></div>
+
+      <!-- Nav — Savings -->
+      <div class="hm-spot hm-cool" style="width:160px; height:40px; top:200px; left:-110px;"></div>
+
+      <!-- Smart suggestions (below fold) -->
+      <div class="hm-spot hm-cool" style="width:700px; height:120px; top:640px; left:50%;"></div>
+
+      <!-- Cash flow chart -->
+      <div class="hm-spot hm-cool" style="width:280px; height:120px; top:560px; right:60px;"></div>
+
+      <!-- Stat cards row -->
+      <div class="hm-spot hm-mild" style="width:180px; height:80px; top:64px; left:320px;"></div>
+      <div class="hm-spot hm-mild" style="width:160px; height:80px; top:64px; left:500px;"></div>
+      <div class="hm-spot hm-cool" style="width:150px; height:80px; top:64px; left:660px;"></div>
+
+      <!-- AI chat bar -->
+      <div class="hm-spot hm-warm" style="width:400px; height:60px; bottom:20px; left:50%; transform:translate(-50%, 0);"></div>
+    </div>
+
+    <!-- TOP BAR -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+      <div>
+        <div style="font-size:22px; font-weight:700; letter-spacing:-.3px;">Good morning, Marcel</div>
+        <div style="font-size:14px; color:var(--muted); margin-top:2px;">Friday, 30 May 2025 · Your financial overview</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button style="display:flex; align-items:center; gap:7px; background:var(--red); color:white; border:none; padding:9px 18px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit;">
+          <svg style="width:14px;height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>Transfer
+        </button>
+        <button style="display:flex; align-items:center; gap:7px; background:var(--white); border:1px solid var(--line); color:var(--navy); padding:9px 18px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit;">
+          <svg style="width:14px;height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>New payment
+        </button>
+        <button style="background:var(--white); border:1px solid var(--line); padding:9px; border-radius:8px; cursor:pointer; display:flex;">
+          <svg style="width:16px;height:16px; color:var(--mid);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+        <button style="position:relative; background:var(--white); border:1px solid var(--line); padding:9px; border-radius:8px; cursor:pointer; display:flex;">
+          <svg style="width:16px;height:16px; color:var(--mid);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span style="position:absolute; top:7px; right:7px; width:6px; height:6px; background:var(--red); border-radius:50%; border:1.5px solid white;"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px;">
+      <div class="card" style="padding:18px;">
+        <div style="font-size:12px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;">Balance</div>
+        <div style="font-size:26px; font-weight:700; letter-spacing:-.5px; line-height:1.1; margin-bottom:12px;">6 263<span style="font-size:14px; font-weight:400; color:var(--muted);"> PLN</span></div>
+        <div style="background:#E5E7EB; border-radius:99px; height:3px; overflow:hidden; margin-bottom:6px;"><div style="width:62%; height:100%; background:var(--navy); border-radius:99px;"></div></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="chip chip-up">+8.2%</span><span style="font-size:13px; color:var(--muted);">vs last month</span></div>
+      </div>
+      <div class="card" style="padding:18px;">
+        <div style="font-size:12px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;">Spent · May</div>
+        <div style="font-size:26px; font-weight:700; letter-spacing:-.5px; line-height:1.1; margin-bottom:12px;">340<span style="font-size:14px; font-weight:400; color:var(--muted);"> PLN</span></div>
+        <div style="background:#E5E7EB; border-radius:99px; height:3px; overflow:hidden; margin-bottom:6px;"><div style="width:72%; height:100%; background:var(--navy); border-radius:99px;"></div></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="chip chip-down">+12%</span><span style="font-size:13px; color:var(--muted);">130 PLN left</span></div>
+      </div>
+      <div class="card" style="padding:18px;">
+        <div style="font-size:12px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;">Saved · May</div>
+        <div style="font-size:26px; font-weight:700; letter-spacing:-.5px; line-height:1.1; margin-bottom:12px;">61<span style="font-size:14px; font-weight:400; color:var(--muted);"> PLN</span></div>
+        <div style="background:#E5E7EB; border-radius:99px; height:3px; overflow:hidden; margin-bottom:6px;"><div style="width:25%; height:100%; background:var(--navy); border-radius:99px;"></div></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="chip chip-up">On track</span><span style="font-size:13px; color:var(--muted);">Holiday goal</span></div>
+      </div>
+      <div class="card" style="padding:18px; background:var(--navy); border-color:var(--navy);">
+        <div style="font-size:12px; color:rgba(255,255,255,.45); font-weight:500; text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;">Financial health</div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <div style="font-size:26px; font-weight:700; letter-spacing:-.5px; line-height:1.1; color:white;">72<span style="font-size:14px; font-weight:400; color:rgba(255,255,255,.45);">/100</span></div>
+          <div style="display:flex; align-items:center; gap:4px; background:rgba(255,255,255,.15); padding:3px 8px; border-radius:20px;">
+            <svg style="width:12px;height:12px; color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span style="font-size:11px; font-weight:700; color:white;">GOOD</span>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.15); border-radius:99px; height:3px; overflow:hidden;"><div class="hfill" style="height:100%; background:white; border-radius:99px;"></div></div>
+        <div style="font-size:13px; color:rgba(255,255,255,.5); margin-top:5px;">Spending within budget</div>
+      </div>
+    </div>
+
+    <!-- HEADS UP -->
+    <div class="card" style="padding:12px 16px; margin-bottom:14px; display:flex; align-items:center; gap:16px;">
+      <div style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; background:#ECEEF2; border-radius:8px; flex-shrink:0;">
+        <svg style="width:16px;height:16px; color:var(--navy);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:2px;">3 payments due this week</div>
+        <div style="font-size:13px; color:var(--muted);">Netflix (43 PLN · Jun 1), Savings goal (12 PLN · Jun 1), Rent (1 200 PLN · Jun 5) — your balance covers all of them.</div>
+      </div>
+      <div style="text-align:right; flex-shrink:0;"><div style="font-size:14px; font-weight:700;">1 255 PLN</div><div style="font-size:13px; color:var(--muted);">total due</div></div>
+      <a href="#" style="font-size:13px; color:var(--navy); font-weight:600; text-decoration:none; white-space:nowrap; padding:7px 14px; border:1px solid var(--line); border-radius:8px;">View all →</a>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 300px; gap:14px;">
+
+      <!-- TRANSACTIONS -->
+      <div class="card" style="padding:20px; grid-column:span 2;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+          <div>
+            <div style="font-size:15px; font-weight:600;">Recent transactions</div>
+            <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+              <button style="background:none; border:none; cursor:pointer; color:var(--muted); font-size:13px; padding:0;">←</button>
+              <span style="font-size:13px; color:var(--muted);">May 2025</span>
+              <button style="background:none; border:none; cursor:pointer; color:var(--muted); font-size:13px; padding:0; opacity:.4;">→</button>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button style="font-size:12px; background:#ECEEF2; color:var(--navy); border:none; padding:5px 12px; border-radius:6px; cursor:pointer; font-weight:600; font-family:inherit;">All</button>
+            <button style="font-size:12px; background:#F3F4F6; color:var(--mid); border:none; padding:5px 12px; border-radius:6px; cursor:pointer; font-family:inherit;">Income</button>
+            <button style="font-size:12px; background:#F3F4F6; color:var(--mid); border:none; padding:5px 12px; border-radius:6px; cursor:pointer; font-family:inherit;">Expenses</button>
+          </div>
+        </div>
+        <!-- TX rows (simplified for heatmap) -->
+        <div style="display:grid; grid-template-columns:1fr 110px 80px 100px; gap:8px; padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:2px; padding-left:8px;">
+          <div style="font-size:12px; color:var(--muted); font-weight:500;">Description</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:500;">Category</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:500;">Date</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:500; text-align:right;">Amount</div>
+        </div>
+        <!-- Flagged row -->
+        <div class="tx" style="background:#FFF5F5;">
+          <div style="display:flex; align-items:center; gap:10px;"><div class="icon-box" style="background:white;"><svg style="width:15px;height:15px;color:var(--red);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div><div><div style="font-size:14px; font-weight:600;">Studenciak 77117</div><div style="font-size:13px; color:var(--red);">Unusual — first time seen</div></div></div>
+          <div><span style="font-size:12px; color:#9B0012; background:white; padding:2px 8px; border-radius:20px; font-weight:600; border:1px solid #FCA5A5;">Review</span></div>
+          <div style="font-size:13px; color:var(--muted);">Today</div>
+          <div style="font-size:14px; font-weight:600; color:var(--red); text-align:right;">−3.99 PLN</div>
+        </div>
+        <div style="height:1px; background:#F3F4F6;"></div>
+        <div class="tx"><div style="display:flex; align-items:center; gap:10px;"><div class="icon-box"></div><div><div style="font-size:14px; font-weight:600;">Monthly fee</div><div style="font-size:13px; color:var(--muted);">mBank · Recurring</div></div></div><div><span style="font-size:12px; color:var(--mid); background:#F3F4F6; padding:2px 8px; border-radius:20px;">Bank fee</span></div><div style="font-size:13px; color:var(--muted);">Today</div><div style="font-size:14px; font-weight:600; color:var(--mid); text-align:right;">−18.00 PLN</div></div>
+        <div style="height:1px; background:#F3F4F6;"></div>
+        <div class="tx"><div style="display:flex; align-items:center; gap:10px;"><div class="icon-box" style="background:#ECEEF2;"></div><div><div style="font-size:14px; font-weight:600;">Savings — Holiday fund</div><div style="font-size:13px; color:var(--muted);">3/12 · 25%</div></div></div><div><span style="font-size:12px; color:var(--mid); background:#F3F4F6; padding:2px 8px; border-radius:20px;">Savings</span></div><div style="font-size:13px; color:var(--muted);">Yesterday</div><div style="font-size:14px; font-weight:600; color:var(--navy); text-align:right;">−6.30 PLN</div></div>
+        <div style="height:1px; background:#F3F4F6;"></div>
+        <div class="tx"><div style="display:flex; align-items:center; gap:10px;"><div class="icon-box"></div><div><div style="font-size:14px; font-weight:600;">Żabka</div><div style="font-size:13px; color:var(--muted);">Grocery store</div></div></div><div><span style="font-size:12px; color:var(--mid); background:#F3F4F6; padding:2px 8px; border-radius:20px;">Groceries</span></div><div style="font-size:13px; color:var(--muted);">Yesterday</div><div style="font-size:14px; font-weight:600; color:var(--mid); text-align:right;">−4.40 PLN</div></div>
+        <div style="height:1px; background:#F3F4F6;"></div>
+        <div class="tx"><div style="display:flex; align-items:center; gap:10px;"><div class="icon-box" style="background:#ECFDF5;"></div><div><div style="font-size:14px; font-weight:600;">Salary — Employer Sp. z o.o.</div><div style="font-size:13px; color:var(--muted);">Monthly income</div></div></div><div><span style="font-size:12px; color:#065F46; background:#ECFDF5; padding:2px 8px; border-radius:20px; font-weight:600;">Income</span></div><div style="font-size:13px; color:var(--muted);">25 May</div><div style="font-size:14px; font-weight:600; color:#065F46; text-align:right;">+4 200.00 PLN</div></div>
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center;">
+          <a href="#" style="font-size:13px; color:var(--navy); font-weight:600; text-decoration:none;">View all →</a>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <!-- AI insight -->
+        <div class="card" style="padding:16px; background:#FAFAFA;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <div style="width:24px; height:24px; border-radius:6px; background:var(--navy); display:flex; align-items:center; justify-content:center;"><svg style="width:12px;height:12px; color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+            <span style="font-size:11px; font-weight:600; color:var(--navy); text-transform:uppercase; letter-spacing:.5px;">AI Insight</span>
+          </div>
+          <div style="font-size:14px; color:var(--navy); line-height:1.5;">You spent <strong>67% more on entertainment</strong> this month. Cutting back would free up <strong>~48 PLN</strong>.</div>
+          <button style="margin-top:10px; font-size:13px; color:var(--navy); font-weight:600; background:none; border:1px solid var(--line); padding:6px 12px; border-radius:7px; cursor:pointer; font-family:inherit;">See spending details →</button>
+        </div>
+        <!-- Spending -->
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <div><div style="font-size:15px; font-weight:600;">Spending · May</div><div style="font-size:13px; color:var(--muted); margin-top:1px;">Budget: 470 PLN</div></div>
+            <svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="none" stroke="#E5E7EB" stroke-width="6"/><circle cx="24" cy="24" r="18" fill="none" stroke="#1A1A2E" stroke-width="6" stroke-dasharray="40 73" stroke-dashoffset="0" class="donut-ring"/><circle cx="24" cy="24" r="18" fill="none" stroke="#6B7280" stroke-width="6" stroke-dasharray="25 88" stroke-dashoffset="-40" class="donut-ring"/><circle cx="24" cy="24" r="18" fill="none" stroke="#9CA3AF" stroke-width="6" stroke-dasharray="20 93" stroke-dashoffset="-65" class="donut-ring"/><text x="24" y="27" text-anchor="middle" font-family="IBM Plex Sans" font-size="9" font-weight="700" fill="#1A1A2E">72%</text></svg>
+          </div>
+          <div style="display:flex; gap:3px; align-items:flex-end; height:32px; margin-bottom:10px;">
+            <div style="flex:35; background:#1A1A2E; height:100%; border-radius:3px 3px 0 0;"></div>
+            <div style="flex:22; background:#6B7280; height:63%; border-radius:3px 3px 0 0;"></div>
+            <div style="flex:18; background:#9CA3AF; height:51%; border-radius:3px 3px 0 0;"></div>
+            <div style="flex:15; background:#D1D5DB; height:43%; border-radius:3px 3px 0 0;"></div>
+            <div style="flex:10; background:#E5E7EB; height:29%; border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between;"><div style="display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#1A1A2E;display:inline-block;"></span><span style="font-size:13px; color:var(--mid);">Groceries</span></div><span style="font-size:13px; font-weight:600;">119.00 PLN</span></div>
+            <div style="display:flex; justify-content:space-between;"><div style="display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#6B7280;display:inline-block;"></span><span style="font-size:13px; color:var(--mid);">Entertainment</span></div><span style="font-size:13px; font-weight:600;">74.80 PLN</span></div>
+            <div style="display:flex; justify-content:space-between;"><div style="display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#9CA3AF;display:inline-block;"></span><span style="font-size:13px; color:var(--mid);">Savings</span></div><span style="font-size:13px; font-weight:600;">61.20 PLN</span></div>
+          </div>
+        </div>
+        <!-- Savings goals -->
+        <div class="card" style="padding:18px;">
+          <div style="font-size:15px; font-weight:600; margin-bottom:14px;">Savings goals</div>
+          <div style="display:flex; flex-direction:column; gap:13px;">
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span style="font-size:14px; font-weight:500;">Holiday fund</span><span style="font-size:13px; color:var(--muted); font-weight:600;">25%</span></div>
+              <div style="background:#E5E7EB; border-radius:99px; height:5px; overflow:hidden;"><div style="width:25%; height:100%; background:var(--navy); border-radius:99px;"></div></div>
+              <div style="font-size:13px; color:var(--muted); margin-top:3px;">500 / 2 000 PLN · Dec 2025</div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span style="font-size:14px; font-weight:500;">Emergency buffer</span><span style="font-size:13px; color:var(--navy); font-weight:600;">68%</span></div>
+              <div style="background:#E5E7EB; border-radius:99px; height:5px; overflow:hidden;"><div style="width:68%; height:100%; background:var(--navy); border-radius:99px;"></div></div>
+              <div style="font-size:13px; color:var(--muted); margin-top:3px;">3 400 / 5 000 PLN</div>
+            </div>
+          </div>
+          <div style="height:1px; background:var(--line); margin-top:14px;"></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+            <div style="display:flex; align-items:center; gap:6px;"><svg style="width:13px;height:13px;color:var(--muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span style="font-size:13px; color:var(--muted);">3 subscriptions</span></div>
+            <a href="#" style="font-size:13px; font-weight:600; color:var(--navy); text-decoration:none;">86 PLN/mo →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div style="position:fixed; bottom:24px; right:24px; background:white; border:1px solid var(--line); border-radius:12px; padding:14px 18px; z-index:100; box-shadow:0 4px 16px rgba(0,0,0,.08);">
+      <div style="font-size:12px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">Click density</div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:12px; border-radius:6px; background:radial-gradient(circle, rgba(220,38,38,.7) 0%, transparent 100%);"></div><span style="font-size:12px; color:var(--muted);">Very high</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:12px; border-radius:6px; background:radial-gradient(circle, rgba(234,88,12,.6) 0%, transparent 100%);"></div><span style="font-size:12px; color:var(--muted);">High</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:12px; border-radius:6px; background:radial-gradient(circle, rgba(234,179,8,.5) 0%, transparent 100%);"></div><span style="font-size:12px; color:var(--muted);">Medium</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:12px; border-radius:6px; background:radial-gradient(circle, rgba(59,130,246,.3) 0%, transparent 100%);"></div><span style="font-size:12px; color:var(--muted);">Low</span></div>
+      </div>
+      <div style="font-size:11px; color:var(--muted); margin-top:10px; padding-top:8px; border-top:1px solid var(--line);">Based on 847 sessions · May 2025</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

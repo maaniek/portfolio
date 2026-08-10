@@ -27,6 +27,29 @@
   --wrap: 1280px;
   --pad: clamp(20px, 4vw, 56px);
   --sec: clamp(88px, 12vw, 176px); /* rytm pionowy sekcji */
+
+  /* ---------- skala typograficzna ---------- */
+  --fs-2xs:  12.5px;   /* etykiety mono */
+  --fs-xs:   15px;     /* chipy */
+  --fs-sm:   16px;     /* podpisy pod cytatami */
+  --fs-base: 17px;     /* tekst body */
+  --fs-md:   18px;     /* podstawowy rozmiar interfejsu */
+  --fs-lg:   20px;     /* wyroznienia w listach */
+  --fs-xl:   22px;     /* logo */
+  --fs-2xl:  32px;     /* znak +/x w akordeonach */
+
+  --fs-lead:     clamp(19px, 1.7vw, 23px);
+  --fs-lead-lg:  clamp(19px, 1.9vw, 25px);
+  --fs-case:     clamp(20px, 2vw, 28px);
+  --fs-hook:     clamp(23px, 2.5vw, 34px);
+  --fs-mail:     clamp(22px, 3.6vw, 48px);
+  --fs-stat:     clamp(26px, 2.7vw, 40px);
+  --fs-claim:    clamp(27px, 3.3vw, 46px);
+  --fs-claim-sm: clamp(26px, 6.4vw, 34px);
+  --fs-h2:       clamp(30px, 4.2vw, 56px);
+  --fs-h2-lg:    clamp(34px, 5.4vw, 76px);
+  --fs-stat-lg:  clamp(38px, 5vw, 68px);
+  --fs-h1:       clamp(42px, 7.6vw, 118px);
 }
 
 *{ margin:0; padding:0; box-sizing:border-box; }
@@ -41,7 +64,7 @@ body{
   color:var(--ink);
   font-family:var(--display);
   font-weight:420;
-  font-size:17px;
+  font-size:var(--fs-base);
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
@@ -52,24 +75,17 @@ a{ color:inherit; text-decoration:none; }
 a:hover{ color:var(--blue); }
 :focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
 
-/* ---------- typografia pomocnicza ---------- */
-.mono{
-  font-family:var(--mono);
-  font-size:12.5px;
-  font-weight:500;
-  letter-spacing:.02em;
-}
-/* linki tekstowe — akcent 10% */
-.lnk{ color:var(--blue); border-bottom:1px solid var(--blue); padding-bottom:2px; }
-.lnk:hover{ color:var(--ink); border-color:var(--ink); }
+
+
+
 h2{
   font-weight:640;
   font-variation-settings:"wdth" 112;
-  font-size:clamp(30px, 4.2vw, 56px);
+  font-size:var(--fs-h2);
   line-height:1.02;
   letter-spacing:-0.015em;
 }
-.kicker{ color:var(--ink-60); margin-bottom:14px; }
+
 
 /* ============================================================
    HEADER
@@ -81,11 +97,10 @@ header{
   display:flex; align-items:center; justify-content:space-between;
   padding-block:18px; gap:40px;
 }
-nav{ margin-left:auto; }
-.logo{ font-weight:660; font-variation-settings:"wdth" 112; font-size:22px; letter-spacing:-0.015em; }
-nav{ display:flex; gap:6px; }
+nav{ margin-left:auto; display:flex; gap:6px; }
+.logo{ font-weight:660; font-variation-settings:"wdth" 112; font-size:var(--fs-xl); letter-spacing:-0.015em; }
 nav a{
-  font-size:18px; font-weight:460; color:var(--ink);
+  font-size:var(--fs-md); font-weight:460; color:var(--ink);
   position:relative; padding:6px 16px; border-radius:999px;
   border:1px solid transparent;
   transition:border-color .24s ease, color .24s ease;
@@ -102,7 +117,7 @@ nav a:hover{ border-color:var(--blue); color:var(--blue); }
 h1{
   font-weight:680;
   font-variation-settings:"wdth" 116;
-  font-size:clamp(42px, 7.6vw, 118px);
+  font-size:var(--fs-h1);
   line-height:0.98;
   letter-spacing:-0.028em;
   max-width:14ch;
@@ -112,20 +127,19 @@ h1 em{
   color:var(--ink-60);
 }
 .hero-row{ margin-top:clamp(36px, 4vw, 56px); }
-.hero-sub{ font-size:clamp(19px, 1.7vw, 24px); max-width:52ch; line-height:1.45; color:var(--ink-60); }
-.hero-sub b{ color:var(--ink); }
-.hero-sub b{ font-weight:600; }
+.hero-sub{ font-size:var(--fs-lead); max-width:52ch; line-height:1.45; color:var(--ink-60); }
+.hero-sub b{ color:var(--ink); font-weight:600; }
 .hero-ctas{
   margin-top:clamp(30px, 3.4vw, 46px);
   display:flex; align-items:baseline; flex-wrap:wrap;
   gap:0 30px;
-  font-family:var(--mono); font-size:18px;
+  font-family:var(--mono); font-size:var(--fs-md);
 }
 .hero-ctas a{ color:var(--blue); border-bottom:1px solid var(--blue); padding-bottom:3px; }
 .hero-ctas a:hover{ color:var(--ink); border-color:var(--ink); }
 .hero-ctas .cta-main{
   font-family:var(--display); font-weight:520; letter-spacing:-0.005em;
-  font-size:18px;
+  font-size:var(--fs-md);
   border:1px solid var(--blue); border-bottom-width:1px; border-radius:999px;
   padding:12px 24px;
   transition:background .22s ease, color .22s ease;
@@ -133,7 +147,7 @@ h1 em{
 .hero-ctas .cta-main:hover{ background:var(--blue); color:var(--paper); border-color:var(--blue); }
 .hero-ctas .sep{ color:var(--ink-60); opacity:.55; }
 @media (max-width:760px){
-  .hero-ctas{ gap:14px 22px; font-size:18px; }
+  .hero-ctas{ gap:14px 22px; font-size:var(--fs-md); }
   .hero-ctas .sep{ display:none; }
 }
 
@@ -147,9 +161,9 @@ h1 em{
 .hl:first-child{ border-left:0; padding-left:0; }
 .hl .n{
   font-weight:660; font-variation-settings:"wdth" 112;
-  font-size:clamp(26px, 2.7vw, 40px); letter-spacing:-0.02em; line-height:1;
+  font-size:var(--fs-stat); letter-spacing:-0.02em; line-height:1;
 }
-.hl .l{ font-size:18px; line-height:1.35; color:var(--ink-60); margin-top:12px; max-width:19ch; }
+.hl .l{ font-size:var(--fs-md); line-height:1.35; color:var(--ink-60); margin-top:12px; max-width:19ch; }
 @media (max-width:1000px){
   .highlights{ grid-template-columns:repeat(2, 1fr); }
   .hl{ border-left:0; border-top:1px solid var(--paper-2); padding-left:0; padding-right:16px; }
@@ -165,14 +179,11 @@ h1 em{
    SEKCJE — wspólny szkielet
    ============================================================ */
 section{ padding-top:var(--sec); }
-.sec-head{
-  display:grid; grid-template-columns: 1fr 1fr; gap:40px;
-  align-items:end; margin-bottom:clamp(36px, 5vw, 64px);
-}
-.sec-head p{ color:var(--ink-60); max-width:44ch; justify-self:end; align-self:end; }
+
+
 @media (max-width:900px){
-  .sec-head{ grid-template-columns:1fr; gap:16px; }
-  .sec-head p{ justify-self:start; }
+
+
 }
 
 /* ============================================================
@@ -185,17 +196,17 @@ section{ padding-top:var(--sec); }
   align-items:start;
 }
 .about-lead{
-  font-size:clamp(19px, 1.9vw, 25px);
+  font-size:var(--fs-lead-lg);
   line-height:1.42; font-weight:440; letter-spacing:-0.005em;
   color:var(--ink);
 }
 .about-claim{
-  font-size:clamp(27px, 3.3vw, 46px);
+  font-size:var(--fs-claim);
   line-height:1.1; font-weight:620; letter-spacing:-0.022em;
   color:var(--ink-60);
 }
 .about-grid .pre{
-  display:block; font-family:var(--mono); font-size:18px; font-weight:500;
+  display:block; font-family:var(--mono); font-size:var(--fs-md); font-weight:500;
   letter-spacing:.01em; color:var(--ink-60);
   margin-bottom:clamp(28px, 3vw, 42px);
 }
@@ -205,34 +216,30 @@ section{ padding-top:var(--sec); }
 .about-more .acc{ border-top:0; }
 .about-more .acc:last-of-type{ border-bottom:0; }
 .about-more .acc-btn{
-  width:auto; display:inline-flex; align-items:baseline; gap:14px;
-  padding-block:0;
+  width:auto; display:inline-flex; align-items:baseline; gap:16px;
+  border:1px solid var(--blue); border-radius:999px;
+  padding:12px 24px;
+  transition:background .22s ease, border-color .22s ease;
 }
-.about-more .acc-btn:hover{ background:none; }
 .about-more{ margin-top:0; grid-column:1 / -1; }
 .sign-off{
   padding-bottom:var(--sec);
   display:flex; flex-direction:column; align-items:flex-start;
 }
 .sign-lbl{
-  font-family:var(--mono); font-size:18px; font-weight:500;
+  font-family:var(--mono); font-size:var(--fs-md); font-weight:500;
   letter-spacing:.01em; color:var(--ink-60);
   margin-bottom:clamp(30px, 3.4vw, 46px);
 }
 .signature{ height:clamp(80px, 8vw, 116px); width:auto; }
 @media (max-width:900px){ .signature{ height:76px; } }
-.about-more .acc-btn{
-  border:1px solid var(--blue); border-radius:999px;
-  padding:12px 24px; gap:16px;
-  transition:background .22s ease, border-color .22s ease;
-}
 .about-more .toggle{
   font-family:var(--display); font-weight:520; letter-spacing:-0.005em;
-  font-size:18px; color:var(--blue);
+  font-size:var(--fs-md); color:var(--blue);
   transition:color .22s ease;
 }
 .about-more .pm{
-  font-size:18px; font-weight:400; color:var(--blue); line-height:1;
+  font-size:var(--fs-md); font-weight:400; color:var(--blue); line-height:1;
   transition:color .22s ease;
 }
 .about-more .pm::after{ content:"→"; display:inline-block; transition:transform .25s cubic-bezier(.2,.8,.3,1); }
@@ -255,7 +262,7 @@ section{ padding-top:var(--sec); }
 @media (max-width:760px){ .about-more .acc-body{ columns:1; } }
 @media (max-width:900px){
   .about-grid{ grid-template-columns:1fr; }
-  .about-claim{ font-size:clamp(26px, 6.4vw, 34px); }
+  .about-claim{ font-size:var(--fs-claim-sm); }
 }
 
 /* ============================================================
@@ -271,7 +278,7 @@ section{ padding-top:var(--sec); }
 }
 .acc-btn:hover{ background:var(--paper-2); }
 .acc-btn .plus{
-  font-family:var(--mono); font-size:20px; font-weight:400;
+  font-family:var(--mono); font-size:var(--fs-lg); font-weight:400;
   justify-self:end; align-self:center;
   transition:transform .25s ease;
 }
@@ -287,16 +294,16 @@ section{ padding-top:var(--sec); }
 .acc-body p{ margin-bottom:16px; }
 .acc-body p:last-child{ margin-bottom:0; }
 .acc-body .lbl{
-  font-family:var(--mono); font-size:12px; letter-spacing:.01em;
+  font-family:var(--mono); font-size:var(--fs-2xs); letter-spacing:.01em;
   color:var(--ink-60);
   display:block; margin-bottom:4px;
 }
-.proof-line{ font-family:var(--mono); font-size:12.5px; color:var(--ink-60); }
-.proof-line b{ color:var(--blue); font-weight:500; }
+
+
 
 /* HOW I HELP */
 .sec-intro{
-  font-size:clamp(19px, 1.7vw, 23px); line-height:1.45;
+  font-size:var(--fs-lead); line-height:1.45;
   color:var(--ink-60); max-width:62ch;
   margin-top:24px;
 }
@@ -307,12 +314,12 @@ section{ padding-top:var(--sec); }
 /* Industries — ciąg dalszy case studies */
 .industries{ margin-top:clamp(44px, 5vw, 72px); max-width:900px; }
 .industries .ind-label{
-  display:block; font-family:var(--mono); font-size:18px; color:var(--ink-60);
+  display:block; font-family:var(--mono); font-size:var(--fs-md); color:var(--ink-60);
   margin-bottom:22px;
 }
 .ind-grid{
   display:grid; grid-template-columns:repeat(3, 1fr);
-  font-size:18px; color:var(--ink-60);
+  font-size:var(--fs-md); color:var(--ink-60);
   border-top:1px solid var(--ink); border-left:1px solid var(--ink);
 }
 .ind{
@@ -331,10 +338,10 @@ section{ padding-top:var(--sec); }
 .scope-grid{ display:grid; grid-template-columns:repeat(3, 1fr); }
 .scope-col{ padding:0 32px 0 0; }
 
-.scope-col h3{ font-size:19px; font-weight:600; letter-spacing:-0.01em; margin-bottom:20px; }
+.scope-col h3{ font-size:var(--fs-lg); font-weight:600; letter-spacing:-0.01em; margin-bottom:20px; }
 .scope-col ul{ list-style:none; }
 .scope-col li{
-  font-size:18px; color:var(--ink-60); line-height:1.35;
+  font-size:var(--fs-md); color:var(--ink-60); line-height:1.35;
   padding:9px 0;
 }
 @media (max-width:900px){
@@ -347,7 +354,7 @@ section{ padding-top:var(--sec); }
 .help-cols{
   display:grid; grid-template-columns:var(--help-cols);
   gap:28px; padding:0 26px 14px;
-  font-size:18px; color:var(--ink-60);
+  font-size:var(--fs-md); color:var(--ink-60);
 }
 .help-cols span:first-child{ grid-column:2; }
 @media (max-width:1000px){ .help-cols{ display:none; } }
@@ -362,19 +369,19 @@ section{ padding-top:var(--sec); }
 .help .acc-btn:hover{ background:var(--paper-2); }
 .help .acc.open .acc-btn{ background:none; }
 .help .acc.open .acc-btn:hover{ background:var(--paper-2); }
-.help .tag{ font-family:var(--mono); font-size:18px; letter-spacing:.01em; color:var(--ink-60); }
+.help .tag{ font-family:var(--mono); font-size:var(--fs-md); letter-spacing:.01em; color:var(--ink-60); }
 .help .problem{
-  font-size:clamp(19px, 1.7vw, 23px); font-weight:580;
+  font-size:var(--fs-lead); font-weight:580;
   letter-spacing:-0.012em; line-height:1.2;
   transition:color .35s ease;
 }
 .help .acc-btn:hover .problem{ color:var(--blue); }
 .help .do, .help .result, .help .tag{ transition:color .35s ease; }
 .help .acc-btn:hover .do{ color:var(--ink); }
-.help .do{ font-size:18px; line-height:1.4; color:var(--ink-60); }
-.help .result{ font-size:18px; line-height:1.4; font-weight:520; }
+.help .do{ font-size:var(--fs-md); line-height:1.4; color:var(--ink-60); }
+.help .result{ font-size:var(--fs-md); line-height:1.4; font-weight:520; }
 .help .plus{
-  font-size:32px; color:var(--blue); align-self:start; line-height:.9;
+  font-size:var(--fs-2xl); color:var(--blue); align-self:start; line-height:.9;
   transition:transform .3s cubic-bezier(.2,.8,.3,1);
 }
 .help .acc.open .plus{ transform:rotate(45deg); }
@@ -387,8 +394,7 @@ section{ padding-top:var(--sec); }
 .help .acc-body .case-link{ margin:0; white-space:nowrap; align-self:center; }
 @media (max-width:1000px){
   .help .acc-body{ grid-template-columns:1fr; gap:22px; }
-}
-@media (max-width:1000px){
+
   .help{ --help-cols: 1fr 40px; }
   .help .acc-btn{ gap:14px; padding:26px 20px; }
   .help .tag{ grid-column:1 / -1; }
@@ -402,7 +408,7 @@ section{ padding-top:var(--sec); }
 /* link do case study w rozwinięciu */
 .case-link{
   display:inline-flex; align-items:center; gap:12px;
-  font-size:18px; color:var(--blue);
+  font-size:var(--fs-md); color:var(--blue);
   border:1px solid var(--blue); border-radius:999px;
   padding:11px 22px; white-space:nowrap;
   transition:background .22s ease, color .22s ease;
@@ -422,7 +428,7 @@ section{ padding-top:var(--sec); }
 .work .acc.open .acc-btn:hover{ background:var(--paper-2); }
 .work .case-title{
   display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  font-size:clamp(20px, 2vw, 28px); font-weight:600;
+  font-size:var(--fs-case); font-weight:600;
   letter-spacing:-0.015em; line-height:1.15;
   transition:color .35s ease;
 }
@@ -432,12 +438,12 @@ section{ padding-top:var(--sec); }
   margin-top:22px;
 }
 .work .meta{
-  font-family:var(--mono); font-size:18px; color:var(--ink-60); line-height:1.4;
+  font-family:var(--mono); font-size:var(--fs-md); color:var(--ink-60); line-height:1.4;
 }
 .work .meta i{ font-style:normal; opacity:.45; margin:0 12px; }
 .work .chips{ display:flex; gap:9px; flex-wrap:wrap; }
 .chip{
-  font-family:var(--mono); font-size:15px; font-weight:500;
+  font-family:var(--mono); font-size:var(--fs-xs); font-weight:500;
   border:1px solid #C9C9C4; border-radius:999px;
   padding:6px 13px; white-space:nowrap; color:var(--ink-60);
 }
@@ -445,7 +451,7 @@ section{ padding-top:var(--sec); }
 .chip.flag{ border-style:dashed; }
 .work .plus{
   position:absolute; right:26px; top:42px;
-  font-family:var(--mono); font-size:32px; color:var(--blue); line-height:.9;
+  font-family:var(--mono); font-size:var(--fs-2xl); color:var(--blue); line-height:.9;
   transition:transform .3s cubic-bezier(.2,.8,.3,1);
 }
 .work .acc.open .plus{ transform:rotate(45deg); }
@@ -457,30 +463,30 @@ section{ padding-top:var(--sec); }
   gap:clamp(40px, 6vw, 88px); align-items:start;
 }
 .work .acc-side{ position:sticky; top:32px; }
-.side-note{ font-size:18px; line-height:1.5; color:var(--ink-60); margin-top:24px; }
+
 .teach-side .case-link{ margin-top:30px; }
 .side-quote{ margin-top:30px; border:1px solid var(--ink); padding:24px 28px; }
-.side-quote p{ font-size:18px; line-height:1.5; margin-bottom:0; }
+.side-quote p{ font-size:var(--fs-md); line-height:1.5; margin-bottom:0; }
 .side-quote .q-cont{ margin-top:18px; }
-.side-quote .who{ margin-top:20px; font-family:var(--mono); font-size:16px; line-height:1.45; color:var(--ink-60); }
+.side-quote .who{ margin-top:20px; font-family:var(--mono); font-size:var(--fs-sm); line-height:1.45; color:var(--ink-60); }
 .teach-body .side-quote p{ margin-bottom:0; }
-.earlier-item{ margin-bottom:44px; }
-.earlier-item:last-child{ margin-bottom:0; }
-.earlier-item p{ margin-bottom:18px; }
+
+
+
 .work .acc-body .case-link{ margin-top:4px; }
 @media (max-width:900px){
   .work .acc-body{ grid-template-columns:1fr; gap:32px; }
   .work .acc-side{ position:static; order:-1; }
 }
 .work .hook{
-  font-size:clamp(23px, 2.5vw, 34px); font-weight:620; line-height:1.16;
+  font-size:var(--fs-hook); font-weight:620; line-height:1.16;
   letter-spacing:-0.018em; color:var(--ink-60);
   margin-bottom:26px;
 }
 .work .hook em{ font-style:normal; color:var(--ink); }
 .work .acc-body p{ margin-bottom:46px; }
 .work .acc-body .lbl{
-  font-family:var(--mono); font-size:18px; font-weight:500;
+  font-family:var(--mono); font-size:var(--fs-md); font-weight:500;
   letter-spacing:.01em; color:var(--ink-60);
   display:block; margin-bottom:10px;
 }
@@ -491,9 +497,9 @@ section{ padding-top:var(--sec); }
   display:grid; grid-template-columns:1fr auto; gap:24px; align-items:baseline;
   padding:13px 0; border-bottom:1px solid #DEDED9;
 }
-.res i{ font-style:normal; font-size:18px; color:var(--ink-60); }
+.res i{ font-style:normal; font-size:var(--fs-md); color:var(--ink-60); }
 .res b{
-  font-family:var(--mono); font-weight:500; font-size:18px;
+  font-family:var(--mono); font-weight:500; font-size:var(--fs-md);
   color:var(--ink); text-align:right; white-space:nowrap;
 }
 
@@ -504,9 +510,6 @@ section{ padding-top:var(--sec); }
   .work .plus{ right:20px; top:28px; }
 }
 
-/* ============================================================
-   HOW I LEAD — jedyna ciemna sekcja (budżet 20%)
-   ============================================================ */
 /* ============================================================
    TEACHING
    ============================================================ */
@@ -519,9 +522,9 @@ section{ padding-top:var(--sec); }
 .teach-nums > div:first-child{ border-left:0; padding-left:0; }
 .teach-nums .n{
   font-weight:660; font-variation-settings:"wdth" 112;
-  font-size:clamp(38px, 5vw, 68px); letter-spacing:-0.02em; line-height:1;
+  font-size:var(--fs-stat-lg); letter-spacing:-0.02em; line-height:1;
 }
-.teach-nums .l{ font-size:20px; line-height:1.3; color:var(--ink-60); margin-top:14px; max-width:18ch; }
+.teach-nums .l{ font-size:var(--fs-lg); line-height:1.3; color:var(--ink-60); margin-top:14px; max-width:18ch; }
 .teach-more{ margin-top:clamp(48px, 6vw, 76px); }
 .teach-body{
   display:grid; grid-template-columns:55fr 45fr;
@@ -529,21 +532,21 @@ section{ padding-top:var(--sec); }
 }
 .teach-body p{ margin-bottom:44px; max-width:76ch; }
 .teach-body .lbl{
-  font-family:var(--mono); font-size:18px; font-weight:500;
+  font-family:var(--mono); font-size:var(--fs-md); font-weight:500;
   letter-spacing:.01em; color:var(--ink-60);
   display:block; margin-bottom:10px;
 }
 #leadership .teach-body .lbl b{ color:var(--ink); font-weight:500; }
 .teach .hook{
-  font-size:clamp(23px, 2.5vw, 34px); font-weight:620; line-height:1.16;
+  font-size:var(--fs-hook); font-weight:620; line-height:1.16;
   letter-spacing:-0.018em; color:var(--ink-60); margin-bottom:26px;
 }
 .teach .hook em{ font-style:normal; color:var(--ink); }
 .teach-cols{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
 .teach-list{ list-style:none; margin-top:6px; }
-.teach-list li{ font-size:18px; line-height:1.35; margin-bottom:26px; }
+.teach-list li{ font-size:var(--fs-md); line-height:1.35; margin-bottom:26px; }
 .teach-list li:last-child{ margin-bottom:0; }
-.teach-list i{ display:block; font-style:normal; font-size:16px; color:var(--ink-60); margin-top:6px; }
+.teach-list i{ display:block; font-style:normal; font-size:var(--fs-sm); color:var(--ink-60); margin-top:6px; }
 @media (max-width:900px){
   .teach-body{ grid-template-columns:1fr; gap:32px; }
   .teach-side{ order:-1; }
@@ -556,8 +559,8 @@ section{ padding-top:var(--sec); }
 .quotes h2{ margin-bottom:clamp(32px, 4vw, 52px); }
 .quotes-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--ink); border:1px solid var(--ink); }
 .quote{ background:var(--paper); padding:36px 32px; }
-.quote p{ font-size:17.5px; line-height:1.5; }
-.quote .who{ margin-top:22px; font-family:var(--mono); font-size:16px; letter-spacing:.01em; color:var(--ink-60); }
+.quote p{ font-size:var(--fs-base); line-height:1.5; }
+.quote .who{ margin-top:22px; font-family:var(--mono); font-size:var(--fs-sm); letter-spacing:.01em; color:var(--ink-60); }
 
 .quotes-actions{ display:flex; justify-content:flex-end; margin-top:34px; }
 @media (max-width:760px){ .quotes-actions{ justify-content:flex-start; } }
@@ -567,8 +570,8 @@ section{ padding-top:var(--sec); }
    CONTACT
    ============================================================ */
 .contact{ padding-block:var(--sec) clamp(88px, 11vw, 150px); }
-.contact h2{ font-size:clamp(34px, 5.4vw, 76px); max-width:16ch; }
-.contact .sub{ margin-top:26px; color:var(--ink-60); max-width:54ch; font-size:clamp(20px, 1.8vw, 25px); line-height:1.45; }
+.contact h2{ font-size:var(--fs-h2-lg); max-width:16ch; }
+
 .contact-line{
   margin-top:48px;
   display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 34px;
@@ -576,20 +579,20 @@ section{ padding-top:var(--sec); }
 .big-mail{
   display:inline-block;
   font-weight:640; font-variation-settings:"wdth" 112;
-  font-size:clamp(22px, 3.6vw, 48px); letter-spacing:-0.02em;
+  font-size:var(--fs-mail); letter-spacing:-0.02em;
   color:var(--blue);
   border-bottom:3px solid var(--blue); padding-bottom:6px;
 }
 .big-mail:hover{ color:var(--ink); border-color:var(--ink); }
 .big-phone{
   display:inline-block;
-  font-family:var(--mono); font-size:clamp(19px, 1.7vw, 23px);
+  font-family:var(--mono); font-size:var(--fs-lead);
   color:var(--ink-60);
 }
 .big-phone:hover{ color:var(--blue); }
 .contact-links{
   margin-top:52px; display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 30px;
-  font-family:var(--mono); font-size:18px;
+  font-family:var(--mono); font-size:var(--fs-md);
 }
 .contact-links .sep{ color:var(--ink-60); opacity:.55; }
 
@@ -631,11 +634,11 @@ section{ padding-top:var(--sec); }
     <span class="sep">·</span>
     <a href="mailto:marcel.dziedzic@gmail.com">marcel.dziedzic@gmail.com</a>
     <span class="sep">·</span>
-    <a href="#">Resume</a>
+    <a href="https://drive.google.com/file/d/1TdTWwkF8X1LdqpVUzh_dzXeit-L-e4-I/view" target="_blank" rel="noopener">Resume</a>
     <span class="sep">·</span>
     <a href="#">References</a>
     <span class="sep">·</span>
-    <a href="#">LinkedIn</a>
+    <a href="https://www.linkedin.com/in/marceldziedzic" target="_blank" rel="noopener">LinkedIn</a>
   </div>
 
   <div class="highlights">
@@ -726,11 +729,11 @@ section{ padding-top:var(--sec); }
         <span class="tag">Craft</span>
         <span class="problem">You need a leader who still opens the file.</span>
         <span class="do">Run the team and review the components — ownership from product vision through to delivery.</span>
-        <span class="result">3 products designed, built and deployed in under 3 hours</span>
+        <span class="result">Gold &amp; Bronze<br>Merit Awards 2025</span>
         <span class="plus">+</span>
       </button>
       <div class="acc-panel"><div><div class="acc-body">
-        <p>I led iX Hero end-to-end while managing the design team, and I keep my own craft honest with self-initiated work: a landing page, a mobile app and an investor deck, designed and deployed in a single session with no hand-written code.</p>
+        <p>I led iX Hero end-to-end while managing the design team — contributing to director-level product vision in the same quarter I was reviewing component specs. I keep my own craft honest with self-initiated work, designed and shipped end to end without handing the build to anyone else.</p>
         <a class="case-link" href="#case-sommelier" data-case="case-sommelier">Read the Sommelier Node case <span>→</span></a>
       </div></div></div>
     </div>
@@ -846,12 +849,12 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="acc-side">
         <p class="hook">A design team, an AI-native product — and a flagship feature <em>we shipped twice</em>, because the first version made the problem worse.</p>
-        <a class="case-link" href="#">Read case study <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/1kzkYE7KzZo2d15bsRKcejW_wv1Zn85iC/view" target="_blank" rel="noopener">Read case study <span>→</span></a>
       </div>
     </div></div></div>
   </div>
   <!-- CASE 2 — InsightX -->
-  <div class="acc" id="case-insightx">
+  <div class="acc">
     <div class="acc-head">
       <button class="acc-btn" aria-expanded="false">
         <span class="case-title">InsightX — an executive dashboard that answers in 60 seconds</span>
@@ -883,7 +886,7 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="acc-side">
         <p class="hook"><em>"It's a 3-hour job to answer a 3-second question."</em> — Operations Leader</p>
-        <a class="case-link" href="#">Read case study <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/18Q_rUPSxn2eVF7xIoyVtwapQtF0Hc4Gy/view" target="_blank" rel="noopener">Read case study <span>→</span></a>
       </div>
     </div></div></div>
   </div>
@@ -922,12 +925,12 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="acc-side">
         <p class="hook">The screens were the easy part. Introducing user-centred design to a compliance-driven culture <em>was the job</em>.</p>
-        <a class="case-link" href="#">Read case study <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/15Z-T0uIl-9UVCs2uPM31aFh0L63wqNmq/view" target="_blank" rel="noopener">Read case study <span>→</span></a>
       </div>
     </div></div></div>
   </div>
   <!-- CASE 4 — Concept — retail bank -->
-  <div class="acc" id="case-mbank">
+  <div class="acc">
     <div class="acc-head">
       <button class="acc-btn" aria-expanded="false">
         <span class="case-title">Concept — rethinking a retail bank, powered by AI</span>
@@ -959,7 +962,7 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="acc-side">
         <p class="hook">How I frame a product transformation <em>before anyone opens Figma</em>.</p>
-        <a class="case-link" href="#">Read case study <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/1vEjKbMU0B464BjAyAh4x6RGWNlJ-5rUi/view" target="_blank" rel="noopener">Read case study <span>→</span></a>
       </div>
     </div></div></div>
   </div>
@@ -995,12 +998,12 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="acc-side">
         <p class="hook">The speed isn't the point. <em>The operating model is.</em></p>
-        <a class="case-link" href="#">Read case study <span>→</span></a>
+        <a class="case-link" href="case-studies/sommelier-node/case-study.html">Read case study <span>→</span></a>
       </div>
     </div></div></div>
   </div>
   <!-- CASE 6 — Fleet Platform -->
-  <div class="acc" id="case-fleet">
+  <div class="acc">
     <div class="acc-head">
       <button class="acc-btn" aria-expanded="false">
         <span class="case-title">Fleet Platform — a dispatcher tool rebuilt around progressive disclosure</span>
@@ -1032,9 +1035,12 @@ section{ padding-top:var(--sec); }
       </div>
       <div class="acc-side">
         <p class="hook">The stakeholders asked for every field and a cleaner screen. <em>Those are the same request only if you say no to one of them.</em></p>
+        <a class="case-link" href="https://drive.google.com/file/d/1eVKKmkBLgntV_VIxLZMFZndC0KTjNgDe/view" target="_blank" rel="noopener">Read case study <span>→</span></a>
       </div>
     </div></div></div>
   </div>
+  </div><!-- /.help-list -->
+
   <div class="industries">
     <span class="ind-label">Industries</span>
     <div class="ind-grid">
@@ -1131,16 +1137,8 @@ section{ padding-top:var(--sec); }
   <h2>What People Say</h2>
   <div class="quotes-grid">
     <div class="quote">
-      <p>"I managed Marcel directly as he led a high performing team building the interfaces of AI tooling. He is very good at working with upper leadership and allowing his team to do what they did best."</p>
-      <p class="who">Meredith Ragsdale — Design Director, Concentrix</p>
-    </div>
-    <div class="quote">
       <p>"Marcel possesses a rare ability to bridge 'big picture' strategy with the granular details of delivery."</p>
       <p class="who">Pronab Saha — Lead Researcher &amp; Sr. Design Manager, iX Hero</p>
-    </div>
-    <div class="quote">
-      <p>"He is always involved in the training process, takes due care of the development of his offer and its high professional level, adapting it to current trends and needs."</p>
-      <p class="who">Wojciech Czerepak — Director, Comarch Training Centre</p>
     </div>
     <div class="quote">
       <p>"As a User Experience practitioner he has demonstrated not only professional competences, but also the ability to present the discussed issues in a clear and attractive form."</p>
@@ -1177,9 +1175,9 @@ section{ padding-top:var(--sec); }
     <a class="big-phone" href="tel:+48535820627">+48 535 820 627</a>
   </div>
   <div class="contact-links">
-    <a href="#">LinkedIn</a>
+    <a href="https://www.linkedin.com/in/marceldziedzic" target="_blank" rel="noopener">LinkedIn</a>
     <span class="sep">·</span>
-    <a href="#">Resume</a>
+    <a href="https://drive.google.com/file/d/1TdTWwkF8X1LdqpVUzh_dzXeit-L-e4-I/view" target="_blank" rel="noopener">Resume</a>
     <span class="sep">·</span>
     <a href="#">References</a>
     <span class="sep">·</span>
