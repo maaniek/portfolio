@@ -725,7 +725,7 @@ section{ padding-top:var(--sec); }
       </button>
       <div class="acc-panel"><div><div class="acc-body">
         <p>Next Best Action went through two full versions. V1 surfaced the recommendation; V2 changed how much the advisor had to think about it — because the pain point was cognitive load, and an AI widget on an overloaded screen makes it worse. The second version shipped.</p>
-        <a class="case-link" href="#case-ixhero" data-case="case-ixhero">Read the iX Hero case <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/1kzkYE7KzZo2d15bsRKcejW_wv1Zn85iC/view" target="_blank" rel="noopener">Read the iX Hero case <span>→</span></a>
       </div></div></div>
     </div>
 
@@ -739,7 +739,7 @@ section{ padding-top:var(--sec); }
       </button>
       <div class="acc-panel"><div><div class="acc-body">
         <p>At a Nordic bank I convinced leadership to run bi-weekly reference group meetings with 15+ stakeholders — not standard practice there. My argument was risk, not craft: rapid feedback de-risks legal approval delays, and legal delays were the schedule's real threat. Two other teams adopted the format as their own.</p>
-        <a class="case-link" href="#case-aml" data-case="case-aml">Read the AML platform case <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/15Z-T0uIl-9UVCs2uPM31aFh0L63wqNmq/view" target="_blank" rel="noopener">Read the AML platform case <span>→</span></a>
       </div></div></div>
     </div>
 
@@ -753,7 +753,7 @@ section{ padding-top:var(--sec); }
       </button>
       <div class="acc-panel"><div><div class="acc-body">
         <p>On the AML platform I built a component library from scratch under a 12-month deadline. It felt like a detour at the time; it let the team iterate roughly three times faster and removed the ambiguity that usually turns handoff into a second round of design.</p>
-        <a class="case-link" href="#case-aml" data-case="case-aml">Read the AML Redesign case <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/15Z-T0uIl-9UVCs2uPM31aFh0L63wqNmq/view" target="_blank" rel="noopener">Read the AML Redesign case <span>→</span></a>
       </div></div></div>
     </div>
 
@@ -767,7 +767,7 @@ section{ padding-top:var(--sec); }
       </button>
       <div class="acc-panel"><div><div class="acc-body">
         <p>I led iX Hero end-to-end while managing the design team — contributing to director-level product vision in the same quarter I was reviewing component specs. I keep my own craft honest with self-initiated work, designed and shipped end to end without handing the build to anyone else.</p>
-        <a class="case-link" href="#case-sommelier" data-case="case-sommelier">Read the Sommelier Node case <span>→</span></a>
+        <a class="case-link" href="case-studies/sommelier-node/case-study.html" target="_blank" rel="noopener">Read the Sommelier Node case <span>→</span></a>
       </div></div></div>
     </div>
 
@@ -795,7 +795,7 @@ section{ padding-top:var(--sec); }
       </button>
       <div class="acc-panel"><div><div class="acc-body">
         <p>One fast designer is a trick. The question worth answering is whether the setup transfers — whether file architecture, skill definitions and tool-selection logic can be handed to a team so the whole function's floor rises.</p>
-        <a class="case-link" href="#case-ixhero" data-case="case-ixhero">Read the iX Hero case <span>→</span></a>
+        <a class="case-link" href="https://drive.google.com/file/d/1kzkYE7KzZo2d15bsRKcejW_wv1Zn85iC/view" target="_blank" rel="noopener">Read the iX Hero case <span>→</span></a>
       </div></div></div>
     </div>
   </div>
@@ -849,7 +849,7 @@ section{ padding-top:var(--sec); }
   <div class="help-list">
 
   <!-- CASE 1 — iX Hero -->
-  <div class="acc" id="case-ixhero">
+  <div class="acc">
     <div class="acc-head">
       <button class="acc-btn" aria-expanded="false">
         <span class="case-title">iX Hero — design leadership for an agentic AI platform</span>
@@ -924,7 +924,7 @@ section{ padding-top:var(--sec); }
     </div></div></div>
   </div>
   <!-- CASE 3 — AML Redesign -->
-  <div class="acc" id="case-aml">
+  <div class="acc">
     <div class="acc-head">
       <button class="acc-btn" aria-expanded="false">
         <span class="case-title">AML Redesign — compliance workflows for a Nordic bank</span>
@@ -1000,7 +1000,7 @@ section{ padding-top:var(--sec); }
     </div></div></div>
   </div>
   <!-- CASE 5 — Sommelier Node -->
-  <div class="acc" id="case-sommelier">
+  <div class="acc">
     <div class="acc-head">
       <button class="acc-btn" aria-expanded="false">
         <span class="case-title">Sommelier Node — three products in three hours, built with AI</span>
@@ -1224,24 +1224,6 @@ section{ padding-top:var(--sec); }
 </div>
 
 <script>
-// linki do case study: otwórz właściwy case i przewiń
-document.querySelectorAll('.case-link[data-case]').forEach(function(link){
-  link.addEventListener('click', function(e){
-    var target = document.getElementById(link.dataset.case);
-    if (!target) return;
-    e.preventDefault();
-    (target.closest('.work') || document).querySelectorAll('.acc.open').forEach(function(o){
-      o.classList.remove('open');
-      var b = o.querySelector('.acc-btn');
-      if (b) b.setAttribute('aria-expanded','false');
-    });
-    target.classList.add('open');
-    var btn = target.querySelector('.acc-btn');
-    if (btn) btn.setAttribute('aria-expanded','true');
-    target.scrollIntoView({behavior:'smooth', block:'start'});
-  });
-});
-
 // znak +/× obok wiersza też przełącza akordeon
 document.querySelectorAll('.acc-head .plus').forEach(function(mark){
   mark.addEventListener('click', function(){
