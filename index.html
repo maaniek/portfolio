@@ -183,8 +183,8 @@ h1 em{
   font-weight:660; font-variation-settings:"wdth" 112;
   font-size:var(--fs-stat); letter-spacing:-0.02em; line-height:1;
 }
-.hl .l{ font-size:var(--fs-md); line-height:1.35; color:var(--ink-60); margin-top:12px; max-width:26ch; }
-@media (max-width:1000px){
+.hl .l{ font-size:var(--fs-md); line-height:1.35; color:var(--ink-60); margin-top:12px; max-width:22ch; }
+@media (max-width:1220px){
   .highlights{ grid-template-columns:repeat(2, 1fr); }
   .hl{ border-left:0; border-top:1px solid var(--paper-2); padding-left:0; padding-right:16px; }
   .hl:nth-child(-n+2){ border-top:0; }
@@ -302,7 +302,13 @@ section{ padding-top:var(--sec); }
   padding:12px 0; border-bottom:1px solid var(--ink);
 }
 .track-head span{ text-align:left; }
-.track-row{ padding:20px 0; border-bottom:1px solid #DEDED9; font-size:var(--fs-md); }
+.track-row{
+  padding:20px 0; border-bottom:1px solid #DEDED9; font-size:var(--fs-md);
+  color:inherit; text-decoration:none;
+  transition:background .2s ease;
+}
+a.track-row{ cursor:pointer; }
+a.track-row:hover{ background:var(--paper-2); }
 .t-yr{ font-family:var(--mono); font-size:var(--fs-xs); color:var(--ink-60); padding-top:3px; }
 .t-co b{ display:block; font-weight:600; line-height:1.25; }
 .t-co i{ display:block; font-style:normal; color:var(--ink-60); font-size:var(--fs-sm); margin-top:4px; }
@@ -310,6 +316,15 @@ section{ padding-top:var(--sec); }
 .t-kpi{ font-weight:520; line-height:1.3; }
 .t-lk{ white-space:nowrap; }
 .t-lk i{ font-style:normal; color:var(--ink-60); opacity:.45; }
+.t-go{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:40px; height:40px;
+  border:1px solid var(--blue); border-radius:50%;
+  color:var(--blue);
+  transition:background .22s ease, color .22s ease;
+}
+.t-go:hover,
+.track-row:hover .t-go{ background:var(--blue); color:var(--paper); }
 @media (max-width:1000px){
   .track-head{ display:none; }
   .track-row{ grid-template-columns:1fr auto; gap:4px 16px; padding:24px 0; }
@@ -335,12 +350,17 @@ section{ padding-top:var(--sec); }
   padding-block:24px;
 }
 .acc-btn:hover{ background:var(--paper-2); }
-.acc-btn .plus{
-  font-family:var(--mono); font-size:var(--fs-lg); font-weight:400;
-  justify-self:end; align-self:center;
-  transition:transform .25s ease;
+.plus{
+  display:flex; align-items:center; justify-content:center;
+  width:48px; height:48px; flex:0 0 48px;
+  border:1px solid var(--blue); border-radius:50%;
+  font-family:var(--mono); font-size:var(--fs-xl); font-weight:400;
+  color:var(--blue); line-height:1;
+  transition:transform .3s cubic-bezier(.2,.8,.3,1), background .22s ease, color .22s ease;
 }
-.acc.open .plus{ transform:rotate(45deg); color:var(--blue); }
+.acc-btn .plus{ justify-self:end; align-self:center; }
+.acc-btn:hover .plus, .acc-head:hover .plus{ background:var(--blue); color:var(--paper); }
+.acc.open .plus{ transform:rotate(45deg); }
 .acc-panel{
   display:grid; grid-template-rows:0fr;
   opacity:0;
@@ -398,7 +418,7 @@ section{ padding-top:var(--sec); }
 @media (max-width:1000px){ .help-cols{ display:none; } }
 
 /* --- wiersze scenariuszy --- */
-.help{ --help-cols: 132px 1.15fr 1.05fr .95fr 40px; }
+.help{ --help-cols: 132px 1.15fr 1.05fr .95fr 48px; }
 .help .acc-btn{
   grid-template-columns:var(--help-cols);
   gap:28px; padding:32px 24px; align-items:start;
@@ -418,10 +438,7 @@ section{ padding-top:var(--sec); }
 .help .acc-btn:hover .do{ color:var(--ink); }
 .help .do{ font-size:var(--fs-md); line-height:1.4; color:var(--ink-60); }
 .help .result{ font-size:var(--fs-md); line-height:1.4; font-weight:520; }
-.help .plus{
-  font-size:var(--fs-2xl); color:var(--blue); align-self:start; line-height:.9;
-  transition:transform .3s cubic-bezier(.2,.8,.3,1);
-}
+.help .plus{ align-self:center; }
 .help .acc.open .plus{ transform:rotate(45deg); }
 .help .acc-body{
   padding:24px 24px 48px; max-width:none;
@@ -433,13 +450,13 @@ section{ padding-top:var(--sec); }
 @media (max-width:1000px){
   .help .acc-body{ grid-template-columns:1fr; gap:24px; }
 
-  .help{ --help-cols: 1fr 40px; }
+  .help{ --help-cols: 1fr 48px; }
   .help .acc-btn{ gap:16px; padding:24px 20px; }
-  .help .tag{ grid-column:1 / -1; }
+  .help .tag{ grid-column:1; }
   .help .problem, .help .do, .help .result{ grid-column:1; }
   .help .do::before{ content:"What I do — "; color:var(--ink); }
   .help .result::before{ content:"Result — "; color:var(--ink-60); font-weight:440; }
-  .help .plus{ grid-row:2; grid-column:2; }
+  .help .plus{ grid-row:1 / span 4; grid-column:2; align-self:center; }
   .help .acc-body{ padding-inline:20px; }
 }
 
@@ -487,11 +504,7 @@ section{ padding-top:var(--sec); }
 }
 .chip b{ color:var(--ink); font-weight:500; }
 .chip.flag{ border-style:dashed; }
-.work .plus{
-  position:absolute; right:26px; top:42px;
-  font-family:var(--mono); font-size:var(--fs-2xl); color:var(--blue); line-height:.9;
-  transition:transform .3s cubic-bezier(.2,.8,.3,1);
-}
+.work .plus{ position:absolute; right:24px; top:0; bottom:0; margin-block:auto; }
 .work .acc.open .plus{ transform:rotate(45deg); }
 
 /* rozwinięcie */
@@ -549,7 +562,7 @@ section{ padding-top:var(--sec); }
   .work .acc-btn{ padding:24px 60px 24px 20px; }
   .work .case-title{ white-space:normal; }
   .work .acc-body{ padding-inline:20px; }
-  .work .plus{ right:20px; top:28px; }
+  .work .plus{ right:20px; }
   /* opisowe wyniki (Fleet) nie mieszcza sie w kolumnie z nowrap — skladamy w pion */
   .res{ grid-template-columns:1fr; gap:2px; }
   .res b{ text-align:left; white-space:normal; }
@@ -596,10 +609,10 @@ section{ padding-top:var(--sec); }
 .teach-cols{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
 /* Design Excellence Program — zwijany blok pod nawykami */
 .dep{ margin-top:var(--sp-4); }
-.dep .acc-btn{ grid-template-columns:1fr auto; padding:24px 24px; }
+.dep .acc-btn{ grid-template-columns:1fr auto; padding:24px 24px; align-items:center; }
 .dep .dep-title{ font-size:var(--fs-lead); font-weight:580; letter-spacing:-0.012em; }
 .dep .acc-btn:hover .dep-title{ color:var(--blue); }
-.dep .plus{ font-size:var(--fs-2xl); color:var(--blue); line-height:.9; align-self:center; }
+.dep .plus{ align-self:center; }
 .dep .acc.open .plus{ transform:rotate(45deg); }
 .dep-body{ max-width:none; padding:16px 24px 48px; }
 .dep-body .dep-intro{ max-width:78ch; margin-bottom:var(--sp-4); }
@@ -710,7 +723,7 @@ section{ padding-top:var(--sec); }
   </div>
 
   <div class="hero-row">
-    <p class="hero-sub"><b>Almost two decades designing enterprise products.<br>Three leading the teams that build them.</b> I never handed the craft over.</p>
+    <p class="hero-sub"><b>Almost two decades designing enterprise products.<br>Three leading the teams that build them.</b><br>I never handed the craft over.</p>
   </div>
 
   <div class="hero-ctas">
@@ -726,8 +739,8 @@ section{ padding-top:var(--sec); }
   </div>
 
   <div class="highlights">
-    <div class="hl"><div class="n">19 yrs</div><div class="l">in enterprise product design</div></div>
-    <div class="hl"><div class="n">3 yrs</div><div class="l">leading design teams</div></div>
+    <div class="hl"><div class="n">19 yrs</div><div class="l">in enterprise product design, across 10 industries</div></div>
+    <div class="hl"><div class="n">3 yrs</div><div class="l">leading design teams, mentoring and growth paths</div></div>
     <div class="hl"><div class="n">4 designers</div><div class="l">led on an award-winning AI platform</div></div>
     <div class="hl"><div class="n">1,000+</div><div class="l">people trained in 8 years, rated 4.9/5</div></div>
   </div>
@@ -757,19 +770,19 @@ section{ padding-top:var(--sec); }
   <div class="track">
     <div class="track-top">
       <span class="track-label">Where I've done it</span>
-      <span class="track-span">19 years, since 2007</span>
+      <span class="track-span">19 years of experience, since 2007</span>
     </div>
     <div class="track-grid">
       <div class="track-head">
         <span>Years</span><span>Company &amp; industry</span><span>Role</span><span>Outcome</span><span></span>
       </div>
-      <div class="track-row">
+      <a class="track-row" href="https://drive.google.com/file/d/1kzkYE7KzZo2d15bsRKcejW_wv1Zn85iC/view" target="_blank" rel="noopener" aria-label="Read the iX Hero case, opens in a new tab">
         <span class="t-yr">2023&ndash;2025</span>
         <span class="t-co"><b>Concentrix</b><i>Contact centre &amp; AI</i></span>
         <span class="t-ro">Senior UX Manager &amp; Lead Designer</span>
         <span class="t-kpi">Handle time down 22%</span>
-        <span class="t-lk"><a class="lnk" href="https://drive.google.com/file/d/1kzkYE7KzZo2d15bsRKcejW_wv1Zn85iC/view" target="_blank" rel="noopener">iX Hero</a></span>
-      </div>
+        <span class="t-lk"><span class="t-go"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </a>
       <div class="track-row">
         <span class="t-yr">2022&ndash;2023</span>
         <span class="t-co"><b>EY</b><i>Audit &amp; assurance</i></span>
@@ -777,13 +790,13 @@ section{ padding-top:var(--sec); }
         <span class="t-kpi">Handoff time down 30%</span>
         <span class="t-lk"><i>&mdash;</i></span>
       </div>
-      <div class="track-row">
+      <a class="track-row" href="https://drive.google.com/file/d/15Z-T0uIl-9UVCs2uPM31aFh0L63wqNmq/view" target="_blank" rel="noopener" aria-label="Read the AML platform case, opens in a new tab">
         <span class="t-yr">12 months</span>
         <span class="t-co"><b>Danske Bank</b><i>Banking &amp; FinTech</i></span>
         <span class="t-ro">Senior UX/UI Designer, AML platform</span>
         <span class="t-kpi">Assessment time down 31%</span>
-        <span class="t-lk"><a class="lnk" href="https://drive.google.com/file/d/15Z-T0uIl-9UVCs2uPM31aFh0L63wqNmq/view" target="_blank" rel="noopener">AML case</a></span>
-      </div>
+        <span class="t-lk"><span class="t-go"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </a>
       <div class="track-row">
         <span class="t-yr">2007&ndash;2022</span>
         <span class="t-co"><b>HSBC, AKQA, Vodafone,<br>Sabre Holdings</b><i>Banking, travel &amp; telecom</i></span>
@@ -791,20 +804,20 @@ section{ padding-top:var(--sec); }
         <span class="t-kpi">UX strategy for global brands</span>
         <span class="t-lk"><i>&mdash;</i></span>
       </div>
-      <div class="track-row">
+      <a class="track-row" href="https://drive.google.com/file/d/1eVKKmkBLgntV_VIxLZMFZndC0KTjNgDe/view" target="_blank" rel="noopener" aria-label="Read the Fleet Platform case, opens in a new tab">
         <span class="t-yr">2022</span>
         <span class="t-co"><b>Logistics operator</b><i>Fleet management</i></span>
         <span class="t-ro">Senior UX &amp; UI Designer</span>
         <span class="t-kpi">Scope set by usage data</span>
-        <span class="t-lk"><a class="lnk" href="https://drive.google.com/file/d/1eVKKmkBLgntV_VIxLZMFZndC0KTjNgDe/view" target="_blank" rel="noopener">Fleet case</a></span>
-      </div>
-      <div class="track-row">
+        <span class="t-lk"><span class="t-go"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </a>
+      <a class="track-row" href="https://drive.google.com/file/d/1emlqT-VGTawGBfKDe7uhI0pQzhYEQkjF/view" target="_blank" rel="noopener" aria-label="Read the MBA lecture, opens in a new tab">
         <span class="t-yr">2012&ndash;2020</span>
         <span class="t-co"><b>Comarch, AGH, UJ, UEK MBA</b><i>Education</i></span>
         <span class="t-ro">Design coach &amp; university lecturer</span>
         <span class="t-kpi">1,000+ trained, rated 4.9/5</span>
-        <span class="t-lk"><a class="lnk" href="https://drive.google.com/file/d/1emlqT-VGTawGBfKDe7uhI0pQzhYEQkjF/view" target="_blank" rel="noopener">MBA lecture</a></span>
-      </div>
+        <span class="t-lk"><span class="t-go"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -906,7 +919,7 @@ section{ padding-top:var(--sec); }
   </div>
   <!-- lista zakresu -->
   <div class="scope">
-    <h2 class="scope-title">The function I build:<br><em>from Strategy to Standards</em></h2>
+    <h2 class="scope-title">The function I build:<br><em>from strategy to standards</em></h2>
     <div class="scope-grid">
       <div class="scope-col">
         <h3>Strategy &amp; Vision</h3>
@@ -915,7 +928,7 @@ section{ padding-top:var(--sec); }
           <li>Advising at VP and director level</li>
           <li>KPI definition and go/no-go gates</li>
           <li>Product audit and diagnosis</li>
-          <li>Delivery scenarios priced by risk</li>
+          <li>Delivery scenarios priced by risk, with go/no-go gates</li>
           <li>Roadmaps defended with evidence</li>
         </ul>
       </div>
@@ -923,7 +936,7 @@ section{ padding-top:var(--sec); }
         <h3>Design Culture &amp; Ops</h3>
         <ul>
           <li>Building and leading the team</li>
-          <li>Hiring, mentoring, growth paths</li>
+          <li>Mentoring, competency matrix, growth paths</li>
           <li>Quality standards and critique</li>
           <li>Stakeholder and feedback rituals</li>
           <li>Design system ownership</li>
@@ -933,7 +946,7 @@ section{ padding-top:var(--sec); }
       <div class="scope-col">
         <h3>Discovery &amp; Craft</h3>
         <ul>
-          <li>Research and continuous discovery</li>
+          <li>Research: interviews, observation, server-log analysis</li>
           <li>Information architecture</li>
           <li>Design systems and component libraries</li>
           <li>Prototyping and user validation</li>
@@ -948,7 +961,7 @@ section{ padding-top:var(--sec); }
 
 <!-- ================= CASE STUDIES ================= -->
 <section class="wrap work" id="work">
-  <h2>The Work:<br><em>Recent Case Studies</em></h2>
+  <h2>The work:<br><em>recent case studies</em></h2>
   <p class="sec-intro">Work where the outcome was measurable — and where the decisions behind it are worth defending. Each one opens with the numbers, so you can decide in ten seconds whether to read on.</p>
 
   <div class="help-list">
@@ -1241,7 +1254,7 @@ section{ padding-top:var(--sec); }
 
 <!-- ================= TRAINING ================= -->
 <section class="wrap teach" id="teaching">
-  <h2>Coaching &amp; Training</h2>
+  <h2>Coaching &amp; training</h2>
   <p class="sec-intro">Eight years coaching designers, developers, product managers, executives and MBA students — because at leadership level, most of the job is making design legible to everyone who has to act on it.</p>
 
   <div class="teach-nums">
@@ -1292,7 +1305,7 @@ section{ padding-top:var(--sec); }
 
 <!-- ================= QUOTES ================= -->
 <section class="wrap quotes" id="quotes">
-  <h2>What People Say</h2>
+  <h2>What people say</h2>
   <div class="quotes-grid">
     <div class="quote">
       <p>"He is very good at working with upper leadership and allowing his team to do what they did best. I highly recommend Marcel and would work with him again."</p>
