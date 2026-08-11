@@ -57,6 +57,8 @@
   --fs-h2-lg:    clamp(34px, 5.4vw, 76px);
   --fs-stat-lg:  clamp(38px, 5vw, 68px);
   --fs-h1:       clamp(42px, 7.6vw, 118px);
+
+  --lh-display: 1.10;   /* jedna interlinia dla wszystkich naglowkow */
 }
 
 *{ margin:0; padding:0; box-sizing:border-box; }
@@ -92,7 +94,7 @@ h2{
   font-weight:640;
   font-variation-settings:"wdth" 112;
   font-size:var(--fs-h2);
-  line-height:1.02;
+  line-height:var(--lh-display);
   letter-spacing:-0.015em;
 }
 
@@ -138,7 +140,7 @@ h1{
   font-weight:680;
   font-variation-settings:"wdth" 116;
   font-size:var(--fs-h1);
-  line-height:0.98;
+  line-height:var(--lh-display);
   letter-spacing:-0.028em;
   max-width:14ch;
 }
@@ -644,7 +646,8 @@ a.track-row:hover{ background:var(--paper-2); }
    CONTACT
    ============================================================ */
 .contact{ padding-block:var(--sec) clamp(88px, 11vw, 150px); }
-.contact h2{ font-size:var(--fs-h2-lg); max-width:16ch; }
+.contact h2{ max-width:20ch; }
+.contact-sub{ margin-top:var(--sp-2); color:var(--ink-60); font-size:var(--fs-lead); max-width:54ch; }
 
 .contact-line{
   margin-top:48px;
@@ -663,7 +666,7 @@ a.track-row:hover{ background:var(--paper-2); }
   font-family:var(--mono); font-size:var(--fs-lead);
   color:var(--ink-60);
 }
-.big-phone:hover{ color:var(--blue); }
+.big-phone:hover{ color:var(--ink-60); }   /* bez reakcji na hover */
 .contact-links{
   margin-top:52px; display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 32px;
   font-family:var(--mono); font-size:var(--fs-md);
@@ -1322,7 +1325,8 @@ a.track-row:hover{ background:var(--paper-2); }
 
 <!-- ================= CONTACT ================= -->
 <div class="contact wrap" id="contact">
-  <h2>Hiring for a Lead or Head of Design role?</h2>
+  <h2>Need a design function, not just more designers?</h2>
+  <p class="contact-sub">Open to Lead, Head of Design and Director-level roles.</p>
   <div class="contact-line">
     <a class="big-mail" href="mailto:marcel.dziedzic@gmail.com">marcel.dziedzic@gmail.com</a>
     <a class="big-phone" href="tel:+48535820627">+48 535 820 627</a>
@@ -1356,15 +1360,7 @@ document.querySelectorAll('.acc-head .plus').forEach(function(mark){
 document.querySelectorAll('.acc-btn').forEach(function(btn){
   btn.addEventListener('click', function(){
     var acc = btn.closest('.acc');
-    var isWork = !!acc.closest('.work');
     var willOpen = !acc.classList.contains('open');
-    if (isWork){
-      acc.closest('.work').querySelectorAll('.acc.open').forEach(function(o){
-        o.classList.remove('open');
-        var b = o.querySelector('.acc-btn');
-        if (b) b.setAttribute('aria-expanded','false');
-      });
-    }
     acc.classList.toggle('open', willOpen);
     btn.setAttribute('aria-expanded', String(willOpen));
   });
