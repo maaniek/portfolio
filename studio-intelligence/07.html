@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Koniec godziny. — Studio Intelligence</title>
+<style>
+:root{
+  --bg:#EFEFED; --ink:#111114; --soft:#6E6E73; --rule:#C9C9C6;
+  --blue:#3B31F0; --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#EFEFED;color:#111114;font:400 14px/1.65 var(--mono);
+     -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.page{flex:1;width:100%;max-width:1000px;margin:0 auto;padding:104px 44px 64px;
+      display:flex;flex-direction:column;justify-content:center}
+
+h1{font:400 46px/1.16 var(--mono);letter-spacing:-.005em;margin:0 0 34px;max-width:24ch}
+.lede{font-size:15px;line-height:1.85;color:#6E6E73;margin:0;max-width:62ch;letter-spacing:.01em}
+.lede strong{color:#111114;font-weight:400}
+
+.fig{margin:88px 0 0}
+.fig svg{display:block;width:100%;height:auto}
+
+.figcap{margin:16px 0 0;font:400 11px var(--mono);letter-spacing:.16em;color:#6E6E73;
+  transition:opacity .35s ease}
+.figcap.out{opacity:0}
+
+.toggle{margin-top:26px;align-self:flex-start;background:none;border:0;cursor:pointer;
+  font:400 11px var(--mono);letter-spacing:.16em;color:#3B31F0;text-align:left;
+  padding:0 0 3px;border-bottom:1px solid #3B31F0}
+.toggle:hover{color:#111114;border-color:#111114}
+
+.later{margin:44px auto 0;font-size:14.5px;line-height:1.8;color:#111114;max-width:72ch;
+  text-align:center;opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .9s ease 1.5s}
+.later b{display:block;font-weight:400;color:#3B31F0;margin-bottom:10px;white-space:nowrap}
+.later.on{opacity:1;max-height:none}
+
+.cap{margin:60px 0 0;border-top:1px solid #C9C9C6;padding-top:20px;font-size:13px;
+     line-height:1.8;color:#6E6E73;max-width:66ch}
+.cap b{color:#111114;font-weight:400}
+.src{font-size:12px;line-height:1.7;letter-spacing:.02em;color:#6E6E73;margin:16px 0 0}
+
+.hook{margin:88px 0 0;font-size:15px;line-height:1.85;color:#111114;max-width:62ch;
+      border-left:2px solid #3B31F0;padding-left:18px}
+
+.pager{margin-top:76px;display:flex;gap:20px;align-items:center;
+       font-size:12px;letter-spacing:.16em;color:#6E6E73}
+.pager a{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid #C9C9C6;font-size:17px;text-decoration:none;color:#111114}
+.pager a:hover{border-color:#3B31F0;color:#3B31F0}
+
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes blink{
+  0%{opacity:var(--o,1);transform:scale(1)} 2%{opacity:var(--o,1);transform:scale(1.25)}
+  6%{opacity:0;transform:scale(.15)} 20%{opacity:var(--o,1);transform:scale(1)}
+  100%{opacity:var(--o,1);transform:scale(1)}}
+.fade{opacity:0;animation:fadein .8s ease forwards}
+.link{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+      animation:draw var(--dur,1.1s) cubic-bezier(.4,0,.2,1) forwards}
+.blink{transform-box:fill-box;transform-origin:center;
+       animation:blink var(--d,14s) ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}
+@media (max-width:760px){
+  .page{padding:56px 22px 40px} h1{font-size:30px}
+  .fig{margin:60px 0 0} .cap{margin-top:44px} .hook{margin-top:60px} .pager{margin-top:52px}
+  .later b{white-space:normal}
+}
+</style>
+
+<div class="page">
+  <h1>Koniec godziny.</h1>
+
+  <p class="lede">
+    Studio sprzedaje godziny. Narzędzie, które naprawdę działa, skraca czas do odpowiedzi —
+    a każda godzina zaoszczędzona klientowi jest godziną niesprzedaną.
+    <strong>Powstaje z tego koło, w którym własna sprawność obniża przychód.</strong>
+  </p>
+
+  <div class="fig">
+    <svg id="fig" viewBox="0 0 900 400"
+         aria-label="Koło sprzężenia zwrotnego: jednostką jest godzina, więc skracanie czasu obniża rachunek"></svg>
+  </div>
+  <p class="figcap" id="figcap">IM SZYBCIEJ, TYM MNIEJ — DOPÓKI JEDNOSTKĄ JEST CZAS</p>
+
+  <button class="toggle" id="toggle">ZOBACZ, KIEDY SZYBCIEJ ZNACZY WIĘCEJ →</button>
+
+  <p class="later" id="what">
+    <b>Jednostką przestaje być czas, a staje się decyzja.</b>
+    Marża przestaje być pochodną stawki godzinowej, a kwartalna prognoza — prognozą godzin.
+    Wycena nie czeka na oszacowanie pracochłonności, więc cykl sprzedaży się skraca.
+    Przychód przestaje zależeć od obłożenia zespołu — zaczyna zależeć od liczby decyzji,
+    które firma pomoże podjąć.
+  </p>
+
+  <p class="cap">
+    <b>Jednostka rozliczenia przesuwa się w całej branży.</b> Najpierw od dostępu do zużycia:
+    modele liczą za token, nie za abonament. Potem od zużycia do rezultatu — Fin, asystent
+    obsługi klienta Intercomu, bierze 0,99 dolara za rozwiązaną sprawę, a nie za czas jej
+    rozwiązywania. W żadnym z tych kroków nie ma godziny pracy.
+    <br><br>
+    Wzór z drugiej strony mówi to samo z drugiego końca. Skrócenie <b>T</b> podnosi <b>S</b>,
+    czyli sens współpracy ze studiem. Przy rozliczaniu godzinami to samo skrócenie obniża
+    rachunek. Rozjazd bierze się wyłącznie z jednostki.
+  </p>
+  <p class="src">Źródło: intercom.com/pricing, sierpień 2026</p>
+
+  <p class="hook">
+    Pierwszy krok nie wymaga nowej oferty ani zgody klienta — dzieje się na własnych
+    projektach. Na następnej stronie trzy horyzonty i ten pierwszy.
+  </p>
+
+  <div class="pager">
+    <a href="06.html">‹</a><span>07 / 08</span><a href="08.html">›</a>
+  </div>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+const rr=(a,b)=>a+Math.random()*(b-a);
+const svg=document.getElementById('fig');
+const TX=(x,y,s,{anchor='start',fill='#6E6E73',size=10.5}={})=>{
+  const t=el('text',{x,y,'text-anchor':anchor,fill,
+    style:`font:400 ${size}px ui-monospace,Menlo,monospace;letter-spacing:.15em`});
+  t.textContent=s; return t;};
+
+/* ---------- geometria: jedno kolo, trzy wezly, ten sam kierunek w obu stanach ----------
+   miedzy stanami zmieniaja sie DWA napisy i kolor. Ksztalt zostaje ten sam,
+   bo argumentem jest to, ze wystarczy przestawic jednostke.                             */
+const CX=450, CY=210, R=165, H=36;
+const A1=-90, A2=30, A3=150;            // jednostka / krotszy czas / skutek
+const G1=34,  G23=31;                   // luki katowe na pudelka
+const rad=d=>d*Math.PI/180;
+const pt=d=>({x:CX+Math.cos(rad(d))*R, y:CY+Math.sin(rad(d))*R});
+
+const gArc=el('g'); svg.appendChild(gArc);
+const gBox=el('g'); svg.appendChild(gBox);
+const gLab=el('g'); svg.appendChild(gLab);
+
+function box(cx,cy,w,label,delay,col){
+  const g=el('g',{class:'fade'}); g.style.animationDelay=delay+'s';
+  g.appendChild(el('rect',{x:cx-w/2,y:cy-H/2,width:w,height:H,fill:'none',stroke:col,'stroke-width':1}));
+  g.appendChild(TX(cx,cy+4,label,{anchor:'middle',fill:col}));
+  return g;
+}
+/* luk + grot na koncu; kierunek zawsze zgodny z ruchem wskazowek */
+function arc(a1,a2,col,delay){
+  const g=el('g'), p1=pt(a1), p2=pt(a2);
+  const path=el('path',{d:`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A ${R} ${R} 0 0 1 ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`,
+    fill:'none',stroke:col,'stroke-width':1,class:'link'});
+  const len=R*rad(a2-a1);
+  path.style.setProperty('--len',len.toFixed(1));
+  path.style.setProperty('--dur','.9s');
+  path.style.animationDelay=delay+'s';
+  g.appendChild(path);
+
+  const t=rad(a2+90), L=8;             // styczna w punkcie koncowym
+  const head=el('g',{class:'fade'}); head.style.animationDelay=(delay+.75)+'s';
+  [-1,1].forEach(s=>{
+    const a=t+s*rad(148);
+    head.appendChild(el('line',{x1:p2.x.toFixed(1),y1:p2.y.toFixed(1),
+      x2:(p2.x+Math.cos(a)*L).toFixed(1),y2:(p2.y+Math.sin(a)*L).toFixed(1),
+      stroke:col,'stroke-width':1}));
+  });
+  g.appendChild(head);
+  return g;
+}
+function eiMark(x,y,k){
+  const g=el('g'), N=14, Rm=17*k, P=[];
+  for(let i=0;i<N;i++){const a=(i/N)*6.2832-1.5708;
+    P.push({x:x+Math.cos(a)*Rm, y:y+Math.sin(a)*Rm});}
+  g.appendChild(el('circle',{cx:x,cy:y,r:Rm.toFixed(2),fill:'#3B31F0','fill-opacity':.12}));
+  P.forEach(p=>{
+    const c=el('circle',{cx:p.x.toFixed(2),cy:p.y.toFixed(2),r:(1.9*k).toFixed(2),
+      fill:'none',stroke:'#3B31F0','stroke-width':1.2,class:'blink'});
+    c.style.setProperty('--o',rr(.4,1).toFixed(2));
+    c.style.setProperty('--d',rr(9,17).toFixed(1)+'s');
+    c.style.animationDelay=(-rr(0,17)).toFixed(1)+'s';
+    g.appendChild(c);
+  });
+  g.appendChild(el('circle',{cx:x,cy:y,r:(5.5*k).toFixed(2),fill:'#3B31F0'}));
+  return g;
+}
+function render(B){
+  const line = B?'#3B31F0':'#6E6E73';   // kolo jest tu tematem, nie tkanka laczaca
+  const unit = B?'#3B31F0':'#111114';
+  const p1=pt(A1), p2=pt(A2), p3=pt(A3);
+
+  gArc.appendChild(arc(A1+G1, A2-G23, line, .2));
+  gArc.appendChild(arc(A2+G23, A3-G23, line, 1.0));
+  gArc.appendChild(arc(A3+G23, 270-G1, line, 1.8));   // powrot: skutek wraca na jednostke
+
+  gBox.appendChild(box(p1.x,p1.y,190, B?'DECYZJA':'GODZINA', 0, unit));
+  gBox.appendChild(box(p2.x,p2.y,170, 'KRÓTSZY CZAS', .9, '#111114'));
+  gBox.appendChild(box(p3.x,p3.y,170, B?'WYŻSZA MARŻA':'MNIEJSZY RACHUNEK', 1.7, '#111114'));
+
+  const l1=el('g',{class:'fade'}); l1.style.animationDelay='.1s';
+  l1.appendChild(TX(p1.x,p1.y-H/2-13,'JEDNOSTKA ROZLICZENIA',{anchor:'middle',fill:B?'#3B31F0':'#6E6E73'}));
+  gLab.appendChild(l1);
+
+  const l2=el('g',{class:'fade'}); l2.style.animationDelay='.9s';
+  l2.appendChild(TX(624,132,'LEPSZE NARZĘDZIA'));
+  gLab.appendChild(l2);
+
+  /* zdanie, ktore cale kolo wypowiada — jedyna rzecz, jaka z niego wynika */
+  const l3=el('g',{class:'fade'}); l3.style.animationDelay='2.6s';
+  l3.appendChild(TX(276,132, B?'WIĘC SKRACAJ':'WIĘC NIE SKRACAJ',{anchor:'end',fill:'#111114'}));
+  gLab.appendChild(l3);
+
+  const c=el('g',{class:'fade'}); c.style.animationDelay='2.9s';
+  c.appendChild(TX(CX,CY-6,'SPRZĘŻENIE',{anchor:'middle'}));
+  c.appendChild(TX(CX,CY+16,B?'DODATNIE':'UJEMNE',{anchor:'middle'}));
+  gLab.appendChild(c);
+
+  if(B){                                  // jednostka bierze sie z EI — stad kolor
+    const m=el('g',{class:'fade'}); m.style.animationDelay='.4s';
+    m.appendChild(eiMark(p1.x-142,p1.y,1.2));
+    m.appendChild(el('line',{x1:p1.x-121,y1:p1.y,x2:p1.x-95,y2:p1.y,
+      stroke:'#3B31F0','stroke-width':1}));
+    gLab.appendChild(m);
+  }
+}
+
+const btn=document.getElementById('toggle'), what=document.getElementById('what');
+const figcap=document.getElementById('figcap');
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+function go(){
+  btn.remove();
+  what.classList.add('on');
+  figcap.classList.add('out');
+  setTimeout(()=>{
+    figcap.textContent='TO SAMO KOŁO · ZMIENIŁA SIĘ JEDNA RZECZ — JEDNOSTKA';
+    figcap.classList.remove('out');
+  }, still?0:350);
+  svg.setAttribute('aria-label','To samo koło: jednostką jest decyzja dostarczana '
+    +'przez Studio Intelligence, więc skracanie czasu podnosi marżę');
+  gArc.textContent=''; gBox.textContent=''; gLab.textContent='';
+  render(true);
+}
+btn.addEventListener('click',go);
+render(false);
+if(location.hash==='#on') go();
+
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') location.href='08.html';
+  if(e.key==='ArrowLeft') location.href='06.html';
+});
+</script>
+</html>

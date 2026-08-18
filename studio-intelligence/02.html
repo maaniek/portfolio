@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Cały proces jest już po stronie klienta. — Studio Intelligence</title>
+<style>
+:root{
+  --bg:#EFEFED; --ink:#111114; --soft:#6E6E73; --rule:#C9C9C6;
+  --blue:#3B31F0; --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#EFEFED;color:#111114;font:400 14px/1.65 var(--mono);
+     -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.page{flex:1;width:100%;max-width:1000px;margin:0 auto;padding:104px 44px 64px;
+      display:flex;flex-direction:column;justify-content:center}
+
+h1{font:400 40px/1.2 var(--mono);letter-spacing:-.005em;margin:0 0 34px;max-width:28ch}
+.lede{font-size:15px;line-height:1.85;color:#6E6E73;margin:0;max-width:62ch;letter-spacing:.01em}
+.lede strong{color:#111114;font-weight:400}
+
+.fig{margin:88px 0 0}
+.fig.second{margin-top:96px}
+.fig svg{display:block;width:100%;height:auto}
+.figcap{margin:18px 0 0;font-size:11px;letter-spacing:.16em;color:#6E6E73}
+.bridge{margin:72px 0 0;font-size:15px;line-height:1.85;color:#6E6E73;max-width:62ch;
+        letter-spacing:.01em}
+.bridge strong{color:#111114;font-weight:400}
+
+/* ---------- wzór ---------- */
+.math{margin:80px 0 0;padding:0;text-align:center}
+.math .row{margin:0 0 26px}
+.math .row:last-of-type{margin-bottom:0}
+.math .eq{font-size:17px;letter-spacing:.06em;color:#111114;display:inline-block}
+.math sub{font-size:.68em;vertical-align:sub;line-height:0}
+.math .imp{margin:0 18px;color:#6E6E73}
+.math .frac{display:flex;align-items:center;justify-content:center;gap:10px}
+.math .ratio{display:inline-flex;flex-direction:column;align-items:center;
+             font-size:17px;letter-spacing:.06em;color:#111114}
+.math .ratio b{font-weight:400;padding:0 18px 5px}
+.math .ratio i{font-style:normal;padding:5px 18px 0;border-top:1px solid #111114;
+               display:block;width:100%;text-align:center}
+.math .legend{margin:40px 0 0;font-size:13px;line-height:2;letter-spacing:.04em;
+              color:#6E6E73;max-width:none;text-align:center}
+@media (max-width:760px){
+  .math .legend{font-size:12px} .math .eq,.math .ratio{font-size:15px}
+}
+
+.cap{margin:88px 0 0;border-top:1px solid #C9C9C6;padding-top:20px;font-size:13px;
+     line-height:1.8;color:#6E6E73;max-width:66ch}
+.cap b{color:#111114;font-weight:400}
+
+.hook{margin:80px 0 0;font-size:15px;line-height:1.85;color:#111114;max-width:62ch;
+      border-left:2px solid #3B31F0;padding-left:18px}
+
+.pager{margin-top:76px;display:flex;gap:20px;align-items:center;
+       font-size:12px;letter-spacing:.16em;color:#6E6E73}
+.pager a{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid #C9C9C6;font-size:17px;text-decoration:none;color:#111114}
+.pager a:hover{border-color:#3B31F0;color:#3B31F0}
+
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fade{opacity:0;animation:fadein .7s ease forwards}
+.link{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+      animation:draw var(--dur,1.1s) cubic-bezier(.4,0,.2,1) forwards}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}
+@media (max-width:760px){
+  .page{padding:56px 22px 40px} h1{font-size:26px}
+  .fig{margin:60px 0 0} .fig.second{margin-top:64px}
+  .cap{margin-top:60px} .hook{margin-top:56px} .pager{margin-top:52px}
+}
+</style>
+
+<div class="page">
+  <h1>Cały proces jest już<br>po stronie klienta.<br>Razem z jego problemami.</h1>
+
+  <p class="lede">
+    Rozpoznanie rynku, analiza konkurencji, mapa procesu, architektura informacji,
+    koncepcje, teksty, klikalny prototyp — klient robi to dziś sam.
+    <strong>Każde z tych słów było kiedyś osobną pozycją na fakturze.</strong>
+  </p>
+
+  <div class="fig">
+    <svg id="f1" viewBox="0 0 900 130" aria-label="Cały łańcuch projektowy wykonywany dziś samodzielnie przez klienta"></svg>
+  </div>
+
+  <p class="bridge">
+    Skoro każdy etap da się wykonać samodzielnie, pytanie o sens współpracy zadaje się samo.
+    Odpowiedzi powstaje wtedy dużo i szybko, tylko żadna nie jest lepsza od pozostałych.
+    <strong>Tego model nie rozwiąże.</strong>
+  </p>
+
+  <div class="fig second">
+    <svg id="f2" viewBox="0 0 900 250" aria-label="Rosnące możliwości klienta i malejąca postrzegana wartość współpracy ze studiem"></svg>
+  </div>
+
+  <div class="math">
+    <div class="row"><span class="eq">ΔW &nbsp;=&nbsp; W<sub>s</sub> − W<sub>k</sub></span></div>
+
+    <div class="row frac">
+      <span class="eq">S &nbsp;=&nbsp;</span>
+      <span class="ratio"><b>ΔW</b><i>K · T</i></span>
+    </div>
+
+    <div class="row"><span class="eq">d(ΔW)/dt &nbsp;&lt;&nbsp; 0
+      <span class="imp">⟹</span> S → 0</span></div>
+
+    <p class="legend">
+      S — sens współpracy ze studiem &nbsp;·&nbsp; W<sub>s</sub> — co potrafi studio
+      &nbsp;·&nbsp; W<sub>k</sub> — co klient wytworzy sam &nbsp;·&nbsp; ΔW — przewaga studia
+      nad klientem &nbsp;·&nbsp; K — koszt współpracy &nbsp;·&nbsp; T — czas do pierwszej odpowiedzi
+    </p>
+  </div>
+
+  <p class="bridge">
+    Ta przewaga — ΔW — kurczy się sama, bez wstrząsu i bez winnych, a razem z nią
+    sens współpracy. <strong>Zostają dwie dźwignie: powiększyć ΔW, zbić T.
+    Najlepiej obie naraz.</strong>
+  </p>
+
+  <p class="hook">
+    Studio jest więc dziś potrzebne bardziej niż kiedykolwiek — pod warunkiem, że przyniesie
+    odpowiedzi, których klient sobie nie wygeneruje. Takich nie ma w żadnym modelu.
+    Są w projektach, które ktoś już przeprowadził.
+  </p>
+
+  <div class="pager">
+    <a href="01.html">‹</a><span>02 / 08</span><a href="03.html">›</a>
+  </div>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+const TX=(x,y,s,{anchor='start',fill='#6E6E73',size=10.5}={})=>{
+  const t=el('text',{x,y,'text-anchor':anchor,fill,
+    style:`font:400 ${size}px ui-monospace,Menlo,monospace;letter-spacing:.15em`});
+  t.textContent=s; return t;};
+const draw=(node,len,dur,delay)=>{
+  node.setAttribute('class','link');
+  node.style.setProperty('--len',len.toFixed(0));
+  node.style.setProperty('--dur',dur); node.style.animationDelay=delay;
+  return node;};
+
+/* ================= SCHEMAT 1 — łańcuch ================= */
+(function(){
+  const svg=document.getElementById('f1');
+  const STEPS=['BADANIA','ANALIZA','KONCEPCJE','STRUKTURA','MAKIETY','TREŚCI','TESTY'];
+  const X=70, W=94, G=11, Y=44, H=32;      // ta sama rozpiętość co nożyce
+  STEPS.forEach((s,i)=>{
+    const x=X+i*(W+G);
+    const g=el('g',{class:'fade'}); g.style.animationDelay=(.2+i*.13)+'s';
+    g.appendChild(el('rect',{x,y:Y-H/2,width:W,height:H,fill:'none',
+      stroke:'#111114','stroke-width':1}));
+    g.appendChild(TX(x+W/2,Y+4,s,{anchor:'middle',fill:'#111114'}));
+    svg.appendChild(g);
+    if(i<STEPS.length-1)
+      svg.appendChild(draw(el('line',{x1:x+W,y1:Y,x2:x+W+G,y2:Y,
+        stroke:'#C9C9C6','stroke-width':1}),G,'.2s',(.32+i*.13)+'s'));
+  });
+  // klamra pod całością
+  const x2=X+STEPS.length*W+(STEPS.length-1)*G, BY=Y+H/2+22;
+  const g=el('g',{class:'fade'}); g.style.animationDelay='1.25s';
+  g.appendChild(el('path',{d:`M ${X} ${BY-7} L ${X} ${BY} L ${x2} ${BY} L ${x2} ${BY-7}`,
+    fill:'none',stroke:'#111114','stroke-width':1}));
+  g.appendChild(TX((X+x2)/2,BY+20,'CORAZ WIĘKSZĄ CZĘŚĆ TEGO KLIENT ROBI JUŻ SAM',
+    {anchor:'middle',fill:'#111114'}));
+  svg.appendChild(g);
+})();
+
+/* ================= SCHEMAT 2 — nożyce ================= */
+(function(){
+  const svg=document.getElementById('f2');
+  const XA=70, XB=792, CROSS=(70+792)/2;
+  const up1=200, up2=50, dn1=50, dn2=200;   // symetrycznie — przecięcie dokładnie w środku
+
+  const MID=(up1+up2)/2;
+
+  // klin rozjazdu — wszystko za punktem przecięcia
+  const wedge=el('g',{class:'fade'}); wedge.style.animationDelay='2.4s';
+  wedge.appendChild(el('polygon',{points:`${CROSS},${MID} ${XB},${up2} ${XB},${dn2}`,
+    fill:'#111114','fill-opacity':.055}));
+  svg.appendChild(wedge);
+
+  const half=(x1,y1,x2,y2,col,delay)=>svg.appendChild(draw(
+    el('line',{x1,y1,x2,y2,stroke:col,'stroke-width':1.6}),
+    Math.hypot(x2-x1,y2-y1),'.9s',delay));
+
+  // do przecięcia — stan opisany, na czarno
+  half(XA,up1,CROSS,MID,'#111114','.3s');
+  half(XA,dn1,CROSS,MID,'#111114','.45s');
+  // za przecięciem — projekcja, na szaro
+  half(CROSS,MID,XB,up2,'#C9C9C6','1.3s');
+  half(CROSS,MID,XB,dn2,'#C9C9C6','1.45s');
+
+  // znacznik przecięcia
+  const m=el('g',{class:'fade'}); m.style.animationDelay='2.1s';
+  m.appendChild(el('line',{x1:CROSS,y1:16,x2:CROSS,y2:216,stroke:'#111114',
+    'stroke-width':1,'stroke-dasharray':'4 5'}));
+  m.appendChild(el('circle',{cx:CROSS,cy:(up1+up2)/2,r:4.5,fill:'#111114'}));
+  m.appendChild(TX(CROSS+12,26,'2026 — TU JESTEŚMY',{fill:'#111114'}));
+  svg.appendChild(m);
+
+  // podpisy linii
+  const l=el('g',{class:'fade'}); l.style.animationDelay='2.3s';
+  l.appendChild(TX(XB,up2-14,'MOŻLIWOŚCI KLIENTA',{anchor:'end',fill:'#111114'}));
+  l.appendChild(TX(XB,dn2+20,'POSTRZEGANA WARTOŚĆ WSPÓŁPRACY ZE STUDIEM',{anchor:'end',fill:'#111114'}));
+  l.appendChild(TX(XB-14,MID+4,'ROZBIEŻNOŚĆ',{anchor:'end',fill:'#6E6E73'}));
+  l.appendChild(TX(XA,238,'PROJEKCJA PRZY NIEZMIENIONEJ OFERCIE',{fill:'#6E6E73'}));
+  svg.appendChild(l);
+})();
+
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') location.href='03.html';
+  if(e.key==='ArrowLeft') location.href='01.html';
+});
+</script>
+</html>

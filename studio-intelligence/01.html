@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kilka założeń. — Studio Intelligence</title>
+<style>
+:root{
+  --bg:#EFEFED; --ink:#111114; --soft:#6E6E73; --rule:#C9C9C6;
+  --blue:#3B31F0; --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#EFEFED;color:#111114;font:400 14px/1.65 var(--mono);
+     -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.page{flex:1;width:100%;max-width:1000px;margin:0 auto;padding:104px 44px 64px;
+      display:flex;flex-direction:column;justify-content:center}
+
+h1{font:400 46px/1.16 var(--mono);letter-spacing:-.005em;margin:0 0 34px;max-width:30ch}
+.lede{font-size:15px;line-height:1.85;color:#6E6E73;margin:0;max-width:62ch;letter-spacing:.01em}
+.lede strong{color:#111114;font-weight:400}
+
+table{width:100%;border-collapse:collapse;margin-top:84px}
+th,td{text-align:left;vertical-align:baseline;padding:0 0 52px}
+tbody tr:last-child th,tbody tr:last-child td{padding-bottom:0}
+th{width:150px;padding-right:28px;font:400 10.5px/1.9 var(--mono);letter-spacing:.18em;
+   color:#6E6E73;white-space:nowrap}
+td{font-size:14.5px;line-height:1.8;color:#111114;max-width:70ch}
+td b{font-weight:400;color:#111114}
+td strong{font-weight:600;color:#111114}
+tbody tr{opacity:0;animation:fadein .7s ease forwards}
+
+.note{font-size:12px;line-height:1.7;letter-spacing:.02em;color:#6E6E73;margin:44px 0 0}
+sup{font-size:.7em;vertical-align:super;line-height:0}
+.hook{margin:80px 0 0;font-size:15px;line-height:1.85;color:#111114;max-width:62ch;
+      border-left:2px solid #3B31F0;padding-left:18px}
+
+.pager{margin-top:76px;display:flex;gap:20px;align-items:center;
+       font-size:12px;letter-spacing:.16em;color:#6E6E73}
+.pager a,.pager span.off{width:38px;height:38px;display:inline-flex;align-items:center;
+  justify-content:center;border:1px solid #C9C9C6;font-size:17px;text-decoration:none;color:#111114}
+.pager a:hover{border-color:#3B31F0;color:#3B31F0}
+.pager span.off{color:#D8D8D5;border-color:#DEDEDB}
+
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important}}
+@media (max-width:760px){
+  .page{padding:56px 22px 40px} h1{font-size:30px}
+  table{margin-top:52px}
+  th,td{display:block;padding:0} tr{padding:0 0 36px;display:block}
+  th{width:auto;margin-bottom:8px} td{font-size:14px}
+  .hook{margin-top:56px} .pager{margin-top:52px}
+}
+</style>
+
+<div class="page">
+  <h1>Kilka założeń.<br>Na nich stoi wszystko dalej.</h1>
+
+  <p class="lede">
+    Rynek zmienił się szybciej niż sposób, w jaki studia projektowe sprzedają.
+    Poniżej to, co z tego wynika — zdanie po zdaniu, od zewnątrz do środka.
+  </p>
+
+  <table>
+    <tbody>
+      <tr><th>RYNEK I WYCENA</th>
+        <td>Samo wykonanie — makiety, prototypy, teksty, kod — przestało być wąskim gardłem,
+            a godzina przestała być miarą wartości. Zmienia się to, za co w ogóle się płaci:
+            <strong>od dostępu, przez zużycie, po rezultat.</strong></td></tr>
+
+      <tr><th>BRANŻA</th>
+        <td>IDEO zwolniło w 2023 roku niemal jedną trzecią zespołu i zamknęło część biur.<br>
+            Nie zmieniło się to, jak projektowali. Zmieniło się to, po co się do nich
+            przychodziło.</td></tr>
+
+      <tr><th>KLIENCI</th>
+        <td>Narzędzia, które dziś mają, zbudują im niemal wszystko. Nie powiedzą im natomiast,
+            co jest warte zbudowania, a model podsuwający gotowe odpowiedzi nie weźmie na siebie
+            ryzyka i nie usiądzie z zarządem, żeby obronić decyzję. Studia projektowe
+            nie znikną, ale sprzedają odtąd co innego — <strong>trafność decyzji i tempo,
+            w jakim ona zapada.</strong></td></tr>
+
+      <tr><th>STUDIO</th>
+        <td>Lata pracy, setki projektów, kilkadziesiąt osób, zaplecze dużej grupy doradczej.
+            Tego nie da się skopiować — ale pojedynczy projekt korzysta z tego,
+            co pamiętają akurat te osoby, które go prowadzą.</td></tr>
+
+      <tr><th>STRATEGIA</th>
+        <td>Christensen opisał firmy, które upadły nie przez błędy, lecz przez konsekwentne
+            robienie rzeczy słusznych: pilnowanie marży, słuchanie obecnych klientów, inwestowanie
+            w to, co dziś działa. <b>„Przyczyną było samo dobre zarządzanie."</b></td></tr>
+
+      <tr><th>ROLA</th>
+        <td>Prowadzenie linii biznesowej wyłącznie przez marżę, obłożenie i prognozy to same
+            słuszne decyzje. <strong>I właśnie dlatego nie znajdzie się tam wzrostu</strong> —
+            bo wzrostu, o który dziś chodzi, się nie planuje, tylko buduje.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="note">Clayton Christensen, „The Innovator's Dilemma", 1997</p>
+
+  <p class="hook">
+    Najwięcej zmieniło się po stronie klienta. Zanim padnie odpowiedź, co studio
+    projektowe ma dziś oferować, warto zacząć od tego, co klient robi już bez niego.
+  </p>
+
+  <div class="pager">
+    <span class="off">‹</span><span>01 / 08</span><a href="02.html">›</a>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('tbody tr').forEach((r,i)=>{
+  r.style.animationDelay=(0.25+i*0.11).toFixed(2)+'s';
+});
+addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key===' ') location.href='02.html'; });
+</script>
+</html>
