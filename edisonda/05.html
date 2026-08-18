@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>800 projektów. Jeden umysł. — Edisonda Intelligence</title>
+<style>
+:root{
+  --bg:#EFEFED; --ink:#111114; --soft:#6E6E73; --rule:#C9C9C6;
+  --blue:#3B31F0; --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#EFEFED;color:#111114;font:400 14px/1.65 var(--mono);
+     -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.page{flex:1;width:100%;max-width:1000px;margin:0 auto;padding:104px 44px 64px;
+      display:flex;flex-direction:column;justify-content:center}
+
+h1{font:400 46px/1.16 var(--mono);letter-spacing:-.005em;margin:0 0 34px;max-width:24ch}
+.lede{font-size:15px;line-height:1.85;color:#6E6E73;margin:0;max-width:62ch;letter-spacing:.01em}
+.lede strong{color:#111114;font-weight:400}
+
+.fig{margin:88px 0 0}
+.fig svg{display:block;width:100%;height:auto}
+
+.figcap{margin:16px 0 0;font:400 11px var(--mono);letter-spacing:.16em;color:#6E6E73;
+  transition:opacity .35s ease}
+.figcap.out{opacity:0}
+
+.switch{margin-top:26px;display:flex;align-items:center;gap:16px;
+  font:400 11px var(--mono);letter-spacing:.16em}
+.switch .lab{color:#C9C9C6;transition:color .4s ease;user-select:none}
+.switch .lab.act{color:#111114}
+.switch .lab.act.b{color:#3B31F0}
+.track{width:52px;height:24px;padding:0;background:none;cursor:pointer;
+  border:1px solid #111114;border-radius:0;position:relative;flex:none;
+  transition:border-color .4s ease}
+.track:hover{border-color:#3B31F0}
+.knob{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#111114;
+  transition:left .45s cubic-bezier(.4,0,.2,1), background .45s ease}
+.track[aria-checked="true"]{border-color:#3B31F0}
+.track[aria-checked="true"] .knob{left:31px;background:#3B31F0}
+
+.later{margin:44px auto 0;font-size:14.5px;line-height:1.8;color:#111114;max-width:72ch;
+  text-align:center;opacity:0;max-height:0;overflow:hidden;transition:opacity .9s ease 1.4s}
+.later b{display:block;font-weight:400;color:#3B31F0;margin-bottom:10px;white-space:nowrap}
+.later.on{opacity:1;max-height:none}
+
+.cap{margin:60px 0 0;border-top:1px solid #C9C9C6;padding-top:24px;font-size:14.5px;
+     line-height:1.85;color:#3C3C41;max-width:66ch}
+.cap b{color:#111114;font-weight:400}
+.cap strong{font-weight:600;color:#111114}
+.cap .ei{color:#3B31F0}
+.big{font-size:17px;color:#3B31F0;font-weight:600;white-space:nowrap}
+.note{font-size:12px;line-height:1.7;letter-spacing:.02em;color:#6E6E73;margin:16px 0 0}
+
+.hook{margin:88px 0 0;font-size:15px;line-height:1.85;color:#111114;max-width:62ch;
+      border-left:2px solid #3B31F0;padding-left:18px}
+
+.pager{margin-top:76px;display:flex;gap:20px;align-items:center;
+       font-size:12px;letter-spacing:.16em;color:#6E6E73}
+.pager a{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid #C9C9C6;font-size:17px;text-decoration:none;color:#111114}
+.pager a:hover{border-color:#3B31F0;color:#3B31F0}
+
+@keyframes blink{
+  0%{opacity:var(--o,1);transform:scale(1)} 2%{opacity:var(--o,1);transform:scale(1.25)}
+  6%{opacity:0;transform:scale(.15)} 20%{opacity:var(--o,1);transform:scale(1)}
+  100%{opacity:var(--o,1);transform:scale(1)}}
+.blink{transform-box:fill-box;transform-origin:center;
+       animation:blink var(--d,14s) ease-in-out infinite}
+
+/* promien kropek kontr-skaluje sie razem z viewBox — bez tego z bliska sa kleksami */
+#fig circle.d{r:var(--r,1.6px)}
+#fig circle.d.hot{r:var(--rh,3px);fill:#3B31F0;stroke:none}
+#fig .frame{fill:none;stroke:#C9C9C6;stroke-width:1;vector-effect:non-scaling-stroke}
+#fig .frame.origin{stroke:#111114}
+#fig .mark{opacity:0;transition:opacity .9s ease}
+#fig .mark.on{opacity:1}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media (max-width:760px){
+  .page{padding:56px 22px 40px} h1{font-size:30px}
+  .fig{margin:60px 0 0} .cap{margin-top:44px} .hook{margin-top:60px} .pager{margin-top:52px}
+  .later b{white-space:normal}
+}
+</style>
+
+<div class="page">
+  <h1>800 projektów.<br>Jeden umysł.</h1>
+
+  <p class="lede">
+    Nikt w Edisondzie nie prowadził wszystkich ośmiuset projektów. Każdy zna kilkanaście,
+    najwyżej kilkadziesiąt — i z tej perspektywy widzi dokładnie tyle, ile mieści się
+    w kilkunastu. <strong>Wzorce, które przechodzą przez cały dorobek firmy,
+    są dla pojedynczego człowieka fizycznie niewidoczne.</strong>
+  </p>
+
+  <div class="fig">
+    <svg id="fig" viewBox="0 0 900 500" aria-label="Jeden kadr — tyle projektów widzi jedna osoba"></svg>
+  </div>
+  <p class="figcap" id="figcap">TYLE WIDZI JEDNA OSOBA</p>
+
+  <div class="switch">
+    <span class="lab act" id="labA">PERSPEKTYWA JEDNEJ OSOBY</span>
+    <button class="track" id="track" role="switch" aria-checked="false"
+            aria-label="Pokaż wzorzec widoczny na całym zbiorze"><span class="knob"></span></button>
+    <span class="lab b" id="labB">PERSPEKTYWA CAŁEJ FIRMY</span>
+  </div>
+
+  <p class="later" id="what">
+    Wzorzec jest własnością całego zbioru, a nie żadnego z jego elementów — to zjawisko
+    nazywa się emergencją. Model wytrenowany na całym internecie tych wzorców nie zna,
+    bo ich tam nie ma. Są wyłącznie w tym, co Edisonda przez piętnaście lat sama zrobiła.
+  </p>
+
+  <p class="cap">
+    <b>Jeden przykład.</b> Wystarczyło zliczyć, ile razy na publicznych stronach edisonda.pl
+    pada język procesu (badania, warsztat, metodologia, rozpoznanie, prototyp) w stosunku
+    do języka rezultatu (przychód, konwersja, marża, oszczędność, wzrost).
+    <br><br>
+    <strong>Wynik: <span class="big">6,7 : 1</span></strong>.
+    <br>
+    Na stronach ofertowych — tam, gdzie się sprzedaje —
+    <strong><span class="big">7,9 : 1</span></strong>.
+    <br><br>
+    Żadna pojedyncza podstrona tego nie pokazuje. Widać to dopiero, gdy patrzy się
+    na wszystkie naraz. <span class="ei">To właśnie robi Edisonda Intelligence, tyle że
+    na projektach, a nie na stronie internetowej.</span>
+  </p>
+  <p class="note">Obliczenie własne na podstawie publicznych treści edisonda.pl, sierpień 2026</p>
+
+  <p class="hook">
+    Tyle da się wyczytać z jednej strony internetowej.
+    Na następnej — działający fragment tego, co wychodzi z projektów.
+  </p>
+
+  <div class="pager">
+    <a href="04.html">‹</a><span>05 / 08</span><a href="06.html">›</a>
+  </div>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+let seed=1907; const rnd=()=>(seed=(seed*1103515245+12345)&0x7fffffff)/0x7fffffff;
+const rr=(a,b)=>a+rnd()*(b-a);
+const svg=document.getElementById('fig');
+
+/* ---------- siatka: 50 kadrow po 16 kropek = 800 projektow ----------
+   kadr to pole widzenia jednej osoby, kropka to jeden projekt        */
+const COLS=10, ROWS=5, S=84, G=6, X0=3, Y0=36;
+const CX=450, CY=258, RAD=195, NSAMP=104;      // okrag — wzorzec
+const VB_OUT=[0,0,900,500];
+const AR=VB_OUT[2]/VB_OUT[3];                  // 1.8 — stale, wiec brak letterboxu
+const R_OUT=1.6, R_IN=0.86;                    // promien kropki w obu kadrach
+
+const gDisc=el('g');  svg.appendChild(gDisc);
+const gFrame=el('g'); svg.appendChild(gFrame);
+const gDot=el('g');   svg.appendChild(gDot);
+const gCore=el('g');  svg.appendChild(gCore);
+
+const sq=(c,r)=>({x:X0+c*(S+G), y:Y0+r*(S+G)});
+const frames=[], dots=[];
+
+for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  const {x,y}=sq(c,r);
+  const rect=el('rect',{x,y,width:S,height:S,class:'frame'});
+  gFrame.appendChild(rect);
+  const mine=[];
+  for(let i=0;i<4;i++)for(let j=0;j<4;j++){
+    const px=+(x+13+j*19.33+rr(-2.2,2.2)).toFixed(1);
+    const py=+(y+13+i*19.33+rr(-2.2,2.2)).toFixed(1);
+    const d=el('circle',{cx:px,cy:py,r:R_OUT,fill:'#111114',class:'d'});
+    gDot.appendChild(d);
+    const o={node:d,x:px,y:py,hot:false,ang:Math.atan2(py-CY,px-CX)};
+    dots.push(o); mine.push(o);
+  }
+  frames.push({c,r,x,y,rect,dots:mine});
+}
+
+/* wzorzec: dla rowno rozlozonych probek na obwodzie bierzemy najblizsza
+   istniejaca kropke. Prog odleglosci dawal dziury i zbitki — tak wychodzi
+   ciagly okrag, a zadna kropka nie zostala dodana ani przesunieta.      */
+for(let i=0;i<NSAMP;i++){
+  const a=(i/NSAMP)*6.2832;
+  const tx=CX+Math.cos(a)*RAD, ty=CY+Math.sin(a)*RAD;
+  let best=null, bd=1e9;
+  for(const d of dots){
+    const dd=Math.hypot(d.x-tx,d.y-ty);
+    if(dd<bd){ bd=dd; best=d; }
+  }
+  if(best && bd<26) best.hot=true;   // powtorki same sie skladaja — okrag ma grubosc jednej kropki
+}
+frames.forEach(f=>f.hits=f.dots.filter(d=>d.hot).length);
+
+/* kadr startowy: mozliwie bliski trzem kropkom wzorca na szesnascie —
+   z bliska nie do odroznienia od reszty, z daleka widac, ze tam byly */
+const inner=frames.filter(f=>f.c>0&&f.c<COLS-1&&f.r>0&&f.r<ROWS-1);
+const origin=inner.find(f=>f.hits===3)
+  || inner.slice().sort((a,b)=>Math.abs(a.hits-3)-Math.abs(b.hits-3))[0];
+origin.rect.classList.add('origin');
+
+/* wzorzec jest niebieski OD RAZU, w obu kadrach. Dzieki temu przy oddaleniu
+   nic nie zmienia koloru — zmienia sie wylacznie punkt patrzenia.          */
+dots.filter(d=>d.hot).forEach(d=>d.node.classList.add('hot'));
+
+/* Okrag ulozony z projektow jest pierscieniem znaku EI. Po oddaleniu dochodzi
+   reszta znaku — dysk i rdzen — jako rozpoznanie ksztaltu, nie jako nowe dane.
+   Zadna kropka nie zostala dodana, przesunieta ani przefarbowana.              */
+const disc=el('circle',{cx:CX,cy:CY,r:RAD,fill:'#3B31F0','fill-opacity':.12,class:'mark'});
+gDisc.appendChild(disc);
+const core=el('circle',{cx:CX,cy:CY,r:(RAD*0.23).toFixed(1),fill:'#3B31F0',class:'mark'});
+gCore.appendChild(core);
+const setMark=v=>[disc,core].forEach(m=>m.classList.toggle('on',v));
+
+/* ---------- kadrowanie ---------- */
+const H_IN=S+52, W_IN=H_IN*AR;
+const VB_IN=[origin.x+S/2-W_IN/2, origin.y+S/2-H_IN/2, W_IN, H_IN];
+
+function apply(vb,r){
+  svg.setAttribute('viewBox',vb.map(v=>v.toFixed(2)).join(' '));
+  gDot.style.setProperty('--r',r.toFixed(3)+'px');
+  gDot.style.setProperty('--rh',(r*2.3).toFixed(3)+'px');   // kropki wzorca w tej samej proporcji
+}
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let raf=null, timers=[];
+
+function zoom(from,to,rFrom,rTo,dur,done){
+  cancelAnimationFrame(raf);
+  if(still){ apply(to,rTo); if(done)done(); return; }
+  const t0=performance.now();
+  (function step(now){
+    const p=Math.min(1,(now-t0)/dur), e=ease(p);
+    apply(from.map((v,i)=>v+(to[i]-v)*e), rFrom+(rTo-rFrom)*e);
+    if(p<1) raf=requestAnimationFrame(step); else if(done) done();
+  })(t0);
+}
+
+/* ---------- przelacznik ---------- */
+const track=document.getElementById('track'), what=document.getElementById('what');
+const labA=document.getElementById('labA'), labB=document.getElementById('labB');
+const figcap=document.getElementById('figcap');
+const CAP={
+  a:'TYLE WIDZI JEDNA OSOBA',
+  b:'800 PROJEKTÓW · ŻADNA KROPKA SIĘ NIE ZMIENIŁA — ZMIENIŁA SIĘ ODLEGŁOŚĆ'
+};
+function setCap(s){
+  figcap.classList.add('out');
+  setTimeout(()=>{ figcap.textContent=CAP[s]; figcap.classList.remove('out'); }, still?0:350);
+}
+
+let on=false, busy=false;
+function setState(next){
+  if(busy||next===on) return;
+  busy=true; on=next;
+  track.setAttribute('aria-checked',String(on));
+  labA.classList.toggle('act',!on);
+  labB.classList.toggle('act',on);
+  what.classList.toggle('on',on);
+  svg.setAttribute('aria-label', on
+    ? 'Osiemset projektów — wzorzec ułożony z projektów okazuje się znakiem Edisonda Intelligence'
+    : 'Jeden kadr — tyle projektów widzi jedna osoba');
+
+  timers.forEach(clearTimeout); timers=[];
+  if(on){
+    setCap('b');
+    zoom(VB_IN,VB_OUT,R_IN,R_OUT,1500,()=>{
+      timers.push(setTimeout(()=>setMark(true), still?0:350));
+      busy=false;
+    });
+  }else{
+    setMark(false); setCap('a');
+    zoom(VB_OUT,VB_IN,R_OUT,R_IN,1200,()=>{ busy=false; });
+  }
+}
+apply(VB_IN,R_IN);
+track.addEventListener('click',()=>setState(!on));
+
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') location.href='06.html';
+  if(e.key==='ArrowLeft') location.href='04.html';
+});
+</script>
+</html>

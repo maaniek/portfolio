@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Wiedza przestaje czekać. — Edisonda Intelligence</title>
+<style>
+:root{
+  --bg:#EFEFED; --ink:#111114; --soft:#6E6E73; --rule:#C9C9C6;
+  --blue:#3B31F0; --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#EFEFED;color:#111114;font:400 14px/1.65 var(--mono);
+     -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.page{flex:1;width:100%;max-width:1000px;margin:0 auto;padding:104px 44px 64px;
+      display:flex;flex-direction:column;justify-content:center}
+
+h1{font:400 46px/1.16 var(--mono);letter-spacing:-.005em;margin:0 0 34px;max-width:24ch}
+.lede{font-size:15px;line-height:1.85;color:#6E6E73;margin:0;max-width:62ch;letter-spacing:.01em}
+.lede strong{color:#111114;font-weight:400}
+
+.fig{margin:88px 0 0}
+.fig svg{display:block;width:100%;height:auto}
+
+.toggle{margin-top:24px;align-self:flex-start;background:none;border:0;cursor:pointer;
+  font:400 11px var(--mono);letter-spacing:.16em;color:#3B31F0;text-align:left;
+  padding:0 0 3px;border-bottom:1px solid #3B31F0}
+.toggle:hover{color:#111114;border-color:#111114}
+
+.later{margin:44px auto 0;font-size:14.5px;line-height:1.8;color:#111114;max-width:72ch;
+  text-align:center;opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .9s ease 1.5s}
+.later b{display:block;font-weight:400;color:#3B31F0;margin-bottom:10px;white-space:nowrap}
+.later.on{opacity:1;max-height:none}
+@media (max-width:760px){.later b{white-space:normal}}
+
+.cap{margin:60px 0 0;border-top:1px solid #C9C9C6;padding-top:20px;font-size:13px;
+     line-height:1.8;color:#6E6E73;max-width:66ch}
+.cap b{color:#111114;font-weight:400}
+.src{font-size:12px;line-height:1.7;letter-spacing:.02em;color:#6E6E73;margin:16px 0 0}
+
+.hook{margin:88px 0 0;font-size:15px;line-height:1.85;color:#111114;max-width:62ch;
+      border-left:2px solid #3B31F0;padding-left:18px}
+
+.pager{margin-top:76px;display:flex;gap:20px;align-items:center;
+       font-size:12px;letter-spacing:.16em;color:#6E6E73}
+.pager a{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid #C9C9C6;font-size:17px;text-decoration:none;color:#111114}
+.pager a:hover{border-color:#3B31F0;color:#3B31F0}
+
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes blink{
+  0%{opacity:var(--o,1);transform:scale(1)} 2%{opacity:var(--o,1);transform:scale(1.25)}
+  6%{opacity:0;transform:scale(.15)} 20%{opacity:var(--o,1);transform:scale(1)}
+  100%{opacity:var(--o,1);transform:scale(1)}}
+.fade{opacity:0;animation:fadein .8s ease forwards}
+.link{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+      animation:draw var(--dur,1.1s) cubic-bezier(.4,0,.2,1) forwards}
+.blink{transform-box:fill-box;transform-origin:center;
+       animation:blink var(--d,14s) ease-in-out infinite}
+rect,text{transition:stroke .6s ease, fill .6s ease}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}
+@media (max-width:760px){
+  .page{padding:56px 22px 40px} h1{font-size:30px}
+  .fig{margin:60px 0 0} .cap{margin-top:44px} .hook{margin-top:60px} .pager{margin-top:52px}
+}
+</style>
+
+<div class="page">
+  <h1>Wiedza przestaje czekać.</h1>
+
+  <p class="lede">
+    Sam dostęp niczego jeszcze nie zmienia — wyszukiwarka po dyskach to nadal wyszukiwarka,
+    a odpowiedź, po którą trzeba pójść, przychodzi za późno. Różnicę robi wiedza, która wchodzi
+    w projekt sama i w formie nadającej się do użycia od razu.
+    <strong>A wychodzi z niego większa, niż weszła.</strong>
+  </p>
+
+  <div class="fig">
+    <svg id="fig" viewBox="0 0 900 268" aria-label="Wiedza jako archiwum, po które trzeba sięgnąć"></svg>
+  </div>
+  <button class="toggle" id="toggle">CO WTEDY KUPUJE KLIENT →</button>
+
+  <p class="later" id="what">
+    Klient kupuje decyzję opartą na ośmiuset projektach, dostarczoną w dobę
+    — i decyzje, których nie trzeba potem cofać.
+    Cena przestaje być pochodną liczby godzin. Zbiór, z którego to wychodzi, rośnie
+    od używania i — w odróżnieniu od kompetencji ludzi — nie odchodzi z firmy.
+  </p>
+
+  <p class="cap">
+    <b>Koncept nie jest nowy — bliskie rozwiązanie powstało już wewnątrz firmy.</b>
+    W latach 2024–2025 Edisonda dostarczyła Departamentowi Audytu Grant Thornton asystenta AI
+    czerpiącego odpowiedzi z przepisów, polityk i wcześniej rozstrzygniętych spraw.
+    Architektura, zespół i partner technologiczny istnieją.
+    Różnica jest jedna: tam źródłem były cudze dokumenty.
+  </p>
+  <p class="src">Źródło: edisonda.pl / realizacje</p>
+
+  <p class="hook">
+    Zostaje pytanie, dlaczego akurat osiemset projektów miałoby dać coś,
+    czego nie da model wytrenowany na całym internecie.
+  </p>
+
+  <div class="pager">
+    <a href="03.html">‹</a><span>04 / 08</span><a href="05.html">›</a>
+  </div>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+const rr=(a,b)=>a+Math.random()*(b-a);
+const svg=document.getElementById('fig');
+const TX=(x,y,s,{anchor='start',fill='#6E6E73',size=10.5}={})=>{
+  const t=el('text',{x,y,'text-anchor':anchor,fill,
+    style:`font:400 ${size}px ui-monospace,Menlo,monospace;letter-spacing:.15em`});
+  t.textContent=s; return t;};
+
+/* ---------- geometria: oba stany dziela ten sam szkielet ---------- */
+const SX=6,  SW=160, SH=30, ROW=[42,90,138];   // zrodla — identyczne w A i B
+const MID=90;                                   // os glowna
+const AX=210, AW=140, AH=44;                    // ARCHIWUM (stan A)
+const EX=280;                                   // znak EI (stan B) — w tym samym miejscu
+const OX=320, OW=312, OH=44;                    // co EI podsuwa (stan B)
+const ZX=680, ZW=92;                            // ZESPOL — ta sama pozycja w A i B
+const KX=806, KW=92;                            // KLIENT (stan B)
+const RY=208;                                   // linia powrotna
+const CAPY=250;                                 // podpis pod schematem
+
+const gSrc=el('g'); svg.appendChild(gSrc);
+const gA=el('g');   svg.appendChild(gA);
+const gB=el('g');   svg.appendChild(gB);
+
+function box(x,y,w,h,label,delay,col){
+  const g=el('g',{class:'fade'}); g.style.animationDelay=delay+'s';
+  g.appendChild(el('rect',{x,y:y-h/2,width:w,height:h,fill:'none',stroke:col,'stroke-width':1}));
+  g.appendChild(TX(x+w/2,y+4,label,{anchor:'middle',fill:col}));
+  return g;
+}
+function seg(x1,x2,y,delay,col,dur){
+  const l=el('line',{x1,y1:y,x2,y2:y,stroke:col,'stroke-width':1,class:'link'});
+  l.style.setProperty('--len',Math.abs(x2-x1));
+  l.style.setProperty('--dur',(dur||.45)+'s');
+  l.style.animationDelay=delay+'s'; return l;
+}
+function elbow(y,x2,delay,col){                   // zrodlo -> srodek
+  const x1=SX+SW, xm=(x1+x2)/2;
+  const p=el('path',{d:`M ${x1} ${y} C ${xm} ${y}, ${xm} ${MID}, ${x2} ${MID}`,
+    fill:'none',stroke:col,'stroke-width':1,class:'link'});
+  p.style.setProperty('--len',(Math.abs(x2-x1)+Math.abs(MID-y))*1.25);
+  p.style.setProperty('--dur','.9s'); p.style.animationDelay=delay+'s';
+  return p;
+}
+function eiMark(x,y,k){
+  const g=el('g'), N=14, R=17*k, P=[];
+  for(let i=0;i<N;i++){const a=(i/N)*6.2832-1.5708;
+    P.push({x:x+Math.cos(a)*R, y:y+Math.sin(a)*R});}
+  g.appendChild(el('circle',{cx:x,cy:y,r:R.toFixed(2),fill:'#3B31F0','fill-opacity':.12}));
+  P.forEach(p=>{
+    const c=el('circle',{cx:p.x.toFixed(2),cy:p.y.toFixed(2),r:(1.9*k).toFixed(2),
+      fill:'none',stroke:'#3B31F0','stroke-width':1.2,class:'blink'});
+    c.style.setProperty('--o',rr(.4,1).toFixed(2));
+    c.style.setProperty('--d',rr(9,17).toFixed(1)+'s');
+    c.style.animationDelay=(-rr(0,17)).toFixed(1)+'s';
+    g.appendChild(c);
+  });
+  g.appendChild(el('circle',{cx:x,cy:y,r:(5.5*k).toFixed(2),fill:'#3B31F0'}));
+  return g;
+}
+
+/* ---------- zrodla: nic sie miedzy stanami nie zmienia ---------- */
+['800 PROJEKTÓW','BADANIA I BRIEFY','15 LAT DECYZJI'].forEach((l,i)=>{
+  gSrc.appendChild(box(SX,ROW[i],SW,SH,l,.2+i*.16,'#111114'));
+});
+
+/* ---------- STAN A: archiwum, po ktore trzeba siegnac ---------- */
+function renderA(){
+  ROW.forEach((y,i)=>gA.appendChild(elbow(y,AX,.8+i*.12,'#C9C9C6')));
+  gA.appendChild(box(AX,MID,AW,AH,'ARCHIWUM',.7,'#111114'));
+  gA.appendChild(seg(AX+AW,460,MID,1.5,'#C9C9C6'));
+  gA.appendChild(seg(560,ZX,MID,1.6,'#C9C9C6'));
+  const g=el('g',{class:'fade'}); g.style.animationDelay='2s';
+  g.appendChild(TX(510,MID-10,'TRZEBA PO TO PÓJŚĆ',{anchor:'middle'}));
+  gA.appendChild(g);
+  gA.appendChild(box(ZX,MID,ZW,SH,'ZESPÓŁ',1.9,'#111114'));
+  const c=el('g',{class:'fade'}); c.style.animationDelay='2.3s';
+  c.appendChild(TX(SX,CAPY,'WIEDZA CZEKA, AŻ KTOŚ ZAPYTA'));
+  gA.appendChild(c);
+}
+
+/* ---------- STAN B: obieg zamkniety ---------- */
+function renderB(){
+  const B='#3B31F0';
+  ROW.forEach((y,i)=>gB.appendChild(elbow(y,EX-23,.2+i*.12,B)));
+  const mk=el('g',{class:'fade'}); mk.style.animationDelay='.5s';
+  mk.appendChild(eiMark(EX,MID,1.35)); gB.appendChild(mk);
+
+  gB.appendChild(seg(EX+23,OX,MID,1,B));
+  gB.appendChild(box(OX,MID,OW,OH,'BRIEF · RYZYKA · METODYKA · MAKIETY',1.2,'#111114'));
+  gB.appendChild(seg(OX+OW,ZX,MID,1.6,B));
+  gB.appendChild(box(ZX,MID,ZW,SH,'ZESPÓŁ',1.8,'#111114'));
+
+  // granica: to zespol idzie do klienta, nie EI
+  gB.appendChild(seg(ZX+ZW,KX,MID,2.1,'#C9C9C6'));
+  gB.appendChild(box(KX,MID,KW,SH,'KLIENT',2.2,'#111114'));
+
+  // linia powrotna — projekt wraca do zbioru
+  const rx=KX+KW/2, sx=SX+SW/2;
+  const p=el('path',{d:`M ${rx} ${MID+SH/2} L ${rx} ${RY} L ${sx} ${RY} L ${sx} ${ROW[2]+SH/2}`,
+    fill:'none',stroke:B,'stroke-width':1,class:'link'});
+  p.style.setProperty('--len',(RY-MID-SH/2)+(rx-sx)+(RY-ROW[2]-SH/2)+20);
+  p.style.setProperty('--dur','1.6s'); p.style.animationDelay='2.5s';
+  gB.appendChild(p);
+  const nl=el('g',{class:'fade'}); nl.style.animationDelay='3.4s';
+  nl.appendChild(TX((rx+sx)/2,RY-10,'NOWY PROJEKT',{anchor:'middle',fill:B}));
+  gB.appendChild(nl);
+
+  const c=el('g',{class:'fade'}); c.style.animationDelay='3.6s';
+  c.appendChild(TX(SX,CAPY,'KAŻDY PROJEKT ZOSTAWIA WIĘCEJ, NIŻ WZIĄŁ'));
+  gB.appendChild(c);
+}
+
+const btn=document.getElementById('toggle'), what=document.getElementById('what');
+function go(){
+  btn.remove();
+  what.classList.add('on');
+  svg.setAttribute('aria-label','Obieg zamknięty: dorobek zasila EI, EI podsuwa zespołowi, '
+    +'zespół dostarcza klientowi, nowy projekt wraca do zbioru');
+  gA.textContent=''; renderB();
+}
+btn.addEventListener('click',go);
+renderA();
+if(location.hash==='#on') go();
+
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') location.href='05.html';
+  if(e.key==='ArrowLeft') location.href='03.html';
+});
+</script>
+</html>

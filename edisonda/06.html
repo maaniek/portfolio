@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Spotkanie się skończyło. Brief już jest. — Edisonda Intelligence</title>
+<style>
+:root{
+  --bg:#EFEFED; --ink:#111114; --soft:#6E6E73; --rule:#C9C9C6;
+  --blue:#3B31F0; --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#EFEFED;color:#111114;font:400 14px/1.65 var(--mono);
+     -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.page{flex:1;width:100%;max-width:1000px;margin:0 auto;padding:104px 44px 64px;
+      display:flex;flex-direction:column;justify-content:center}
+
+h1{font:400 40px/1.2 var(--mono);letter-spacing:-.005em;margin:0 0 34px;max-width:26ch}
+.lede{font-size:15px;line-height:1.85;color:#6E6E73;margin:0;max-width:62ch;letter-spacing:.01em}
+.lede strong{color:#111114;font-weight:400}
+
+.step{margin:64px 0 0;font:400 11px var(--mono);letter-spacing:.16em;color:#6E6E73}
+
+.cards{margin:20px 0 0;display:grid;gap:14px}
+.card{text-align:left;background:none;cursor:pointer;font:inherit;color:#111114;
+  border:1px solid #C9C9C6;padding:16px 18px;transition:border-color .3s ease}
+.card:hover{border-color:#6E6E73}
+.card[aria-pressed="true"]{border-color:#3B31F0}
+.card .who{font-size:11px;letter-spacing:.16em;color:#6E6E73;display:block;margin-bottom:8px}
+.card[aria-pressed="true"] .who{color:#3B31F0}
+.card .say{font-size:13.5px;line-height:1.75;color:#3C3C41}
+
+.fields{margin:24px 0 0;display:grid;gap:44px 48px;grid-template-columns:1fr 1fr;
+  align-items:start}
+label{display:block;font:400 11px var(--mono);letter-spacing:.16em;color:#6E6E73;margin-bottom:12px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0;font:400 11px var(--mono);letter-spacing:.16em;color:#6E6E73;margin-bottom:14px}
+.opt{display:flex;align-items:baseline;gap:12px;cursor:pointer;padding:6px 0;margin:0;
+  font-size:13.5px;line-height:1.6;letter-spacing:normal;color:#3C3C41;
+  transition:color .25s ease}
+.opt:hover{color:#111114}
+.opt input{position:absolute;width:1px;height:1px;opacity:0}
+.opt .mark{flex:none;width:11px;height:11px;border:1px solid #C9C9C6;border-radius:50%;
+  position:relative;top:2px;transition:border-color .25s ease}
+.opt input:checked ~ .mark{border-color:#3B31F0}
+.opt input:checked ~ .mark::after{content:"";position:absolute;inset:2px;border-radius:50%;
+  background:#3B31F0}
+.opt input:focus-visible ~ .mark{outline:1px solid #3B31F0;outline-offset:3px}
+.opt input:checked ~ .txt{color:#111114}
+input[type=text]{width:100%;font:400 13px var(--mono);color:#111114;background:#EFEFED;
+  border:1px solid #C9C9C6;border-radius:0;padding:11px 13px;-webkit-appearance:none;appearance:none}
+input[type=text]:focus{outline:none;border-color:#3B31F0}
+
+.go{margin:52px 0 0;align-self:flex-start;background:none;border:0;cursor:pointer;
+  font:400 11px var(--mono);letter-spacing:.16em;color:#3B31F0;text-align:left;
+  padding:0 0 3px;border-bottom:1px solid #3B31F0}
+.go:hover{color:#111114;border-color:#111114}
+.go[disabled]{color:#C9C9C6;border-color:#C9C9C6;cursor:default}
+
+.out{margin:48px 0 0;border:1px solid #C9C9C6;padding:38px 38px 40px;display:none}
+.out.on{display:block}
+.out h2{font:400 11px var(--mono);letter-spacing:.16em;color:#111114;margin:0 0 8px}
+.out .meta{font-size:11px;letter-spacing:.16em;color:#6E6E73;margin:0 0 46px}
+.out section{margin:0 0 44px}
+.out section:last-child{margin-bottom:0}
+.out h3{font:400 11px var(--mono);letter-spacing:.16em;color:#6E6E73;margin:0 0 16px}
+.out p{margin:0 0 12px;font-size:14px;line-height:1.85;color:#1E1E22}
+.out ul{margin:0;padding-left:18px}
+.out li{font-size:14px;line-height:1.85;color:#1E1E22;margin-bottom:12px}
+.out b{font-weight:600;color:#111114}
+.out .src{font-size:12.5px;line-height:1.75;color:#4E4E53}
+.reveal{opacity:0;animation:fadein .5s ease forwards}
+@keyframes fadein{to{opacity:1}}
+
+.status{margin:16px 0 0;font-size:12.5px;letter-spacing:.02em;color:#4E4E53;min-height:1.4em}
+
+.hook{margin:88px 0 0;font-size:15px;line-height:1.85;color:#111114;max-width:62ch;
+      border-left:2px solid #3B31F0;padding-left:18px}
+
+.pager{margin-top:76px;display:flex;gap:20px;align-items:center;
+       font-size:12px;letter-spacing:.16em;color:#6E6E73}
+.pager a{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid #C9C9C6;font-size:17px;text-decoration:none;color:#111114}
+.pager a:hover{border-color:#3B31F0;color:#3B31F0}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important}}
+@media (max-width:760px){
+  .page{padding:56px 22px 40px} h1{font-size:26px}
+  .fields{grid-template-columns:1fr}
+  .out{padding:22px 18px} .hook{margin-top:60px} .pager{margin-top:52px}
+}
+</style>
+
+<div class="page">
+  <h1>Spotkanie się skończyło.<br>Brief już jest.</h1>
+
+  <p class="lede">
+    Poniżej działa fragment tego, o czym mówią poprzednie strony. Formularz zbiera to,
+    co zostaje w głowie po spotkaniu; <strong>całą resztę model bierze z treści edisonda.pl
+    — z oferty i opisanych realizacji. Dobiera do sytuacji najbliższe projekty i z nich
+    składa brief</strong>.
+  </p>
+
+  <p class="step">1 · Z JAKIEGO SPOTKANIA WRACASZ</p>
+  <div class="cards" id="cards"></div>
+
+  <p class="step">2 · CO WIESZ PONAD TO</p>
+  <div class="fields">
+    <fieldset>
+      <legend>KTO BYŁ PO DRUGIEJ STRONIE</legend>
+      <label class="opt"><input type="radio" name="kto" value="dyrektor działu, sam" checked>
+        <span class="mark"></span><span class="txt">dyrektor działu, sam</span></label>
+      <label class="opt"><input type="radio" name="kto" value="zarząd w komplecie">
+        <span class="mark"></span><span class="txt">zarząd w komplecie</span></label>
+      <label class="opt"><input type="radio" name="kto" value="zespół produktowy bez decyzyjności">
+        <span class="mark"></span><span class="txt">zespół produktowy bez decyzyjności</span></label>
+      <label class="opt"><input type="radio" name="kto" value="dział zakupów razem z biznesem">
+        <span class="mark"></span><span class="txt">dział zakupów razem z biznesem</span></label>
+    </fieldset>
+    <fieldset>
+      <legend>CO ICH NAPRAWDĘ UWIERA</legend>
+      <label class="opt"><input type="radio" name="ryzyko" value="termin — decyzja zapada niedługo" checked>
+        <span class="mark"></span><span class="txt">termin — decyzja zapada niedługo</span></label>
+      <label class="opt"><input type="radio" name="ryzyko" value="budżet — trzeba go obronić przed zarządem">
+        <span class="mark"></span><span class="txt">budżet — trzeba go obronić przed zarządem</span></label>
+      <label class="opt"><input type="radio" name="ryzyko" value="zgodność z przepisami">
+        <span class="mark"></span><span class="txt">zgodność z przepisami</span></label>
+      <label class="opt"><input type="radio" name="ryzyko" value="spór między działami wewnątrz firmy">
+        <span class="mark"></span><span class="txt">spór między działami wewnątrz firmy</span></label>
+    </fieldset>
+    <fieldset>
+      <legend>KIEDY ZAPADA DECYZJA</legend>
+      <label class="opt"><input type="radio" name="termin" value="za dwa tygodnie" checked>
+        <span class="mark"></span><span class="txt">za dwa tygodnie</span></label>
+      <label class="opt"><input type="radio" name="termin" value="w tym miesiącu">
+        <span class="mark"></span><span class="txt">w tym miesiącu</span></label>
+      <label class="opt"><input type="radio" name="termin" value="w tym kwartale">
+        <span class="mark"></span><span class="txt">w tym kwartale</span></label>
+    </fieldset>
+    <div>
+      <label for="cytat">ZDANIE, KTÓRE ZAPAMIĘTAŁEŚ</label>
+      <input id="cytat" type="text" autocomplete="off"
+             placeholder="np. „to musi być gotowe przed audytem">
+    </div>
+  </div>
+
+  <button class="go" id="go">GENERUJ BRIEF →</button>
+  <p class="status" id="status"></p>
+
+  <div class="out" id="out"></div>
+
+  <p class="hook">
+    Zostaje pytanie niewygodne. Jeśli brief powstaje w minutę zamiast w tydzień,
+    to za co właściwie wystawia się fakturę.
+  </p>
+
+  <div class="pager">
+    <a href="05.html">‹</a><span>06 / 08</span><a href="07.html">›</a>
+  </div>
+</div>
+
+<script>
+/* Punkt wpiecia zywego modelu. Pusty string = demo chodzi na przykladach
+   wygenerowanych wczesniej. Klucz API nigdy nie trafia do tego pliku —
+   endpoint to Worker, ktory trzyma klucz i pilnuje limitu. Patrz demo/README.md */
+const ENDPOINT = '';
+
+const SC=[
+  {id:'bank', who:'BANK · KANAŁY CYFROWE',
+   say:'Po nowej wersji aplikacji rośnie liczba skarg od klientów po sześćdziesiątce. '
+      +'Wewnątrz banku spór, czy to sprawa wizerunkowa, czy zgodności z prawem.'},
+  {id:'zdrowie', who:'OCHRONA ZDROWIA · OPROGRAMOWANIE DLA PRZYCHODNI',
+   say:'Lekarze mówią, że wizyta zajmuje więcej czasu niż przed wdrożeniem. '
+      +'Konkurencja właśnie ogłosiła asystenta AI.'},
+  {id:'retail', who:'RETAIL · E-COMMERCE',
+   say:'Po redesignie konwersja spadła i nie wróciła. Dwa działy obwiniają się nawzajem, '
+      +'zarząd pyta, czy cofać.'}
+];
+
+/* Przyklady wygenerowane wczesniej — sluza za fallback, gdy Worker nie odpowiada
+   albo limit demo jest wyczerpany. Kazde odwolanie do realizacji jest publiczne. */
+const FALLBACK={
+bank:{
+ tytul:'Dostępność jako ryzyko regulacyjne, nie jako poprawki interfejsu',
+ czytamy:'Spadek skuteczności po redesignie w bankowości prawie nigdy nie dotyczy tego, '
+   +'co pada w skargach. Klienci opisują ostatnią rzecz, która ich zatrzymała, a nie pierwszą, '
+   +'która ich spowolniła. Rozmowa o kontraście i wielkości czcionki jest więc rozmową o objawie.',
+ ryzyka:[
+  'Sprawa jest jednocześnie wizerunkowa i regulacyjna — rozstrzyganie, która bardziej, '
+   +'kosztuje tygodnie i nie zmienia zakresu prac.',
+  'Jeśli skargi zbiera obsługa klienta, dane są już przefiltrowane przez to, komu chciało się zadzwonić.',
+  'Największe straty siedzą zwykle w krokach, których klient nie zgłasza, bo porzuca je w ciszy — '
+   +'logowanie, autoryzacja przelewu, ponowne wejście po przerwaniu.'
+ ],
+ sciezka:'Audyt dostępności prowadzony na realnych ścieżkach, nie na liście kontrolnej WCAG, '
+   +'plus wywiady z klientami z grupy, której dotyczą skargi. Wynikiem jest lista zmian '
+   +'uszeregowana według strat, nie według numeru wytycznej — coś, co da się położyć na stole zarządu.',
+ pytania:[
+  'Czy porzucenia w aplikacji są mierzone krok po kroku, czy tylko na końcu ścieżki?',
+  'Kto w banku odpowiada za zgodność — i czy był na tym spotkaniu?',
+  'Co dokładnie zmieniło się w tej wersji poza wyglądem?'
+ ],
+ skad:'Moje ING · Raport: dostępność w bankowości śladami klientów ze szczególnymi potrzebami · '
+   +'oferta: Dostępność cyfrowa produktów i usług'
+},
+zdrowie:{
+ tytul:'Nie asystent AI, tylko czas wizyty — i dopiero potem narzędzie',
+ czytamy:'Zapowiedź konkurencji zmienia rozmowę handlową, ale nie zmienia problemu. '
+   +'Jeśli wizyta trwa dłużej niż przed wdrożeniem, to jest to policzalna strata po stronie '
+   +'przychodni i najmocniejszy argument sprzedażowy, jaki można mieć — pod warunkiem, że ktoś to zmierzył.',
+ ryzyka:[
+  'Gonienie konkurencji funkcją, której lekarze nie zamawiali, przenosi spór na ich teren '
+   +'i zwykle kończy się niskim wykorzystaniem.',
+  'Skarga „trwa dłużej" bywa skargą na liczbę kliknięć, ale równie często na to, '
+   +'że system wymusza kolejność, której wizyta nie ma.',
+  'Bez pomiaru przed i po nie da się obronić żadnej zmiany przed zarządem przychodni.'
+ ],
+ sciezka:'Badania w gabinecie zamiast ankiety — obserwacja kilkunastu wizyt u różnych specjalizacji, '
+   +'z pomiarem czasu na czynność. Dopiero na tym materiale ma sens rozmowa o tym, '
+   +'gdzie AI faktycznie skraca pracę, a gdzie tylko dokłada ekran.',
+ pytania:[
+  'Ile trwała wizyta przed wdrożeniem i skąd wiemy?',
+  'Czy narzekają wszystkie specjalizacje, czy jedna?',
+  'Kto podejmuje decyzję o zakupie w przychodni — lekarz czy administracja?'
+ ],
+ skad:'drEryk — redesign aplikacji dla lekarzy · badania etnograficzne · '
+   +'UX w ochronie zdrowia: wnioski z UX Healthcare 2025'
+},
+retail:{
+ tytul:'Spór między działami jest tu ważniejszy niż sam spadek konwersji',
+ czytamy:'Pytanie „cofać czy naprawiać" postawione po kilku tygodniach od wdrożenia jest zwykle '
+   +'pytaniem o to, kto miał rację, a nie o to, co robić. Dopóki tak stoi, każda rekomendacja '
+   +'zostanie odczytana jako opowiedzenie się po jednej ze stron.',
+ ryzyka:[
+  'Cofnięcie redesignu kasuje dane i drugi raz zapłacicie za tę samą lekcję.',
+  'Spadek konwersji po redesignie bywa efektem zmiany struktury ruchu, a nie samego interfejsu — '
+   +'to sprawdza się w dzień, nie w kwartał.',
+  'Jeśli decyzja zapada w tym miesiącu, badanie jakościowe zdąży tylko wtedy, gdy ruszy natychmiast.'
+ ],
+ sciezka:'Najpierw rozdzielenie przyczyn: analiza lejka pod kątem zmiany źródeł ruchu, '
+   +'równolegle testy użyteczności na nowej wersji z klientami spoza firmy. Wynik ma rozstrzygać '
+   +'spór danymi, a nie autorytetem — to jedyna forma, w której obie strony go przyjmą.',
+ pytania:[
+  'Czy struktura ruchu po redesignie jest ta sama co przed?',
+  'Który dział będzie właścicielem decyzji, gdy wyniki będą niewygodne dla obu?',
+  'Co jeszcze zmieniło się w tym samym tygodniu — cennik, dostawa, kampania?'
+ ],
+ skad:'Wayfair — użyteczność systemu CRM · Range Rover Evoque — konwersja landing page · '
+   +'oferta: Audyt E-commerce Health Check, Testy użyteczności'
+}
+};
+
+const $=id=>document.getElementById(id);
+const val=n=>document.querySelector('input[name="'+n+'"]:checked').value;
+const cardsBox=$('cards'), out=$('out'), status=$('status'), go=$('go');
+let picked=SC[0].id;
+
+SC.forEach(s=>{
+  const b=document.createElement('button');
+  b.className='card'; b.type='button'; b.dataset.id=s.id;
+  b.setAttribute('aria-pressed', String(s.id===picked));
+  b.innerHTML=`<span class="who"></span><span class="say"></span>`;
+  b.querySelector('.who').textContent=s.who;
+  b.querySelector('.say').textContent=s.say;
+  b.addEventListener('click',()=>{
+    picked=s.id;
+    [...cardsBox.children].forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===picked)));
+  });
+  cardsBox.appendChild(b);
+});
+
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const li=a=>a.map(x=>`<li>${esc(x)}</li>`).join('');
+
+function render(b,ctx,note){
+  out.innerHTML=`
+    <h2>BRIEF — PROPOZYCJA DO WERYFIKACJI</h2>
+    <p class="meta">${esc(ctx)}</p>
+    <section><h3>O CO TU NAPRAWDĘ CHODZI</h3>
+      <p><b>${esc(b.tytul)}</b></p><p>${esc(b.czytamy)}</p></section>
+    <section><h3>RYZYKA, KTÓRYCH KLIENT NIE NAZWAŁ</h3><ul>${li(b.ryzyka)}</ul></section>
+    <section><h3>PROPONOWANA ŚCIEŻKA</h3><p>${esc(b.sciezka)}</p></section>
+    <section><h3>PYTANIA NA KOLEJNE SPOTKANIE</h3><ul>${li(b.pytania)}</ul></section>
+    <section><h3>Z CZEGO TO WYNIKA</h3><p class="src">${esc(b.skad)}</p>
+      ${note?`<p class="src">${esc(note)}</p>`:''}</section>`;
+  out.classList.add('on');
+  [...out.querySelectorAll('section')].forEach((s,i)=>{
+    s.classList.add('reveal'); s.style.animationDelay=(.12+i*.16)+'s';
+  });
+}
+
+async function generate(){
+  const ctx=[val('kto'), val('ryzyko'), val('termin'),
+             $('cytat').value.trim()].filter(Boolean).join(' · ').toUpperCase();
+  go.disabled=true; status.textContent='Czytam realizacje z edisonda.pl i szukam podobnych sytuacji…';
+  out.classList.remove('on');
+
+  if(ENDPOINT){
+    try{
+      const r=await fetch(ENDPOINT,{method:'POST',headers:{'content-type':'application/json'},
+        body:JSON.stringify({scenariusz:picked, kto:val('kto'), ryzyko:val('ryzyko'),
+          termin:val('termin'), cytat:$('cytat').value.trim()})});
+      if(r.status===429){
+        render(FALLBACK[picked],ctx,'Limit demo wyczerpany — poniżej przykład wygenerowany wcześniej.');
+        status.textContent=''; go.disabled=false; return;
+      }
+      if(!r.ok) throw new Error(r.status);
+      render(await r.json(), ctx, null);
+      status.textContent=''; go.disabled=false; return;
+    }catch(e){ /* przechodzimy na przyklad */ }
+  }
+  await new Promise(r=>setTimeout(r,700));
+  render(FALLBACK[picked],ctx, ENDPOINT
+    ? 'Model nie odpowiedział — poniżej przykład wygenerowany wcześniej.'
+    : 'Przykład wygenerowany wcześniej, na treściach z edisonda.pl.');
+  status.textContent=''; go.disabled=false;
+}
+go.addEventListener('click',generate);
+
+addEventListener('keydown',e=>{
+  if(e.target.matches('input,button')) return;
+  if(e.key==='ArrowRight') location.href='07.html';
+  if(e.key==='ArrowLeft') location.href='05.html';
+});
+</script>
+</html>
